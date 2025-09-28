@@ -16,7 +16,7 @@ import pairs from '../../helpers/generate-pairs'
 import widgets from '../../constants/widgets'
 import tTest from '../../utils/statistics/tTest'
 
-function TTestPanel(props) {
+export default function TTestPanel(props) {
 
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
@@ -51,7 +51,7 @@ function TTestPanel(props) {
   )
 }
 
-export default function CalculateTTest(props) {
+export function CalculateTTest(props) {
 
   const parameter = props.parameter
   const subsets = props.subsets || []
