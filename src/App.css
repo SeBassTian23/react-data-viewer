@@ -1,0 +1,572 @@
+:root {
+  --bs-bg-opacity: 1
+}
+
+/** Sidebar Navigation */
+#dv-nav {
+  width: 4rem !important;
+  & a.navbar-brand {
+    /* transition: transform 0.2s ease-in-out; */
+    transition: transform 0.5s ease-in-out;
+  }
+  & a.navbar-brand:hover {
+    /* transform: rotate(-365deg) scale(1.1); */
+    transform: rotate3d(0, 1, 0, 360deg);
+  }
+  .nav-item:has(> .active) {
+    box-shadow: inset 1px 0px 0px var(--bs-primary),
+      inset 4px 0px 0px var(--bs-primary);
+  }
+  .nav-item:hover {
+    background: var(--bs-secondary-bg-subtle);
+  }
+  .nav-item i {
+    font-size: 1.5rem;
+    background: transparent;
+    padding: 6px 9px;
+    border-radius: var(--bs-border-radius);
+  }
+  .nav-item span {
+    font-size: 0.5rem;
+    color: initial;
+  }
+}
+
+.column-dropdown > div {
+  column-count: 2;
+  inset: auto !important;
+}
+
+/** Dashboard */
+#dv-main {
+  .card {
+    .card-header.text-truncate {
+      padding-right: 3em;
+      font-size: 0.85em;
+      line-height: 1.5em;
+    }
+  
+    & button.btn-close {
+      position: absolute;
+      right: 0.8em;
+      top: 0.8em;
+      width: 0.2rem;
+      height: 0.2rem;
+    }
+  
+    .card-body {
+      aspect-ratio: 1.75;
+      overflow-y: auto;
+    }
+  
+    .card-body .list-group.list-group-flush {
+      margin: -1rem;
+    }
+  
+    .list-group.list-group-flush li {
+      background: transparent;
+      padding: 0.25rem 0.5rem;
+    }
+  
+    .leaflet-control-attribution {
+      zoom: 0.85;
+      display: none;
+    }
+
+    .leaflet-bar, .leaflet-control-layers {
+      border-radius: var(--bs-border-radius);
+    }
+    
+    .leaflet-touch .leaflet-control-layers,
+    .leaflet-touch .leaflet-bar {
+      border: 1px solid rgba(0,0,0,0.2);
+    }
+    
+    .leaflet-touch .leaflet-bar a:first-child,
+    .leaflet-touch .leaflet-bar a:last-child {
+      border-radius: var(--bs-border-radius);
+    }
+  
+    .card-body::-webkit-scrollbar-corner {
+      width: 1.25rem;
+    }
+    
+    .card-body > textarea {
+      border: 0px;
+      resize: none;
+      width: 100%;
+      height: 100%;
+      background: none;
+    }
+  
+    .card-header .bi-grip-vertical {
+      margin: 0px 4px 0px -10px;
+      cursor: move;
+    }
+    
+    .card-header .bi-grip-vertical:active {
+      cursor: grabbing;
+    }
+    
+    & > .bi {
+      position: absolute;
+      right: 3em;
+      top: 0.675em;
+      width: 0.2rem;
+      height: 0.2rem;
+      font-size: small;
+      cursor: pointer;
+      opacity: 0.6;
+    }
+    
+    & > .bi:hover {
+      opacity: 1;
+    }
+    
+    .dropdown {
+      position: absolute;
+      right: 1.9em;
+      top: 0.25em;
+      width: 0.2rem;
+      height: 0.2rem;
+    }
+    
+    .dropdown button {
+      border: none;
+    }
+  
+    .card-body textarea:focus {
+      outline: none;
+    }
+  }
+  
+  .sortable-ghost {
+    opacity: 0.25;
+    filter: grayscale(1) blur(1.5px);
+  }
+}
+
+/** Sidebar */
+#dv-sidebar {
+  width: 300px; /* Width of the Sidebar */
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+  & div:not(#dv-tab-nav) .btn-toolbar .btn {
+    border: none;
+    border-radius: 0%;
+  }
+  .sortable-ghost {
+    opacity: 0.25;
+    filter: grayscale(1) blur(1.5px);
+  }
+  & li i.bi-square-fill {
+    cursor: ns-resize;
+  }
+  & li.sortable-chosen i.bi-square-fill {
+    cursor: grabbing;
+  }
+}
+
+/** Documentation */
+#dv-docs {
+  .toc {
+    & {
+      float: right;
+      width: fit-content;
+      border-left: 1px solid var(--bs-border-color);
+      padding: 0.7rem;
+      margin-top: 1rem;
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    & ol {
+      list-style: none;
+      padding: 0.2rem 0.5rem;
+    }
+    & ol a {
+      text-decoration: none;
+      color: var(--bs-text-dark);
+    }
+    & ol a:hover {
+      text-decoration: underline;
+    }
+    & ol ol {
+      padding: 0.2rem 0.75rem;
+    }
+    & .toc-item {
+      font-size: 0.85rem;
+    }
+    & .toc-link-h1 {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--bs-secondary-color);
+    }
+    & > ol:before {
+      content: "Content";
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid var(--bs-border-color);
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+  & section {
+    margin-bottom: 3rem;
+  }
+}
+
+.table-w-fit {
+  width: fit-content;
+}
+
+.scrollup {
+  position: absolute !important;
+  bottom: 1rem;
+  right: 3rem;
+}
+
+/** Plotly */
+.plotly .modebar {
+  right: 1.25rem !important;
+}
+
+/** Main Container */
+#dv-main {
+  /* background: linear-gradient(315deg, rgba(0, 0, 0, 0.1) 2%, transparent 60%); */
+  background: radial-gradient(farthest-corner at 100% 100%, rgba(0, 0, 0, 0.1) 10%, transparent 60%);
+}
+
+body[data-bs-theme="dark"] #dv-main {
+  /* background: linear-gradient(315deg, rgba(255, 255, 255, 0.1) 2%, transparent 60%); */
+  background: radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.1) 10%, transparent 60%);
+}
+
+/** Map Darkmode */
+body[data-bs-theme="dark"] {
+  #dv-sidebar {
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+}
+body[data-bs-theme="dark"] {
+  [class^="leaflet-draw-draw-"],
+  [class^="leaflet-draw-edit-"] {
+    background-image: url(./styles/spritesheet-darkmode.svg) !important;
+  }
+
+  .leaflet-disabled {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-secondary) !important;
+  }
+
+  .leaflet-left a,
+  .leaflet-top.leaflet-right .leaflet-control-layers-toggle,
+  .leaflet-control-layers-expanded {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+}
+
+/** Spreadsheet Darkmode */
+body[data-bs-theme="dark"] .jexcel {
+  & {
+    border-right: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+
+  & > thead > tr > td {
+    border-top: 1px solid var(--bs-border-color);
+    border-left: 1px solid var(--bs-border-color);
+    background-color: var(--bs-secondary-bg-subtle);
+  }
+
+  & > tbody > tr > td {
+    border-top: 1px solid var(--bs-border-color);
+    border-left: 1px solid var(--bs-border-color);
+  }
+
+  & > tbody > tr > td:first-child {
+    background: var(--bs-secondary-bg-subtle);
+  }
+
+  &.jexcel_overflow {
+    background: var(--bs-body-bg);
+  }
+
+  .jexcel_content {
+    box-shadow: none !important;
+  }
+
+  & > tbody > tr.selected > td:first-child,
+  & thead .selected {
+    background: var(--bs-body-bg);
+  }
+
+  & .highlight-top.highlight-left {
+    box-shadow: -1px -1px #ccc;
+    -webkit-box-shadow: -1px -1px #ccc;
+    -moz-box-shadow: -1px -1px #ccc;
+  }
+
+  & .selected .highlight {
+    background-color: var(--bs-secondary-bg-subtle);
+  }
+}
+
+/** Spreadsheet selected cell((s) */
+.jexcel_content{
+  box-shadow: none !important;
+  .jexcel {
+    .highlight-top {
+      border-top: 1px solid var(--bs-primary) !important;
+      box-shadow: none !important;
+    }
+  
+    .highlight-left {
+      border-left: 1px solid var(--bs-primary) !important;
+      box-shadow: none !important;
+    }
+  
+    .highlight-right {
+      border-right: 1px solid var(--bs-primary) !important;
+    }
+  
+    .highlight-bottom {
+      border-bottom: 1px solid var(--bs-primary) !important;
+    }
+  }
+  
+  .jexcel_corner {
+    background-color: var(--bs-primary) !important;
+    border: 1px solid var(--bs-border-color) !important;
+  }
+}
+
+/** Spreadsheet search field */
+.jexcel_search {
+  display: inline-block !important;
+  width: 70% !important;
+}
+
+.jexcel_filter div:nth-child(2) {
+  font-weight: bold;
+}
+
+/** Toast */
+body[data-bs-theme="light"] .toast .toast-body {
+  color: var(--bs-light);
+}
+
+/* Modal Dialogs */
+.modal-dialog .modal-footer button:last-child {
+  border-right: none !important;
+}
+
+/** Overwrite Bootstrap styles */
+.form-color {
+  max-width: 3rem !important;
+}
+
+.form-select-dropdown {
+  border: var(--bs-border-width) solid var(--bs-border-color) !important;
+  background-color: var(--bs-body-bg) !important;
+  padding: 4px 36px 4px 8px !important;
+  border-radius: 4px !important;
+
+  &::after {
+    content: none !important;
+  }
+}
+
+/* Form Label Header */
+.form-label-header {
+  font-variant: petite-caps;
+  opacity: var(--bs-text-opacity);
+  font-size: 0.875rem;
+  display: block;
+  padding: var(--bs-dropdown-header-padding-y)
+    var(--bs-dropdown-header-padding-x);
+  color: var(--bs-dropdown-header-color);
+  margin-bottom: 5px !important;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* Remove dropdown caret in button */
+#dv-tab-nav .btn-group .dropdown:last-child button:after,
+#dv-main .card .dropdown button:after {
+  display: none;
+}
+
+.dropdown-header {
+  font-variant-caps: small-caps;
+  padding: 0px var(--bs-dropdown-item-padding-x) !important;
+}
+
+/* Reduce margin for dropdown divider */
+.dropdown-divider {
+  margin: 4px 0 !important;
+}
+
+/* Rotate file icon to match resize icon orientation */
+#dv-main .card .dropdown-item .bi-file:before {
+  transform: rotate(90deg);
+}
+
+/* Reduce padding in hover button menu */
+ul li .btn-group button.btn {
+  padding: 0.2rem 0.35rem;
+  font-size: 0.75rem;
+}
+
+/* Add background for hover button menu with outline buttons */
+ul li .btn-group button.btn:not(:hover) {
+  background: var(--bs-body-bg);
+}
+
+/* Overwrite z-index to bring offcanvas before modal dialogs */
+.offcanvas {
+  z-index: 1065 !important;
+}
+
+/* Prevent line-breaks at the end of a row */
+kbd {
+  white-space: nowrap;
+}
+
+.leaflet-control-layers-base label,
+.leaflet-control-layers-selector {
+  cursor: pointer
+}
+
+.sidebar-toggle-icon-stack .bi:last-child {
+    position: absolute;
+    margin-left: -0.8rem;
+    margin-top: 0.385rem;
+    font-size: 0.75rem;
+}
+
+.toc-item {
+  font-size: .8rem;
+}
+
+pre:has(code) {
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity));
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+body[data-bs-theme="dark"] pre:has(code) {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+kbd {
+  font-family: inherit !important;
+}
+
+/** Plotly Icon */
+
+.ploty-icon {
+  height: 1.25rem;
+  margin-top: -0.188rem
+}
+
+.ploty-icon-dist {
+  height: 1.125rem;
+  margin-top: -0.188rem
+}
+
+.ploty-icon-matrix {
+  height: 1.375rem;
+  margin-top: -0.188rem
+}
+
+/** Nav */
+.user-profile-btn > img {
+  width: 1.8rem;
+}
+
+/** Map */
+.map-resize-chart-btn {
+  margin-left: -1rem;
+  position: absolute;
+  z-index: 500;
+}
+
+
+/* Spreadsheet */
+
+.spreadsheet-container {
+  margin-top: -38px !important;
+  padding: 0px !important;
+}
+
+.spreadsheet-container > div {
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+
+
+/** Modal Analysis */
+
+.analysis-team-members {
+  columns: 2;
+}
+
+.analysis-user-avatar {
+  margin-right: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.analysis-user-avatar > i {
+  line-height: 41px;
+}
+
+.analysis-user-name {
+  line-height: 1.125rem;
+}
+
+.analysis-user-email {
+  font-size: .75rem;
+  line-height: .8125rem;
+}
+
+/** Modal User */
+.title-avatar {
+  height: 2.375rem;
+  margin-top: .4rem;
+  margin-bottom: -0.3rem;
+  vertical-align: baseline;
+}
+
+/** Color Gradient */
+.color-gradient-menu-dd {
+  width: 400px;
+  overflow-y: auto;
+  height: 300px;
+}
+
+/** Bootstrap extend */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-petite-caps {
+  font-variant: petite-caps;
+}
+
+.text-pre-wrap {
+  white-space: pre-wrap;
+}
+
+/** Dashboard Panel */
+
+.dashboard-title-input {
+  display: inline;
+  width: 95%;
+  margin: -6px; 
+}
