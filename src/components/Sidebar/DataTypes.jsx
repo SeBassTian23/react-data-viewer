@@ -1,16 +1,17 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
 
 import DataTypeItem from './DataTypeItem'
 
-import HelpOffCanvas from '../Main/HelpOffCanvas'
-
 import { useSelector } from 'react-redux'
+
+import useHelp from '../../hooks/useHelp';
 
 export default function DataTypes() {
 
@@ -18,12 +19,18 @@ export default function DataTypes() {
 
   const [filter, setFilter] = useState('');
 
+  const help = useHelp();
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Data Types", "help/md/data-types.md")
+  },[] )
+
   return (
     <>
       <Row id="dv-datatypes">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Data Types
-          <HelpOffCanvas title='Help | Data Types' url='help/md/data-types.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
       </Row>
       <Row className='h-100 overflow-auto align-content-start'>

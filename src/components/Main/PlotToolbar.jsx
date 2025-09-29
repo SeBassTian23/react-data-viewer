@@ -13,7 +13,7 @@ import * as PlotlyIcons from 'plotly-icons';
 
 import ModalDialogPlot from '../../components/Dialogs/ModalDialogPlot'
 
-import HelpOffCanvas from './HelpOffCanvas'
+import useHelp from "../../hooks/useHelp";
 
 import { useSelector, useDispatch } from 'react-redux'
 import { dashboardAddPanel } from '../../features/dashboard.slice'
@@ -33,6 +33,7 @@ export default function PlotToolbar(props) {
   const stateDatasubsets = useSelector(state => state.datasubsets)
 
   const toast = useToast();
+  const help = useHelp()
 
   const addToDashboard = useCallback( () => {
     dispatch(dashboardAddPanel({
@@ -43,6 +44,10 @@ export default function PlotToolbar(props) {
     }))
     toast.info("Plot added to Dashboard", "Panel", "bi-window-plus")
   })
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Plot Data", "help/md/plot.md")
+  },[] )
 
   const addToSubsetInside = (ids) => {
 
@@ -127,7 +132,7 @@ export default function PlotToolbar(props) {
           </DropdownButton>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Help Group">
-          <HelpOffCanvas variant={props.darkmode? "outline-light" : "outline-dark"} title='Help | Plot Data' url='help/md/plot.md' />
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </ButtonGroup>
       </ButtonToolbar>
       <ModalDialogPlot

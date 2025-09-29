@@ -1,3 +1,5 @@
+import {useCallback} from 'react'
+
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Modal from 'react-bootstrap/Modal';
@@ -5,8 +7,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 
-import HelpOffCanvas from '../Main/HelpOffCanvas';
 import { useFileImport } from '../../hooks/useFileImport';
+import useHelp from '../../hooks/useHelp';
 
 export default function ModalDialogImport(props) {
   
@@ -21,6 +23,8 @@ export default function ModalDialogImport(props) {
     }
   });
 
+  const help = useHelp()
+
   const handleProcessFile = () => {
     const values = getValues();
     processFile(values, props.onHide);
@@ -31,6 +35,10 @@ export default function ModalDialogImport(props) {
     reset(); // Reset form
     resetState(); // Reset hook state
   };
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Data Import", "help/md/data-import.md")
+  },[] )
 
   return (
     <Modal
@@ -48,7 +56,7 @@ export default function ModalDialogImport(props) {
         <Row>
           <Col sm={12}>
             <span className='float-end'>
-              <HelpOffCanvas title='Help | Data Import' url='help/md/data-import.md' />
+              <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
             </span>
             <span className="d-block fs-4">
               <i className="bi-box-arrow-in-down fs-1 text-muted" /> Import Data

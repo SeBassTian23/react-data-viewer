@@ -27,8 +27,6 @@ import WelchsTTestPanel from '../Widgets/WelchsTTestPanel'
 import PearsonCorrelationPanel from '../Widgets/PearsonCorrelationPanel'
 import KolmogorovSmirnovPanel from '../Widgets/KolmogorovSmirnovPanel'
 
-import HelpOffCanvas from './HelpOffCanvas'
-
 import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 
 import { useDispatch } from 'react-redux'
@@ -37,6 +35,8 @@ import { dashboardDeletePanel, dashboardResetPanel, dashboardSetPanelSize, dashb
 import { widgetSizes } from '../../constants/widget-sizes'
 
 import copyToClipboard from '../../helpers/clipboard'
+
+import useHelp from "../../hooks/useHelp";
 
 const PANEL_REGISTRY = {
   // Pages
@@ -67,6 +67,8 @@ const PANEL_REGISTRY = {
 function DashboardWidget(props) {
 
   const dispatch = useDispatch();
+
+  const help = useHelp();
 
   const [modalShow, setModalShow] = useState(false);
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
@@ -137,6 +139,10 @@ function DashboardWidget(props) {
     changePanelSize(props.id, size);
   }, [changePanelSize, props.id]);
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Dashboard Widgets", "help/md/dashboard.md")
+  },[] )
+
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
@@ -170,7 +176,7 @@ function DashboardWidget(props) {
           <Dropdown.Item data-size="lg" onClick={handleClickPanelSize}><i className="bi-textarea-resize" /> Large</Dropdown.Item>
           <Dropdown.Item data-size="xl" onClick={handleClickPanelSize}><i className="bi-aspect-ratio" /> Full Width</Dropdown.Item>
           <Dropdown.Divider />
-          <HelpOffCanvas as={Dropdown.Item} text="Help" title='Help | Dashboard Widgets' url='help/md/dashboard.md' />
+          <Dropdown.Item onClick={handleClickHelp}><i className='bi-question-circle' /> Help</Dropdown.Item>
         </DropdownButton>
         {content}
       </Card>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { ReactSortable } from "react-sortablejs";
 
@@ -11,7 +11,6 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
-import HelpOffCanvas from '../Main/HelpOffCanvas'
 import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,10 +19,14 @@ import { getDatasetCount } from '../../modules/database'
 
 import { datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetDnD } from '../../features/datasubset.slice';
 
+import useHelp from '../../hooks/useHelp';
+
 export default function DataSubset(props) {
 
   const state = useSelector(state => state.datasubsets)
   const dispatch = useDispatch()
+
+  const help = useHelp();
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -42,13 +45,17 @@ export default function DataSubset(props) {
   const setList = (request, obj, dragging ) => {
     dispatch( datasubsetDnD(request) )
   }
+    
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Data Selection", "help/md/data-subsets.md")
+  },[] )
 
   return (
     <>
       <Row id="dv-series">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Data Selection
-          <HelpOffCanvas title='Help | Data Selection' url='help/md/data-subsets.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
         <Col sm={12}>
           {(state.length > 0) && (

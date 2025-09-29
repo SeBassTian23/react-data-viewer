@@ -1,28 +1,35 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import ListGroup from 'react-bootstrap/ListGroup'
 
+import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 
 import ParameterItem from './ParameterItem'
 
-import HelpOffCanvas from '../Main/HelpOffCanvas'
-
 import { useSelector } from 'react-redux';
+
+import useHelp from '../../hooks/useHelp';
 
 export default function Parameters() {
 
   const state = useSelector(state => state.parameters);
   const [filter, setFilter] = useState('');
 
+  const help = useHelp();
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Parameters", "help/md/parameters.md")
+  },[] )
+
   return (
     <>
       <Row id="dv-parameters">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Parameters
-          <HelpOffCanvas title='Help | Parameters' url='help/md/parameters.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
       </Row>
 

@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import { useCallback } from 'react'
 
 import { useForm } from 'react-hook-form'
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-
-import HelpOffCanvas from '../Main/HelpOffCanvas'
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -23,6 +21,7 @@ import { } from '../../features/parameter.slice'
 import { datasubsetAdded, datasubsetMultipleAdded } from '../../features/datasubset.slice'
 
 import useToast from "../../hooks/useToast";
+import useHelp from '../../hooks/useHelp';
 
 export default function Filters() {
 
@@ -32,6 +31,8 @@ export default function Filters() {
   const dispatch = useDispatch();
 
   const toast = useToast()
+  const help = useHelp();
+
 
   const resetSelection = (event) => {
     event.preventDefault()
@@ -43,12 +44,16 @@ export default function Filters() {
     reset()
   }
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Filter Data", "help/md/data-filter.md")
+  },[] )
+
   return (
     <>
       <Row id='dv-filters'>
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Filter Data into Subsets
-          <HelpOffCanvas title='Help | Filter Data' url='help/md/data-filter.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
         <Col sm={12}>
           <ButtonToolbar aria-label="Filters Menu">

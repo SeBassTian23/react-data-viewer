@@ -9,6 +9,7 @@ import thresholdReducer from './features/threshold.slice'
 import bookmarkReducer from './features/bookmark.slice'
 import analysisReducer from './features/analysis.slice'
 import toastReducer from './features/toast.slice'
+import offcanvasReducer from './features/offcanvas.slice'
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     bookmarks: bookmarkReducer,
     analysis: analysisReducer,
     toast: toastReducer,
+    offcanvas: offcanvasReducer,
   }
 })
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button'
@@ -7,17 +7,15 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup';
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 
 import { uniqWith, isEqual, differenceWith } from 'lodash'
-
-import HelpOffCanvas from '../Main/HelpOffCanvas'
 
 import { fileExtension } from '../../helpers/file-extension';
 import { analysisUpdate } from '../../features/analysis.slice';
 
 import { getDatasetCount } from '../../modules/database'
+
+import useHelp from '../../hooks/useHelp';
 
 export default function ModalDialogAnalysis(props) {
 
@@ -29,6 +27,8 @@ export default function ModalDialogAnalysis(props) {
   const [team, setTeam] = useState([]);
 
   const dispatch = useDispatch();
+
+  const help = useHelp();
 
   const handleClose = () => {
     dispatch(analysisUpdate({
@@ -49,6 +49,10 @@ export default function ModalDialogAnalysis(props) {
     setTeam(differenceWith( uniqWith(bookmarks.filter( itm => itm.creator ).map( itm => itm.creator), isEqual), [store.creator], isEqual))
   }, [bookmarks])
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Analysis", "help/md/analysis.md")
+  },[] )
+
   return ( <>
     <Modal
       show={props.show}
@@ -58,7 +62,7 @@ export default function ModalDialogAnalysis(props) {
       size={'md'}
     >
       <Modal.Body>
-        <span className='float-end'><HelpOffCanvas title='Help | Analysis' url='help/md/analysis.md' /></span>
+        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button></span>
         <span className="d-block fs-4"><i className="bi bi-journal-richtext fs-2 text-muted" /> Analysis</span>
         <Form className='mt-2'>
           <Form.Group className="mb-3">

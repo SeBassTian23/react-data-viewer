@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { useStore, useDispatch } from 'react-redux';
 
@@ -13,7 +13,7 @@ import { getBase64ImageFromURL } from '../../utils/user/getBase64ImageFromURL';
 
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-import HelpOffCanvas from '../Main/HelpOffCanvas';
+import useHelp from '../../hooks/useHelp';
 
 export default function ModalDialogUser(props) {
 
@@ -29,6 +29,8 @@ export default function ModalDialogUser(props) {
 
   const { register, watch, reset, setValue, getValues } = useForm();
   const dispatch = useDispatch();
+
+  const help = useHelp();
 
   const handleClose = () => {
     if (allowCookies) {
@@ -88,6 +90,10 @@ export default function ModalDialogUser(props) {
     }
   }, [])
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | User Profile", "help/md/profile.md")
+  },[] )
+
   return (
     <Modal
       show={props.show}
@@ -98,7 +104,7 @@ export default function ModalDialogUser(props) {
       centered
     >
       <Modal.Body>
-        <span className='float-end'><HelpOffCanvas title='Help | User Profile' url='help/md/profile.md' /></span>
+        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button></span>
         <span className="d-block fs-4">{props.avatar ? <img src={props.avatar} className='rounded title-avatar' /> : <i className="bi bi bi-person-circle fs-2 text-muted" /> } Profile</span>
         <Form className='mt-2'>
 

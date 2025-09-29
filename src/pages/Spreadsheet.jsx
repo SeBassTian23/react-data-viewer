@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -14,7 +14,7 @@ import { getFilteredData } from '../modules/database'
 
 import { useSelector } from 'react-redux'
 
-import HelpOffCanvas from '../components/Main/HelpOffCanvas'
+import useHelp from "../hooks/useHelp";
 
 export default function Spreadsheet(props) {
   const jssRef = useRef(null);
@@ -23,6 +23,8 @@ export default function Spreadsheet(props) {
   const stateParameters = useSelector(state => state.parameters)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateAnalysis = useSelector(state => state.analysis)
+
+  const help = useHelp()
 
   useEffect(() => {
 
@@ -115,6 +117,9 @@ export default function Spreadsheet(props) {
 
   }, [stateParameters, stateDatasubsets, stateThresholds]);
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Spreadsheet", "help/md/spreadsheet.md")
+  },[] )
 
   function changed(instance, cell, x, y, value) {
     // console.log(instance, cell, x, y, value)
@@ -204,7 +209,7 @@ export default function Spreadsheet(props) {
               <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={downloadJSON}><i className='bi-filetype-json' /> JSON</Button>
             </ButtonGroup>
             <ButtonGroup className='ms-2' size='sm' aria-label="Help Group">
-              <HelpOffCanvas variant={props.darkmode? "outline-light" : "outline-dark"} url='help/md/spreadsheet.md' />
+              <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>

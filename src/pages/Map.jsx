@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 import { MapContainer, TileLayer, LayersControl, FeatureGroup, LayerGroup, GeoJSON, ScaleControl } from 'react-leaflet'
@@ -35,7 +35,6 @@ import { calculateBins } from '../utils/plot/histogram'
 import plotMapLayout from '../constants/plot-map-layout'
 
 import DatumOffCanvas from '../components/Main/DatumOffCanvas'
-import { HelpOffcanvasContent } from '../components/Main/HelpOffCanvas'
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -54,6 +53,7 @@ import ModalDialogMapHistogram from '../components/Dialogs/ModalDialogMapHistogr
 import ModalDialogMapAreaSelect from '../components/Dialogs/ModalDialogMapAreaSelect'
 
 import useToast from "../hooks/useToast"; 
+import useHelp from '../hooks/useHelp';
 
 // Apply fixes
 L.GeometryUtil = fixRectangle();
@@ -98,6 +98,7 @@ export default function Map(props) {
   const dispatch = useDispatch();
 
   const toast = useToast();
+  const help = useHelp();
 
   const geoJsonRef = useRef()
   const mapRef = useRef()
@@ -111,9 +112,6 @@ export default function Map(props) {
   const [areaselectstate, setAreaselectstate] = useState(false)
   const [areaselectedstate, setAreaselectedstate] = useState(null)
 
-  const [help, setHelp] = useState(false)
-  const [toastShow, setToastShow] = useState(false)
-
   const [plotdisplay, setPlotdisplay] = useState('none')
   const [plotstate, setPlotstate] = useState({ data: [], layout: plotMapLayout, frames: [], config: { displayModeBar: false } })
 
@@ -124,16 +122,12 @@ export default function Map(props) {
     setDatumstate(true)
   }
 
-  const showHelp = () => {
-    setHelp(true);
-  }
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Maps", "help/md/map.md")
+  },[] )
 
-  const hideDatum = () => setDatumstate(false)
-  const hideHistogramModal = () => setHistogramstate(false)
-  const hideAreaSelectModal = () => setAreaselectstate(false)
-
-  const addToDashboard = () => {
-
+  const handleClickDashboard = useCallback( ()=> {
+    
     const props = store.getState().map
 
     dispatch(dashboardAddPanel({
@@ -144,7 +138,12 @@ export default function Map(props) {
     })
     )
     toast.info("Map added to Dashboard", "Dashboard", "bi-window-plus");
-  }
+
+  },[] )
+
+  const hideDatum = () => setDatumstate(false)
+  const hideHistogramModal = () => setHistogramstate(false)
+  const hideAreaSelectModal = () => setAreaselectstate(false)
 
   const toggleGrayscale = () => {
     const props = store.getState().map;
@@ -299,9 +298,9 @@ export default function Map(props) {
                 <ToggleFilter action={(e) => toggleGrayscale()} />
               </FeatureGroup>
 
-              <DashboardControl action={(e) => { addToDashboard(e); setToastShow(true); }} title="Add Map View to Dashboard" />
+              <DashboardControl action={handleClickDashboard} title="Add Map View to Dashboard" />
 
-              <HelpControl action={(e) => showHelp()} />
+              <HelpControl action={handleClickHelp} />
             </>
             }
 
@@ -336,7 +335,6 @@ export default function Map(props) {
         </Card>
       </Row>
       <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={`${props.darkmode}`} />
-      <HelpOffcanvasContent onHide={setHelp} show={help} title='Help | Map' url='help/md/map.md' />
       <ModalDialogMapHistogram onHide={hideHistogramModal} show={histogramstate} action={() => mapShowHistogram()} />
       <ModalDialogMapAreaSelect onHide={hideAreaSelectModal} show={areaselectstate} editRef={editRef} areaselectedstate={areaselectedstate} mapRef={mapRef} />
     </>

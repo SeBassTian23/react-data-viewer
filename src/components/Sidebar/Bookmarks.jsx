@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
@@ -9,8 +9,9 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 
 import BookmarkItem from './BookmarkItem'
-import HelpOffCanvas from '../Main/HelpOffCanvas'
 import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
+
+import useHelp from '../../hooks/useHelp';
 
 export default function Bookmarks(props) {
 
@@ -18,12 +19,18 @@ export default function Bookmarks(props) {
 
   const [modalShow, setModalShow] = useState(false);
 
+  const help = useHelp();
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Bookmarks", "help/md/bookmarks.md")
+  },[] )
+
   return (
     <>
       <Row id="dv-bookmarks">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Bookmarks
-          <HelpOffCanvas title='Help | Bookmarks' url='help/md/bookmarks.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
         <Col sm={12} className='mb-2'>
           <ButtonToolbar aria-label="Bookmark Menu">

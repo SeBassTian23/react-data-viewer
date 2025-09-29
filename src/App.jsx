@@ -16,6 +16,7 @@ import store from './store'
 import { dbInit } from './modules/database'
 
 import ToastManager from './components/Main/ToastManager'
+import HelpOffcanvasManager from './components/Main/HelpOffcanvasManager.jsx'
 
 /* Set up database tables */
 dbInit();
@@ -54,7 +55,7 @@ function App() {
           </Row>
         </Container>
         {/*<ModalManager />         all confirm/edit modals */}
-        {/*<HelpOffcanvasManager /> all help panels */}
+        <HelpOffcanvasManager />
         <ToastManager />
       </Provider>
     </Suspense>

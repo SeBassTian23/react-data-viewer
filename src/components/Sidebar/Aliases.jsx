@@ -1,25 +1,33 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useSelector } from 'react-redux';
 
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
 
 import AliasItem from './AliasItem'
-import HelpOffCanvas from '../Main/HelpOffCanvas'
+
+import useHelp from '../../hooks/useHelp';
 
 export default function Aliases() {
 
   const state = useSelector(state => state.parameters)
   const [filter, setFilter] = useState('');
 
+  const help = useHelp();
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Parameter Aliases", "help/md/aliases.md")
+  },[] )
+
   return (
     <>
       <Row id="dv-parameters">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Aliases
-          <HelpOffCanvas url='help/md/aliases.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
       </Row>
       <Row className='h-100 overflow-auto align-content-start'>

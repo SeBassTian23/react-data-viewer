@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { useForm } from 'react-hook-form'
 
@@ -15,11 +15,12 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 import ThresholdItem from './ThresholdItem'
-import HelpOffCanvas from '../Main/HelpOffCanvas'
 import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { thresholdsReset, thresholdAdd } from '../../features/threshold.slice';
+
+import useHelp from '../../hooks/useHelp';
 
 export default function Thresholds(props) {
 
@@ -29,12 +30,18 @@ export default function Thresholds(props) {
   const [toggleform, setToggleform] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
+  const help = useHelp();
+
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Threshold Data", "help/md/thresholds.md")
+  },[] )
+
   return (
     <>
       <Row id='dv-thresholds'>
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
           Thresholds
-          <HelpOffCanvas title='Help | Threshold Data' url='help/md/thresholds.md' />
+          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
         <Col sm={12}>
           <ButtonToolbar aria-label="Threshold Menu">
