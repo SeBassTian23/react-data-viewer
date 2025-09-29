@@ -39,10 +39,7 @@ import { HelpOffcanvasContent } from '../components/Main/HelpOffCanvas'
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
 import Row from 'react-bootstrap/Row';
-import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
 
 import { mapShowSeries, mapShowHistogram, mapApplyHistogramRange, mapApplySettings } from '../features/map.slice'
 import { dashboardAddPanel } from '../features/dashboard.slice';
@@ -55,6 +52,8 @@ import { fixRectangle, fixCircle } from '../utils/map/fixes'
 
 import ModalDialogMapHistogram from '../components/Dialogs/ModalDialogMapHistogram'
 import ModalDialogMapAreaSelect from '../components/Dialogs/ModalDialogMapAreaSelect'
+
+import useToast from "../hooks/useToast"; 
 
 // Apply fixes
 L.GeometryUtil = fixRectangle();
@@ -96,7 +95,9 @@ export default function Map(props) {
 
   const store = useStore();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const toast = useToast();
 
   const geoJsonRef = useRef()
   const mapRef = useRef()
@@ -142,6 +143,7 @@ export default function Map(props) {
       type: "map"
     })
     )
+    toast.info("Map added to Dashboard", "Dashboard", "bi-window-plus");
   }
 
   const toggleGrayscale = () => {
@@ -337,17 +339,6 @@ export default function Map(props) {
       <HelpOffcanvasContent onHide={setHelp} show={help} title='Help | Map' url='help/md/map.md' />
       <ModalDialogMapHistogram onHide={hideHistogramModal} show={histogramstate} action={() => mapShowHistogram()} />
       <ModalDialogMapAreaSelect onHide={hideAreaSelectModal} show={areaselectstate} editRef={editRef} areaselectedstate={areaselectedstate} mapRef={mapRef} />
-      <ToastContainer className="p-3" position='top-end'>
-        <Toast bg='secondary' onClose={() => setToastShow(false)} show={toastShow} delay={3000} autohide>
-          <Toast.Header>
-            <i className='bi-window-plus me-2' />
-            <strong className="me-auto">Dashboard</strong>
-          </Toast.Header>
-          <Toast.Body >
-            Map added to Dashboard
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
     </>
   )
 }

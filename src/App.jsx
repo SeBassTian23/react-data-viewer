@@ -10,11 +10,12 @@ import Col from 'react-bootstrap/Col';
 import Sidebar from './components/Sidebar/Sidebar';
 import RenderRoutes from './routes.jsx';
 
-
 import { Provider } from 'react-redux'
 import store from './store'
 
 import { dbInit } from './modules/database'
+
+import ToastManager from './components/Main/ToastManager'
 
 /* Set up database tables */
 dbInit();
@@ -52,6 +53,9 @@ function App() {
             </Col>
           </Row>
         </Container>
+        {/*<ModalManager />         all confirm/edit modals */}
+        {/*<HelpOffcanvasManager /> all help panels */}
+        <ToastManager />
       </Provider>
     </Suspense>
   );

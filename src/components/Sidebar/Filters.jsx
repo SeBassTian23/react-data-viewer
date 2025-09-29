@@ -11,8 +11,6 @@ import HelpOffCanvas from '../Main/HelpOffCanvas'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
-import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
 
 import FilterItem, { FilterItemDateTime } from './FilterItem'
 
@@ -24,15 +22,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { } from '../../features/parameter.slice'
 import { datasubsetAdded, datasubsetMultipleAdded } from '../../features/datasubset.slice'
 
+import useToast from "../../hooks/useToast";
+
 export default function Filters() {
 
   const { register, unregister, reset, getValues, setValue, handleSubmit, resetField } = useForm();
 
-  const [show, setShow] = useState(false)
-  const [seriesCount, setSeriesCount] = useState(0)
-
   const state = useSelector(state => state.parameters)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const toast = useToast()
 
   const resetSelection = (event) => {
     event.preventDefault()
@@ -77,8 +76,8 @@ export default function Filters() {
                   // Add Filter to Series
                   dispatch(datasubsetAdded(selection))
 
-                  setSeriesCount(1)
-                  setShow(true)
+                  toast.success( "A subset has been added" , "Filter", "bi-filter");
+                  
                   const fields = Object.keys(getValues()) || []
                   fields.forEach(element => {
                     resetField(element)
@@ -114,13 +113,14 @@ export default function Filters() {
 
                     // Add Filter to Series
                     dispatch(datasubsetMultipleAdded(selection))
-                    setSeriesCount(selection.length)
-                    setShow(true)
+
+                    toast.success( selection.length === 1? "A subset has been added" : `${selection.length} subsets have been added` , "Filter", "bi-filter");
+
                     const fields = Object.keys(getValues()) || []
                     fields.forEach(element => {
                       resetField(element)
                     });
-                    reset()
+                    reset();
                   }
                 }
               })}><i className='bi-subtract' /> Separate</Button>
@@ -145,20 +145,6 @@ export default function Filters() {
           </ListGroup>
         </Col>
       </Row>
-
-      <ToastContainer className="p-3" position='top-end'>
-        <Toast bg='secondary' onClose={() => setShow(false)} show={show} delay={3000} autohide>
-          <Toast.Header>
-            <i className='bi-filter me-2' />
-            <strong className="me-auto">Filter</strong>
-          </Toast.Header>
-          <Toast.Body >
-            <i className='bi-check-circle me-2' />
-            {seriesCount === 1 && <><strong>A subset</strong> has been added</>}
-            {seriesCount > 1 && <><strong>{seriesCount} subsets</strong> have been added</>}
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
     </>
   )
 }

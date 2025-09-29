@@ -8,6 +8,7 @@ import plotReducer from './features/plot.slice'
 import thresholdReducer from './features/threshold.slice'
 import bookmarkReducer from './features/bookmark.slice'
 import analysisReducer from './features/analysis.slice'
+import toastReducer from './features/toast.slice'
 
 const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ const store = configureStore({
     plot: plotReducer,
     thresholds: thresholdReducer,
     bookmarks: bookmarkReducer,
-    analysis: analysisReducer
+    analysis: analysisReducer,
+    toast: toastReducer,
   }
 })
 

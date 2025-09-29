@@ -28,9 +28,6 @@ export default function ModalDialogAnalysis(props) {
   const [hasdata, setHasdata] = useState(false);
   const [team, setTeam] = useState([]);
 
-  const [show, setShow] = useState(false)
-  const [message, setMessage] = useState({ header: '', body: '', icon: '', status: 'secondary' })
-
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -93,7 +90,7 @@ export default function ModalDialogAnalysis(props) {
           <Form.Group className="mb-3">
             <div className="form-label m-0">File(s)</div>
             <ListGroup as="ul" variant="flush" className='list-unstyled'>
-              <AnalysisFileInfo files={store.files} hasdata={hasdata} handleClose={handleClose} setShow={setShow} setMessage={setMessage} setModalImport={props.setModalImport} />
+              <AnalysisFileInfo files={store.files} hasdata={hasdata} handleClose={handleClose} setModalImport={props.setModalImport} />
             </ListGroup>
           </Form.Group>
           <Row>
@@ -115,16 +112,6 @@ export default function ModalDialogAnalysis(props) {
         </Button>
       </Modal.Footer>
     </Modal>
-
-    <ToastContainer className="p-3" position='top-end'>
-      <Toast onClose={() => setShow(false)} show={show} delay={4000} autohide bg={message.status || 'secondary'}>
-        <Toast.Header>
-          <i className={`bi ${message.icon === '' ? 'bi-app-indicator' : message.icon} me-2`} />
-          <strong className="me-auto">{message.header}</strong>
-        </Toast.Header>
-        <Toast.Body>{message.body}</Toast.Body>
-      </Toast>
-    </ToastContainer>
   </>
   )
 }

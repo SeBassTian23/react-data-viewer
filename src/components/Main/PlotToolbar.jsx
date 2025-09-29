@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { getFilteredData } from '../../modules/database'
 
@@ -20,27 +20,29 @@ import { dashboardAddPanel } from '../../features/dashboard.slice'
 
 import { datasubsetAdded } from '../../features/datasubset.slice'
 
-import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
+import useToast from "../../hooks/useToast";
 
 export default function PlotToolbar(props) {
 
   const [modalShow, setModalShow] = useState({ type: null, show: false });
   const [toastShow, setToastShow] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const state = useSelector(state => state.plot)
   const stateDatasubsets = useSelector(state => state.datasubsets)
 
-  const addToDashboard = () => {
+  const toast = useToast();
+
+  const addToDashboard = useCallback( () => {
     dispatch(dashboardAddPanel({
       content: { ...state },
       linkTo: null,
       title: state.title !== ""? state.title : "",
       type: "plot"
     }))
-  }
+    toast.info("Plot added to Dashboard", "Panel", "bi-window-plus")
+  })
 
   const addToSubsetInside = (ids) => {
 
@@ -133,17 +135,6 @@ export default function PlotToolbar(props) {
         show={modalShow.show}
         onHide={() => setModalShow({ type: null, show: false })}
       />
-      <ToastContainer className="p-3" position='top-end'>
-        <Toast bg='secondary' onClose={() => setToastShow(false)} show={toastShow} delay={3000} autohide>
-          <Toast.Header>
-            <i className='bi-window-plus me-2' />
-            <strong className="me-auto">Panel</strong>
-          </Toast.Header>
-          <Toast.Body >
-            Plot added to Dashboard
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
     </>
   )
 }
