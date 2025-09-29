@@ -43,7 +43,7 @@ export default function WelchesTTestPanel(props) {
     <>
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect} />}
       {state && <>
-        <Card.Body className='p-0 overflow-y-hidden'>
+        <Card.Body className='p-0 overflow-y'>
           <CalculateKolmogorovSmirnovTest {...props} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}

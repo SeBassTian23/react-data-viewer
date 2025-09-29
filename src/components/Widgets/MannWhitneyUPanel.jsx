@@ -42,7 +42,7 @@ export default function MannWhitneyUPanel(props) {
     <>
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
-        <Card.Body className='p-0 overflow-y-hidden'>
+        <Card.Body className='p-0 overflow-y'>
           <CalculateMannWhitneyU {...props} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}

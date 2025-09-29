@@ -43,7 +43,7 @@ export default function SpearmanCorrelationPanel(props) {
     <>
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
-        <Card.Body className='p-0 overflow-y-hidden'>
+        <Card.Body className='p-0 overflow-y'>
           <CalculateSpearmanCorrelation {...props} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}

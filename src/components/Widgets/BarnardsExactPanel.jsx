@@ -43,7 +43,7 @@ export default function BarndardsExactPanel(props) {
     <>
       {!state && <PanelInputForm {...props} selectType='string' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
-        <Card.Body className='p-0 overflow-y-hidden'>
+        <Card.Body className='p-0 overflow-y'>
           <CalculateBarndardsExact {...props} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}

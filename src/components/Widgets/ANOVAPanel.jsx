@@ -40,7 +40,7 @@ export default function ANOVAPanel(props) {
     <>
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
-        <Card.Body className='p-0 overflow-y-hidden'>
+        <Card.Body className='p-0 overflow-y'>
           <CalculateANOVA {...props} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
