@@ -28,7 +28,7 @@ export default function FilterItem(props) {
       <div className="d-flex justify-content-between align-items-center cursor-pointer" onClick={() => { props.setValue(props.name, []); setToggle(!toggle) }}>
         <span>
           {toggle ? <i className='bi-caret-down-fill small' /> : <i className='bi-caret-right-fill small' />}
-          {' '}<span className={toggle && 'fw-bold'}>{props.alias? props.alias : props.name}</span>
+          {' '}<span className={toggle ? 'fw-bold' : ''}>{props.alias? props.alias : props.name}</span>
         </span>
         <span className='badge text-bg-light'>{unique.length}</span>
       </div>
