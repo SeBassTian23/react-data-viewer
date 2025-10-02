@@ -12,12 +12,12 @@ export default function ToastManager() {
       {toasts.map((toast) => (
         <Toast
           key={toast.id}
-          bg={toast.variant}
+          // bg={toast.variant}
           onClose={() => dispatch(removeToast(toast.id))}
           delay={toast.timeout}
           autohide
         >
-          {toast?.header && <Toast.Header>
+          {toast?.header && <Toast.Header className={`bg-${toast.variant}-subtle`}>
             <i className={`bi ${toast?.icon ? toast.icon : 'bi-app-indicator'} me-2`} />
             <strong className="me-auto">{toast.header}</strong>
           </Toast.Header>}
