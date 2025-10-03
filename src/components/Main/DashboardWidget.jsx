@@ -131,7 +131,7 @@ function DashboardWidget(props) {
     if (!config) return null;
 
     const Component = config.component;
-    return <Component id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
+    return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
   }, [props.type, props.id, props.content, props.darkmode]);
 
   const handleClickPanelSize = useCallback((e) => {

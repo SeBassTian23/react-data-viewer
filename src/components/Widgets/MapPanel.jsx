@@ -1,26 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
+import L from "leaflet";
+import Card from 'react-bootstrap/Card'
 
 import buildGeoJSON from '../../modules/build-geojson';
-
-import { useSelector, useDispatch } from 'react-redux'
-
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
-import L from "leaflet";
-
 import { mapLayers } from '../../constants/map-layers'
-
 import { mapApplySettings } from '../../features/map.slice'
+import { ColorGradientColorArray } from '../Main/ColorGradient';
+import { calculateBins } from '../../utils/plot/histogram'
 
 import chroma from 'chroma-js'
 import jStat from 'jstat'
 
-import { ColorGradientColorArray } from '../Main/ColorGradient';
-import { calculateBins } from '../../utils/plot/histogram'
-
-import Card from 'react-bootstrap/Card'
-
-var geojsonMarkerOptions = {
+const geojsonMarkerOptions = {
   radius: 4,
   fillColor: "#ff0000",
   color: "#000",
@@ -29,78 +23,116 @@ var geojsonMarkerOptions = {
   fillOpacity: 0.8
 };
 
-export default function MapPanel(props) {
-
-  const geoJsonRef = useRef()
-  const mapRef = useRef()
-
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const dispatch = useDispatch()
-
-  const navigate = useNavigate();
-  const linkToView = ((props) => {
-    const { id, ...newobj } = props
-    dispatch(mapApplySettings(newobj))
-    navigate('/map')
-  })
-
-  const [map, setMap] = useState(false)
-  const [mapLayer, setMapLayer] = useState(mapLayers[0])
+// Separate layer component so we can use useMap()
+function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
+  const geoJsonRef = useRef();
+  const map = useMap();
 
   useEffect(() => {
+    if (!geoJsonRef.current) return;
 
-    if (geoJsonRef.current) {
+    geoJsonRef.current.clearLayers();
 
-      // remove old data
-      geoJsonRef.current.clearLayers()
-      let { id, bounds, ...stateMap } = props
-      let geoJSON = buildGeoJSON({ datasets: stateDatasubsets, thresholds: stateThresholds, parameters: stateParameters, ...stateMap })
-      geoJsonRef.current.addData(geoJSON.features)
+    let { id, bounds, ...stateMap } = props;
+    let geoJSON = buildGeoJSON({ datasets, thresholds, parameters, ...stateMap });
+    geoJsonRef.current.addData(geoJSON.features);
 
-      if (props.bounds && L.latLngBounds(props.bounds).isValid()) {
-        geoJsonRef.current._map.fitBounds(L.latLngBounds(props.bounds))
-      }
-
-      if (stateMap.filter) {
-        geoJsonRef.current._map._container.querySelector('.leaflet-pane.leaflet-tile-pane').style.filter = stateMap.filter;
-      }
-
-      if (props.colorType === 'histogram') {
-
-        let colorValues = geoJSON.features.map(item => item.properties.colorValue)
-
-        let scale = ColorGradientColorArray(stateMap.colorScale)
-
-        let f = chroma.scale(scale).domain([jStat(colorValues).min(), jStat(colorValues).max()]);
-
-        let bins = calculateBins(colorValues)
-        let colorbars = []
-        let nextbin = bins.start
-        while (nextbin <= bins.end) {
-          colorbars.push(f(nextbin).hex())
-          nextbin += bins.size
-        }
-      }
-
-      let idx = mapLayers.findIndex(e => e.name === props.layer)
-      if (idx)
-        setMapLayer(mapLayers[idx])
-
+    // fit bounds if valid
+    if (props.bounds && L.latLngBounds(props.bounds).isValid()) {
+      map.fitBounds(L.latLngBounds(props.bounds));
     }
-    else {
-      setMap(true)
+
+    // apply CSS filter if set
+    if (stateMap.filter) {
+      map.getContainer()
+        .querySelector('.leaflet-pane.leaflet-tile-pane')
+        .style.filter = stateMap.filter;
     }
-  }, [stateDatasubsets, stateThresholds, stateParameters, map])
+
+    // histogram coloring
+    if (props.colorType === 'histogram') {
+      let colorValues = geoJSON.features.map(item => item.properties.colorValue);
+      let scale = ColorGradientColorArray(stateMap.colorScale);
+      let f = chroma.scale(scale).domain([jStat.min(colorValues), jStat.max(colorValues)]);
+      let bins = calculateBins(colorValues);
+
+      let colorbars = [];
+      let nextbin = bins.start;
+      while (nextbin <= bins.end) {
+        colorbars.push(f(nextbin).hex());
+        nextbin += bins.size;
+      }
+    }
+
+    return () => {
+      geoJsonRef.current?.clearLayers();
+    };
+  }, [datasets, thresholds, parameters, props, map]);
 
   return (
-    <Card.Body onClick={() => linkToView(props)} className='d-flex justify-content-center align-items-center p-0 card-img-bottom'>
-      <MapContainer ref={mapRef} center={[0, 0]} zoom={0} zoomControl={false} dragging={false} scrollWheelZoom={false} preferCanvas={true} renderer={L.canvas()} style={{ 'width': '100%', 'height': '100%', 'minHeight': '100%', 'cursor': 'pointer' }}>
-        <TileLayer attribution={mapLayer.attribution} url={mapLayer.url} subdomains={mapLayer.subdomains || null} />
-        <GeoJSON ref={geoJsonRef} pointToLayer={(feature, latlng) => L.circleMarker(latlng, { ...geojsonMarkerOptions, ...{ fillColor: feature.properties.fillColor } })} />
+    <GeoJSON
+      ref={geoJsonRef}
+      pointToLayer={(feature, latlng) =>
+        L.circleMarker(latlng, {
+          ...geojsonMarkerOptions,
+          fillColor: feature.properties.fillColor
+        })
+      }
+    />
+  );
+}
+
+export default function MapPanel(props) {
+  const stateThresholds = useSelector(state => state.thresholds);
+  const stateDatasubsets = useSelector(state => state.datasubsets);
+  const stateParameters = useSelector(state => state.parameters);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const linkToView = (panelProps) => {
+    const { id, ...newobj } = panelProps;
+    dispatch(mapApplySettings(newobj));
+    navigate('/map');
+  };
+
+  const [mapLayer, setMapLayer] = useState(mapLayers[0]);
+
+  useEffect(() => {
+    let idx = mapLayers.findIndex(e => e.name === props.layer);
+    if (idx >= 0) {
+      setMapLayer(mapLayers[idx]);
+    }
+  }, [props.layer]);
+
+  return (
+    <Card.Body
+      onClick={() => linkToView(props)}
+      className="d-flex justify-content-center align-items-center p-0 card-img-bottom"
+    >
+      <MapContainer
+        key={props.id}
+        center={[0, 0]}
+        zoom={0}
+        zoomControl={false}
+        dragging={false}
+        scrollWheelZoom={false}
+        preferCanvas={true}
+        renderer={L.canvas()}
+        style={{ width: '100%', height: '100%', minHeight: '100%', cursor: 'pointer' }}
+      >
+        <TileLayer
+          attribution={mapLayer.attribution}
+          url={mapLayer.url}
+          subdomains={mapLayer.subdomains || null}
+        />
+        <GeoJSONLayer
+          props={props}
+          datasets={stateDatasubsets}
+          thresholds={stateThresholds}
+          parameters={stateParameters}
+        />
       </MapContainer>
     </Card.Body>
-  )
+  );
 }

@@ -31,9 +31,9 @@ export default function Dashboard(props) {
             <span className="small">Add Panels to your Dashboard to enrich your Analysis and save your Results.<br />Use the <i className="bi-window-plus"></i>&nbsp;button when available to add the view as a Panel.</span>
           </div> 
         </Row> : 
-        <ReactSortable handle='.bi-grip-vertical' className='row px-2 pb-1 pt-5 vh-100 align-content-start flex-wrap' list={ JSON.parse(JSON.stringify(state)) } setList={ setList } animation={200} delayOnTouchStart={true} delay={2}>
-          {state.map((item) => (
-            <DashboardWidget key={item.id} {...item} {...props}/>
+        <ReactSortable handle='.bi-grip-vertical' className='row px-2 pb-1 pt-5 vh-100 align-content-start flex-wrap' list={ state.map(item => ({ ...item })) } setList={ newState => setList([...newState]) } animation={200} delayOnTouchStart={true} delay={2}>
+          {state.map((item, idx) => (
+            <DashboardWidget key={`${item.id}-${idx}`} {...item} {...props}/>
             ))}
         </ReactSortable>
       }
