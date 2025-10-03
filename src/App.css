@@ -40,18 +40,25 @@
 /** Dashboard */
 #dv-main {
   .card {
-    .card-header.text-truncate {
-      padding-right: 3em;
-      font-size: 0.85em;
-      line-height: 1.5em;
+    .card-header {
+      padding: .25rem;
     }
   
-    & button.btn-close {
-      position: absolute;
-      right: 0.8em;
-      top: 0.8em;
-      width: 0.2rem;
-      height: 0.2rem;
+    .card-header .bi-grip-vertical {
+      cursor: move;
+    }
+    
+    .card-header .bi-grip-vertical:active {
+      cursor: grabbing;
+    }
+
+    .card-header .dashboard-title-input {
+      padding: .1rem;
+      margin: -.1rem; 
+    }
+
+    .card-header > div {
+      font-size: small !important;
     }
   
     .card-body {
@@ -98,15 +105,6 @@
       height: 100%;
       background: none;
     }
-  
-    .card-header .bi-grip-vertical {
-      margin: 0px 4px 0px -10px;
-      cursor: move;
-    }
-    
-    .card-header .bi-grip-vertical:active {
-      cursor: grabbing;
-    }
     
     & > .bi {
       position: absolute;
@@ -121,14 +119,6 @@
     
     & > .bi:hover {
       opacity: 1;
-    }
-    
-    .dropdown {
-      position: absolute;
-      right: 1.9em;
-      top: 0.25em;
-      width: 0.2rem;
-      height: 0.2rem;
     }
     
     .dropdown button {
@@ -561,12 +551,4 @@ kbd {
 
 .text-pre-wrap {
   white-space: pre-wrap;
-}
-
-/** Dashboard Panel */
-
-.dashboard-title-input {
-  display: inline;
-  width: 95%;
-  margin: -6px; 
 }

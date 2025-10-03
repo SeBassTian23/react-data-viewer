@@ -146,10 +146,10 @@ function DashboardWidget(props) {
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
-        <Card.Header className="text-truncate fw-bold" title={props.title || props.content.title || "Untitled"}>
+        <Card.Header className="fw-bold d-flex justify-content-between align-items-center" title={props.title || props.content.title || "Untitled"}>
           <i className='bi-grip-vertical' />
           {!editTitle ?
-            <>{props.title || props.content.title || "Untitled"}</> :
+            <div className='w-100 text-truncate'>{props.title || props.content.title || "Untitled"}</div> :
             <Form.Control
               ref={titleRef}
               size={'sm'}
@@ -159,35 +159,31 @@ function DashboardWidget(props) {
               onKeyUp={(e) => e.key === 'Enter' ? editTitleHandler(false) : null} defaultValue={props.title || props.content.title || "Untitled"}
             />
           }
+          <Dropdown>
+            <Dropdown.Toggle size="sm" variant="outline-secondary" id="dropdown-basic">
+              <i className="bi-three-dots-vertical" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {PANEL_REGISTRY[props.type].showEdit &&
+                <Dropdown.Item onClick={handleReset}><i className="bi-pencil-square" /> Edit</Dropdown.Item>
+              }
+              <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>
+              <Dropdown.Item onClick={handleDelete}><i className="bi-window-x" /> Delete</Dropdown.Item>
+              <Dropdown.Divider />
+              {(['map', 'image'].indexOf(props.type) === -1) && <>
+                <Dropdown.Item onClick={handleCopy}><i className="bi-clipboard" /> Copy</Dropdown.Item>
+                <Dropdown.Divider /> </>}
+              <Dropdown.Header>Size</Dropdown.Header>
+              <Dropdown.Item data-size="md" onClick={handleClickPanelSize}><i className="bi-file" /> Default</Dropdown.Item>
+              <Dropdown.Item data-size="lg" onClick={handleClickPanelSize}><i className="bi-textarea-resize" /> Large</Dropdown.Item>
+              <Dropdown.Item data-size="xl" onClick={handleClickPanelSize}><i className="bi-aspect-ratio" /> Full Width</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleClickHelp}><i className='bi-question-circle' /> Help</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Card.Header>
-
-        <DropdownButton size="sm" variant="outline-secondary" align="end" title={<i className="bi-three-dots-vertical" />} >
-          {PANEL_REGISTRY[props.type].showEdit &&
-            <Dropdown.Item onClick={handleReset}><i className="bi-pencil-square" /> Edit</Dropdown.Item>
-          }
-          <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>
-          <Dropdown.Item onClick={handleDelete}><i className="bi-window-x" /> Delete</Dropdown.Item>
-          <Dropdown.Divider />
-          {(['map', 'image'].indexOf(props.type) === -1) && <>
-            <Dropdown.Item onClick={handleCopy}><i className="bi-clipboard" /> Copy</Dropdown.Item>
-            <Dropdown.Divider /> </>}
-          <Dropdown.Header>Size</Dropdown.Header>
-          <Dropdown.Item data-size="md" onClick={handleClickPanelSize}><i className="bi-file" /> Default</Dropdown.Item>
-          <Dropdown.Item data-size="lg" onClick={handleClickPanelSize}><i className="bi-textarea-resize" /> Large</Dropdown.Item>
-          <Dropdown.Item data-size="xl" onClick={handleClickPanelSize}><i className="bi-aspect-ratio" /> Full Width</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item onClick={handleClickHelp}><i className='bi-question-circle' /> Help</Dropdown.Item>
-        </DropdownButton>
         {content}
       </Card>
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={handleHideModal}
-        header="Delete Panel"
-        content={<>Removing the <strong>"{props.title || props.content.title || "Untitled"}"</strong> Panel cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
     </Col>
   )
 }
