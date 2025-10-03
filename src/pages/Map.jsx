@@ -30,6 +30,7 @@ import jStat from 'jstat'
 import { ColorGradientColorArray } from '../components/Main/ColorGradient';
 
 import buildGeoJSON from '../modules/build-geojson';
+import { getDatasetCount } from '../modules/database'
 
 import { calculateBins } from '../utils/plot/histogram'
 import plotMapLayout from '../constants/plot-map-layout'
@@ -152,8 +153,9 @@ export default function Map(props) {
 
   useEffect(() => {
 
+    
     if (geoJsonRef.current) {
-
+      
       // Clear all old data
       geoJsonRef.current.clearLayers()
 
@@ -165,8 +167,18 @@ export default function Map(props) {
       let geoJSON = buildGeoJSON({ datasets: stateDatasubsets, thresholds: stateThresholds, parameters: stateParameters, valueType, ...stateMap })
       geoJsonRef.current.addData(geoJSON.features)
 
+      // Apply saved map bounds
       if (stateMap.bounds && L.latLngBounds(stateMap.bounds).isValid()) {
-        geoJsonRef.current._map.fitBounds(L.latLngBounds(stateMap.bounds))
+        geoJsonRef.current._map.fitBounds(L.latLngBounds(stateMap.bounds),{
+          maxZoom: 18
+        })
+      }
+      // Zoom in to data if no bounds exist
+      // This should cover the initial state just using the preset zoom level
+      if (stateMap.bounds.length == 0 && getDatasetCount() > 0 && geoJSON?.features.length > 0){
+        geoJsonRef.current._map.fitBounds(L.latLngBounds(geoJsonRef.current.getBounds()),{
+          maxZoom: 18
+        })
       }
 
       if (stateMap.colorType === 'series') {

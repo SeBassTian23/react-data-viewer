@@ -6,10 +6,7 @@ const initialState = {
   colorScale: null,
   colorRange: null,
   colorType: 'series',
-  bounds: [
-    [-72.2, -132.5],
-    [84.3, 150.0]
-  ],
+  bounds: [],
   filter: 'grayscale(1)',
   layer: mapLayers.find(itm => itm.name === 'OpenStreetMap').name || mapLayers[0].name,
 }
