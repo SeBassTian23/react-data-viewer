@@ -13,7 +13,8 @@ export default function Dashboard(props) {
   const dispatch = useDispatch();
 
   const setList = (request, obj, dragging ) => {
-    dispatch( dashboardDnDPanel(request) )
+    const ids = request.map(item => item.id)
+    dispatch( dashboardDnDPanel(ids) )
   }
 
   return (
