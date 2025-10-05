@@ -28,7 +28,7 @@ export default function PanelInputForm(props) {
 
   return (
     <>
-      <Card.Body className='p-1' style={{ "overflowY": "hidden !important" }}>
+      <Card.Body className='p-1 overflow-y-hidden'>
         <Row className='m-0 p-0'>
           <Col className='p-1'>
             <Form.Label className='form-label-header'>{selectTypeName}</Form.Label>

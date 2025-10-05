@@ -68,7 +68,7 @@ export default function BookmarkItemMenu(props) {
 
   return (
     <>
-      <ButtonGroup size="sm" className='bg-white' style={{ 'position': 'absolute', 'right': 0, 'top': 16, 'marginRight': '10px' }}>
+      <ButtonGroup size="sm" className='bg-white bookmark-menu-btn-group' >
         <Button variant="outline-secondary" onClick={() => setModalShow(true)} >
           <i className="bi-journal-arrow-up" />
         </Button>

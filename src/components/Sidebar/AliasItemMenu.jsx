@@ -12,7 +12,7 @@ export default function AliasItemMenu(props) {
 
   return (
     <>
-      <ButtonGroup size="sm" className='bg-white' style={{ position: 'absolute', right: '0.625rem', top: '0.5rem'}}>
+      <ButtonGroup size="sm" className='bg-white alias-menu-select'>
         <Button variant="outline-secondary" onClick={props.onEditClick} >
           <i className="bi-input-cursor-text" />
         </Button>

@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react'
+import React, { useId, useState, useMemo } from 'react'
 
 import Dropdown from 'react-bootstrap/Dropdown'
 
@@ -10,7 +10,7 @@ import { startCase } from 'lodash'
 export default function ColorGradient(props) {
 
   const gradient = linearColorScale(props.colors, props.steps || false)
-  const style = { 'width': '100%', 'height': '22px', 'background': gradient, ...props.style, borderRadius: 'var(--bs-border-radius-sm)' }
+  const style = useMemo(() => ({ 'width': '100%', 'height': '22px', 'background': gradient, ...props.style, borderRadius: 'var(--bs-border-radius-sm)' }), []);
 
   return (
     <div className={props.className || null} style={style}></div>
@@ -48,7 +48,7 @@ export function ColorGradientDropDown(props) {
 
   const [state, setState] = useState(props.selectedScale || 'Viridis')
 
-  let style = props.style || { 'width': '75%' }
+  let style = useMemo(() => (props.style || { 'width': '75%' }), []);
 
   return (
     <Dropdown>

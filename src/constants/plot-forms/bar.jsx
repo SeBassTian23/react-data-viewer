@@ -4,7 +4,7 @@ const bar = [
   {
     'type': 'barchart',
     'name': 'Bar',
-    'icon': <PlotlyIcons.PlotBarIcon style={{ 'height': '20px', 'marginTop': '-5px', 'rotate': '-90deg' }} />,
+    'icon': <PlotlyIcons.PlotBarIcon className='ploty-icon-bar' />,
     "options": [
       {
         'label': 'y-Axis',

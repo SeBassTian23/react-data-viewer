@@ -49,7 +49,7 @@ export default function DataSubsetItem(props) {
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}
       >
         <span className="d-inline-block text-truncate" style={!props.isVisible ? { 'opacity': 0.25 } : {}}>
-          <i className="bi-square-fill  " style={{ "color": props.color }} /> {props.name || "Unknown"}
+          <i className="bi-square-fill " style={{ "color": props.color }} /> {props.name || "Unknown"}
         </span>
         {showHoverContent && (
           <DataSubsetMenu {...props} showModalEdit={handleShow} setModalShow={setModalShow} />
@@ -82,7 +82,7 @@ function DataSubsetMenu(props) {
 
   return (
     <>
-      <ButtonGroup size="sm" style={{ position: 'absolute', right: '0.75rem'}}>
+      <ButtonGroup size="sm" className="data-subset-btn-group">
         <Button variant="outline-secondary" onClick={() => dispatch(datasubsetToggled(props.id))} onDoubleClick={() => dispatch(datasubsetDblToggled(props.id))}>
           {props.isVisible && <i className="bi-eye-fill" />}
           {!props.isVisible && <i className="bi-eye-slash-fill" />}

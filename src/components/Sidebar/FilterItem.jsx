@@ -37,8 +37,7 @@ export default function FilterItem(props) {
         htmlSize={4}
         multiple={true}
         {...props.register(props.name)}
-        style={{ 'display': toggle ? 'block' : 'none' }}
-        className='mt-2'
+        className={`mt-2 ${ toggle ? 'd-block' : 'd-none' }`}
       >
         {unique.map((el, idx) => {
           return (<option key={idx} value={el}>{el}</option>)
@@ -120,14 +119,14 @@ export function FilterItemDateTime(props) {
         <span className='badge text-bg-light'><i className='bi bi-calendar-range' /></span>
       </div>
       
-      <div style={{ 'display': toggle ? 'block' : 'none' }}>
+      <div className={toggle ? 'd-block' : 'd-none' }>
         <ButtonGroup size='sm'>
           <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" defaultChecked={true} onClick={() => setInputtype('datetime-local')} />
-          <label className="btn btn-outline-secondary" htmlFor="btnradio1" style={{padding: '0.2rem 0.35rem', fontSize: '0.75rem'}}>Date-Time</label>
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio1">Date-Time</label>
           <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off" onClick={() => setInputtype('date')} />
-          <label className="btn btn-outline-secondary" htmlFor="btnradio2" style={{padding: '0.2rem 0.35rem', fontSize: '0.75rem'}}>Date</label>
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio2">Date</label>
           <input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off" onClick={() => setInputtype('time')}/>
-          <label className="btn btn-outline-secondary" htmlFor="btnradio3" style={{padding: '0.2rem 0.35rem', fontSize: '0.75rem'}}>Time</label>
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio3">Time</label>
         </ButtonGroup>
 
         <Form.Check
@@ -135,8 +134,7 @@ export function FilterItemDateTime(props) {
             type="switch"
             label="Range"
             size={'sm'}
-            className='ms-3 mt-2'
-            style={{fontSize: 'small'}}
+            className='ms-3 mt-2 small'
             onChange={()=>setDatetimerange( e => !e)}
           />
 

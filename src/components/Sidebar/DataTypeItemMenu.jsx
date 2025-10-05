@@ -24,7 +24,7 @@ export default function DatatypeItemMenu(props) {
       <FormSelect
         size='sm'
         value={props.specialtype || props.type}
-        style={{ position: 'absolute', right: '0.625rem', top: '0.35rem', width: '40%' }}
+        className='data-type-menu-select'
         onChange={update}
       >
         {Object.entries(datatypeIcons).map((itm, idx) => {

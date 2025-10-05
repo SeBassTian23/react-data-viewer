@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -52,10 +52,12 @@ export default function ImagePanel(props) {
     newTab.document.body.innerHTML = image.outerHTML;
   }
 
+  const handleClick = useCallback(() => imageNewTab(props.base64))
+
   return (
     <>
       {!state && <>
-        <Card.Body className='p-1' style={{ "overflowY": "hidden !important" }}>
+        <Card.Body className='p-1 overflow-y-hidden'>
           <Row className='m-0 p-0'>
             <Col className='p-1'>
               <Form.Group className="my-auto">
@@ -70,9 +72,8 @@ export default function ImagePanel(props) {
         </Card.Body>
       </>}
       {state && <>
-        <Card.Body className='p-1' style={
+        <Card.Body className='p-1 overflow-y-hidden' style={
           {
-            "overflowY": "hidden !important",
             "background": `url(${props.base64})`,
             "backgroundSize": "contain",
             "backgroundPosition": "center",
@@ -81,7 +82,7 @@ export default function ImagePanel(props) {
           }
         }
           title={props.name}
-          onClick={() => imageNewTab(props.base64)}></Card.Body>
+          onClick={handleClick}></Card.Body>
       </>}
     </>
   )

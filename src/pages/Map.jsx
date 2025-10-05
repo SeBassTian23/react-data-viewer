@@ -319,7 +319,7 @@ export default function Map(props) {
           <ScaleControl position='bottomleft' />
         </MapContainer>
 
-        <Card style={{ 'display': plotdisplay, 'position': 'absolute', 'width': (resize ? '300px' : '600px'), 'height': (resize ? '160px' : '320px'), 'bottom': '25px', 'right': '10px', 'zIndex': 400 }}>
+        <Card className={`map-histogram-card d-${plotdisplay} ${resize ? 'map-histogram-card-sm' : 'map-histogram-card-lg'}`}>
           <Button size={'sm'} variant='link' className='map-resize-chart-btn' onClick={() => setResize(!resize)}>
             {resize ? <i className='bi bi-arrow-up-left-square' /> : <i className='bi bi-arrow-down-right-square' />}
           </Button>

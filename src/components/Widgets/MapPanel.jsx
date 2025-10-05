@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
@@ -105,9 +105,13 @@ export default function MapPanel(props) {
     }
   }, [props.layer]);
 
+  const style = useMemo(() => ({ width: '100%', height: '100%', minHeight: '100%', cursor: 'pointer' }),[] )
+
+  const handleClick = useCallback(() => linkToView(props))
+
   return (
     <Card.Body
-      onClick={() => linkToView(props)}
+      onClick={handleClick}
       className="d-flex justify-content-center align-items-center p-0 card-img-bottom"
     >
       <MapContainer
@@ -119,7 +123,7 @@ export default function MapPanel(props) {
         scrollWheelZoom={false}
         preferCanvas={true}
         renderer={L.canvas()}
-        style={{ width: '100%', height: '100%', minHeight: '100%', cursor: 'pointer' }}
+        style={style}
       >
         <TileLayer
           attribution={mapLayer.attribution}

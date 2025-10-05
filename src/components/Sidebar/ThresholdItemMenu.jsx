@@ -16,7 +16,7 @@ export default function ThresholdItemMenu(props) {
 
   return (
     <>
-      <ButtonGroup size="sm" style={{ position: 'absolute', right: '0.625rem', top: '1rem' }}>
+      <ButtonGroup size="sm" className="threshold-menu-select">
         <Button variant="outline-secondary" onClick={() => setModalDeleteShow(true)} >
           <i className="bi-x-lg" />
         </Button>

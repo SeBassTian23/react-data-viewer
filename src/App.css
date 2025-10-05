@@ -474,6 +474,13 @@ kbd {
   margin-top: -0.188rem
 }
 
+.ploty-icon-bar {
+  height: 1.375rem;
+  margin-top: -0.313rem;
+  rotate: -90deg
+}
+
+
 /** Nav */
 .user-profile-btn > img {
   width: 1.8rem;
@@ -488,15 +495,10 @@ kbd {
 
 
 /* Spreadsheet */
-
 .spreadsheet-container {
-  margin-top: -38px !important;
   padding: 0px !important;
-}
-
-.spreadsheet-container > div {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 
@@ -551,4 +553,66 @@ kbd {
 
 .text-pre-wrap {
   white-space: pre-wrap;
+}
+
+
+.map-histogram-card {
+  position: absolute !important;
+  bottom: 25px;
+  right: 10px;
+  z-index: 400;
+}
+
+.map-histogram-card-sm {
+  width: 300px !important;
+  height: 160px !important;
+}
+
+.map-histogram-card-lg {
+  width: 600px !important;
+  height: 320px !important;
+}
+
+.data-type-menu-select {
+  position: absolute;
+  right: 0.625rem;
+  top: 0.35rem;
+  width: 40% !important;
+}
+
+.threshold-menu-select {
+  position: absolute;
+  top: 1rem;
+}
+
+.alias-menu-select {
+  position: absolute !important;
+  right: .625rem;
+  top: .5rem;
+}
+
+.bookmark-ul-icons {
+  font-size: 0.7rem;
+}
+
+.bookmark-avatar {
+  height: 1.2rem;
+  margin-top: -0.25rem;
+}
+
+.bookmark-menu-btn-group {
+  position: absolute !important;
+  right: 0rem;
+  top: 1rem;
+  margin-right: 0.625rem;
+}
+
+.filter-datetime-btn {
+  padding: 0.2rem 0.35rem !important;
+  font-size: 0.75rem !important;
+}
+
+.data-subset-btn-group {
+  position: absolute !important;
+  right: 0.75rem;
 }
