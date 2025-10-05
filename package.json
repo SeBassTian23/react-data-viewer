@@ -8,6 +8,8 @@
   "dependencies": {
     "@bopen/leaflet-area-selection": "^0.7.0",
     "@reduxjs/toolkit": "^2.8.2",
+    "@revolist/react-datagrid": "^4.17.3",
+    "@revolist/revogrid-react": "^4.17.3",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "buffer": "^6.0.3",
@@ -42,7 +44,8 @@
     "remark-gfm": "^4.0.1",
     "sortablejs": "^1.15.6",
     "stream-browserify": "^3.0.0",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "^1.6.0",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "vite",
