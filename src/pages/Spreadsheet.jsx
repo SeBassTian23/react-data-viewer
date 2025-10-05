@@ -43,7 +43,6 @@ export default function Spreadsheet(props) {
       if (col.type === 'number') columnType = 'numeric'
       if (col.specialtype === 'color') columnType = 'color'
       if (col.specialtype === 'date-time') columnType = 'date'
-      if (!col.isSelected) columnType = 'hidden'
 
       let colDef = {
         prop: col.name,
@@ -52,6 +51,7 @@ export default function Spreadsheet(props) {
         columnType,
         sortable: true,
         // order: 'asc',
+        isVisible: col.isSelected
       }
 
       if (columnType === 'color')
@@ -70,7 +70,7 @@ export default function Spreadsheet(props) {
       // TODO: define more types in the future
 
       return colDef;
-    })
+    }).filter( col => col.isVisible )
 
     let data = []
 
