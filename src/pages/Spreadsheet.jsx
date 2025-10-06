@@ -256,7 +256,7 @@ export default function Spreadsheet(props) {
         </Col>
       </Row>
       <Row>
-        <Col sm='12' className='spreadsheet-container'>
+        <Col sm='12' className='spreadsheet-container position-relative'>
           <RevoGrid
             ref={gridRef}
             className='color-grid cell-border'
@@ -271,6 +271,12 @@ export default function Spreadsheet(props) {
             sorting={true}
             exporting={true}
           />
+          {!source.length && (
+            <div className="position-absolute  top-50 start-50 translate-middle text-center">
+              <i class="bi bi-table text-muted fs-1"></i>
+              <p class="small">No data available.</p>
+            </div>
+          )}
         </Col>
       </Row>
     </>

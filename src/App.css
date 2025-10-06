@@ -501,6 +501,14 @@ kbd {
   height: calc(100vh - 48px);
 }
 
+.spreadsheet-container {
+  & revogr-header.hydrated {
+    line-height: 35px;
+  }
+  & .header-rgRow.actual-rgRow {
+    height: 35px;
+  }
+} 
 
 /** Modal Analysis */
 
