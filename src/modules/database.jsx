@@ -11,7 +11,7 @@ import getSpecialStringType from '../utils/data/getSpecialStringType'
 
 const db = new loki('dataviewer');
 
-window.db = db
+// window.db = db
 
 export const addCollection = (collection = null) => {
   if (collection)

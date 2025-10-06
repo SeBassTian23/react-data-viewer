@@ -2,8 +2,6 @@ import dayjs from 'dayjs'
 import tinycolor from 'tinycolor2'
 // import chroma from 'chroma-js'
 
-window.dayjs = dayjs
-
 const getSpecialStringType = (arr) => {
 
    let types = []
