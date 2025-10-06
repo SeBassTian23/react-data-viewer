@@ -16,4 +16,5 @@ Data from the spreadsheet can be saved in different formats.
 
 + `CSV` - Comma separated format
 + `TXT` - Tab separated format
++ `XLSX` - Excel spreadsheet file
 + `JSON` - JSON format (allows for better compatibility with arrays, objects, etc.)
