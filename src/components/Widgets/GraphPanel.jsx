@@ -54,7 +54,7 @@ export default function GraphPanel(props) {
           width: 800,
           height: 457,
           scale: 2,
-          format: 'png',
+          format: 'webp',
         })
         return img
       } finally {
