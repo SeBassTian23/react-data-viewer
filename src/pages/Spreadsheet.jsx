@@ -134,29 +134,47 @@ export default function Spreadsheet(props) {
 
   }, [stateParameters, stateDatasubsets, stateThresholds])
 
-  /** =============================
-   *  EXPORT HANDLERS
-   * ============================= */
+  /** Export Handlers */
+
+  function lookupTableSubsetNames (){
+    return Object.fromEntries(stateDatasubsets.map( (itm) => [itm.id, itm.name]));
+  }
 
   function downloadCSV() {
-    const ws = utils.json_to_sheet(source)
+    const ltsn = lookupTableSubsetNames()
+    const ws = utils.json_to_sheet(source.map( itm => ({
+      ...itm,
+      subset: itm.subset ? ltsn[itm.subset] : itm.subset
+    })))
     const csv = utils.sheet_to_csv(ws)
     triggerDownload(csv, `${stateAnalysis?.saveAs || 'data'}.csv`, 'text/csv')
   }
 
   function downloadTXT() {
-    const ws = utils.json_to_sheet(source)
+    const ltsn = lookupTableSubsetNames()
+    const ws = utils.json_to_sheet(source.map( itm => ({
+      ...itm,
+      subset: itm.subset ? ltsn[itm.subset] : itm.subset
+    })))
     const txt = utils.sheet_to_txt ? utils.sheet_to_txt(ws) : utils.sheet_to_csv(ws, { FS: '\t' })
     triggerDownload(txt, `${stateAnalysis?.saveAs || 'data'}.txt`, 'text/plain')
   }
 
   function downloadJSON() {
-    const jsonStr = JSON.stringify(source, null, 2)
+    const ltsn = lookupTableSubsetNames()
+    const jsonStr = JSON.stringify(source.map( itm => ({
+      ...itm,
+      subset: itm.subset ? ltsn[itm.subset] : itm.subset
+    })), null, 2)
     triggerDownload(jsonStr, `${stateAnalysis?.saveAs || 'data'}.json`, 'application/json')
   }
 
   function downloadXLSX() {
-    const ws = utils.json_to_sheet(source);
+    const ltsn = lookupTableSubsetNames()
+    const ws = utils.json_to_sheet(source.map( itm => ({
+      ...itm,
+      subset: itm.subset ? ltsn[itm.subset] : itm.subset
+    })))
     const wb = utils.book_new();
     utils.book_append_sheet(wb, ws, 'Sheet1');
     const filename = `${stateAnalysis?.saveAs || 'data'}.xlsx`;
