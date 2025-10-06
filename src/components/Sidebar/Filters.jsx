@@ -137,9 +137,15 @@ export default function Filters() {
         </Col>
       </Row>
 
-      <Row className='h-100 overflow-auto'>
+      <Row className={`h-100 overflow-auto${(state.length === 0) ? ' align-items-center' : ''}`}>
         <Col sm={12} className='p-0'>
-          <ListGroup as="ul" variant="flush">
+          {state.length === 0? <div className='text-center'>
+              <i className='bi-filter text-muted fs-1' />
+              <span className='d-block text-muted fs-5'>Filters</span>
+              <p className='small'>No Filters available.</p>
+            </div>
+          :
+          <ListGroup as="ul" variant="flush" className={`h-100`}>
             {state.map((el, idx) => {
               if (el.isFilter && el.isSelected)
                 if (el.specialtype === 'date-time')
@@ -148,6 +154,7 @@ export default function Filters() {
                   return (<FilterItem key={idx} index={idx} {...el} register={register} setValue={setValue} />)
             })}
           </ListGroup>
+        }
         </Col>
       </Row>
     </>
