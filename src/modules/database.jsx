@@ -21,7 +21,7 @@ export const addCollection = (collection = null) => {
 
 export const removeAllData = (collection = 'data') => {
   let dataset = db.getCollection(collection)
-  dataset.remove()
+  dataset.removeDataOnly()
 }
 
 export const addDataJSON = async (data, append = false, collection = 'data') => {
@@ -103,7 +103,7 @@ export const updateDocByField = async (field, search, payload, collection = 'dat
 
 export const resetCollection = (collection = 'data') => {
   let dataset = db.getCollection(collection)
-  dataset.remove()
+  dataset.removeDataOnly()
 }
 
 export const parameters = (collection = 'data') => {
