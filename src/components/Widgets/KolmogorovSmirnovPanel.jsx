@@ -126,28 +126,20 @@ function CalculateKolmogorovSmirnovTest(props) {
                 <td colSpan={2}>{itm.testType}</td>
               </tr>
               <tr>
-                <th>t-Statistic</th>
-                <td>{round(itm.tStatistic,4)}</td>
+                <th>d-Statistic</th>
+                <td>{round(itm.dStatistic,4)}</td>
               </tr>
               <tr>
                 <th><em>p</em>-value</th>
                 <td className={`${itm.pValue < props.confidence_level? 'text-success': 'text-danger'}`}>{itm.pValue < props.confidence_level? '< ' + props.confidence_level : round(itm.pValue, 4)}</td>
               </tr>
               <tr>
-                <th>Degrees Of Freedom</th>
-                <td>{itm.degreesOfFreedom}</td>
+                <th>Sample Size (n2)</th>
+                <td>{itm.sampleSize1}</td>
               </tr>
               <tr>
-                <th>Sample Means</th>
-                <td>{round(itm.mean1,4)}; {round(itm.mean2,4)}</td>
-              </tr>
-              <tr>
-                <th>Standard Error</th>
-                <td>{round(itm.standardError,4)}</td>
-              </tr>
-              <tr>
-                <th>Confidence Interval (95%)</th>
-                <td>{round(itm.confidenceInterval95[0],4)} - {round(itm.confidenceInterval95[1],4)}</td>
+                <th>Sample Size (n2)</th>
+                <td>{itm.sampleSize2}</td>
               </tr>
               <tr>
                 <th>Alternative</th>
