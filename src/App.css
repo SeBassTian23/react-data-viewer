@@ -590,7 +590,7 @@ kbd {
 
 .threshold-menu-select {
   position: absolute;
-  top: 1rem;
+  top: .1rem;
 }
 
 .alias-menu-select {
