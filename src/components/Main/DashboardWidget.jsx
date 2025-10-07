@@ -37,6 +37,8 @@ import copyToClipboard from '../../helpers/clipboard'
 
 import useHelp from "../../hooks/useHelp";
 
+import ErrorBoundary from '../../utils/ErrorBoundary'
+
 const PANEL_REGISTRY = {
   // Pages
   plot: { component: GraphPanel, title: 'Plot', showEdit: false },
@@ -183,7 +185,9 @@ function DashboardWidget(props) {
             </Dropdown.Menu>
           </Dropdown>
         </Card.Header>
-        {content}
+        <ErrorBoundary>
+          {content}
+        </ErrorBoundary>
       </Card>
     </Col>
   )
