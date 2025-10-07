@@ -17,6 +17,7 @@ import { dbInit } from './modules/database'
 
 import ToastManager from './components/Main/ToastManager'
 import HelpOffcanvasManager from './components/Main/HelpOffcanvasManager.jsx'
+import ModalManager from './components/Main/ModalManager.jsx'
 
 /* Set up database tables */
 dbInit();
@@ -54,7 +55,7 @@ function App() {
             </Col>
           </Row>
         </Container>
-        {/*<ModalManager />         all confirm/edit modals */}
+        <ModalManager />
         <HelpOffcanvasManager />
         <ToastManager />
       </Provider>

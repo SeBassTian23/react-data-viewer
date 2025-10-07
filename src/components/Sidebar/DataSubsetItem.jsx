@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
 
@@ -11,11 +11,11 @@ import Badge from 'react-bootstrap/Badge'
 
 import tinycolor from 'tinycolor2'
 
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 import ModalDialogEditSubset from '../Dialogs/ModalDialogEditSubset'
 
 import { useDispatch } from 'react-redux'
-import { datasubsetToggled, datasubsetDblToggled, datasubsetDeleted } from '../../features/datasubset.slice'
+import { datasubsetToggled, datasubsetDblToggled } from '../../features/datasubset.slice'
+import useModal from '../../hooks/useModalConfirm'
 
 export default function DataSubsetItem(props) {
 
@@ -59,26 +59,26 @@ export default function DataSubsetItem(props) {
         )}
       </ListGroup.Item>
       <ModalDialogEditSubset show={show} onHide={handleClose} {...props} />
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={(confirmed) => {
-          setModalShow(false);
-          if (confirmed)
-            dispatch(datasubsetDeleted(props.id))
-        }
-        }
-        header="Delete Subset"
-        content={<>Removing Subset <strong>"{props.name}"</strong> cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
     </>
   )
 }
 
 function DataSubsetMenu(props) {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const modal = useModal();
+
+  const handleDelete = useCallback(() => modal.show("confirm", {
+    header: "New Analysis",
+    content: `Removing Subset "${props.name}" cannot be undone.`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "DELETE_SUBSET"
+    }
+  }), [] )
 
   return (
     <>
@@ -90,7 +90,7 @@ function DataSubsetMenu(props) {
         <Button variant="outline-secondary" onClick={() => props.showModalEdit()} >
           <i className="bi-gear-fill" />
         </Button>
-        <Button variant="outline-secondary" onClick={() => props.setModalShow(true)} >
+        <Button variant="outline-secondary" onClick={handleDelete} >
           <i className="bi-x-lg" />
         </Button>
       </ButtonGroup>

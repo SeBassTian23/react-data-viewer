@@ -10,6 +10,7 @@ import bookmarkReducer from './features/bookmark.slice'
 import analysisReducer from './features/analysis.slice'
 import toastReducer from './features/toast.slice'
 import offcanvasReducer from './features/offcanvas.slice'
+import modalReducer from './features/modal.slice'
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     analysis: analysisReducer,
     toast: toastReducer,
     offcanvas: offcanvasReducer,
+    modal: modalReducer,
   }
 })
 

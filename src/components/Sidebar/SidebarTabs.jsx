@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useStore, useDispatch } from 'react-redux'
+import { useState, useEffect, useCallback } from 'react'
+import { useStore } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -21,15 +21,8 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
 import saveAnalysisToFile from '../../utils/data/save-analysis'
-import addBookmarkToDB from '../../utils/data/bookmark'
-import { deleteBookmarkFromDB, deleteAllBookmarksFromDB } from '../../utils/data/bookmark'
-import { bookmarksReset, bookmarkAdd, bookmarkDelete } from '../../features/bookmark.slice';
 
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 import Aliases from './Aliases';
-
-import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
 
 import ModalDialogImport from '../Dialogs/ModalDialogImport'
 import ModalDialogBusy from '../Dialogs/ModalDialogBusy'
@@ -37,28 +30,28 @@ import ModalDialogAnalysisImport from '../Dialogs/ModalDialogAnalysisImport'
 
 import { KEYBOARD_SHORTCUTS } from '../../constants/keyboard-shortcuts'
 
-import { useAppReset } from '../../hooks/useAppReset';
 import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
 
 import widgets from '../../constants/widgets'
+import useModal from '../../hooks/useModalConfirm';
+import { useAddBookmark } from '../../hooks/useAddBookmark';
 
 export default function SidebarTabs(props) {
 
   const store = useStore();
-  const dispatch = useDispatch();
 
   const location = useLocation();
   const navigate = useNavigate();
+  const modal = useModal();
+  const addBookmark = useAddBookmark();
 
   // Custom Hooks
-  const resetApp = useAppReset();
   const addDashboardPanel = useAddDashboardPanel();
 
   const modalImport = props.modalImport
   const setModalImport = props.setModalImport;
 
   const [showAbout, setShowAbout] = useState(false)
-  const [modalShow, setModalShow] = useState(false);
   const [modalSaveAnalysis, setModalSaveAnalysis] = useState(false);
   const [dashboardMenuInactive, setDashboardMenuInactive] = useState(false);
 
@@ -72,37 +65,7 @@ export default function SidebarTabs(props) {
     title: 'Data'
   });
 
-  const saveBookmark = () => {
-    const bookmark = addBookmarkToDB(store);
-
-    dispatch(bookmarkAdd({
-      id: bookmark.id,
-      name: bookmark.name,
-      created_at: bookmark.created_at,
-      dashboard: bookmark.store.dashboard.length,
-      datasubsets: bookmark.store.datasubsets.length,
-      thresholds: bookmark.store.thresholds.length,
-      creator: bookmark.creator
-    }))
-    setMessage({
-      ...message,
-      body: <>Bookmark <strong>"{bookmark.name}"</strong> created</>,
-      header: 'Bookmark',
-      icon: 'bi-bookmark-plus',
-      status: 'secondary'
-    })
-    setShow(true);
-  }
-
-  const deleteBookmark = (id) => {
-    deleteBookmarkFromDB(id);
-    dispatch(bookmarkDelete(id))
-  }
-
-  const resetBookmarks = () => {
-    deleteAllBookmarksFromDB();
-    dispatch(bookmarksReset());
-  }
+  const saveBookmark = useCallback( () => addBookmark(), []);
 
   useHotkeys('meta+/', (event) => {
     event.preventDefault();
@@ -111,7 +74,7 @@ export default function SidebarTabs(props) {
 
   useHotkeys('meta+ctrl+n', (event) => {
     event.preventDefault();
-    setModalShow(true);
+    handleNewAnalysis();
   });
 
   useHotkeys('meta+s', (event) => {
@@ -170,6 +133,16 @@ export default function SidebarTabs(props) {
     }, 250)
   },[])
 
+  const handleNewAnalysis = useCallback(() => modal.show("confirm", {
+    header: "New Analysis",
+    content: `Start a New Analysis. Make sure to save your old Analysis, if you didn't already.`,
+    yes: "Start",
+    no: "Cancel",
+    payload: {
+      action: "NEW_ANALYSIS"
+    }
+  }), [] )
+
   const ShortcutLabel = ({ shortcutKey }) => {
     const shortcut = KEYBOARD_SHORTCUTS[shortcutKey];
     const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator?.platform || navigator.userAgent);
@@ -191,7 +164,7 @@ export default function SidebarTabs(props) {
       case 'Parameters':
         return <Parameters />;
       case 'Bookmarks':
-        return <Bookmarks saveBookmark={saveBookmark} resetBookmarks={resetBookmarks} deleteBookmark={deleteBookmark} message={message} setMessage={setMessage} setShow={setShow} />;
+        return <Bookmarks />;
       case 'Thresholds':
         return <Thresholds />;
       case 'Aliases':
@@ -228,13 +201,13 @@ export default function SidebarTabs(props) {
               <Dropdown.Item onClick={() => changeTab('Aliases', 'Aliases')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
-              <Dropdown.Item onClick={() => setModalShow(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>
+              <Dropdown.Item onClick={handleNewAnalysis} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setLoadAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-up" /> Load…</span> <ShortcutLabel shortcutKey="loadAnalysis" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={() => saveBookmark()} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
+              <Dropdown.Item onClick={saveBookmark} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
               <Dropdown.Item onClick={() => changeTab('Bookmarks', 'Bookmarks')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setShowAbout(true)}><i className="bi bi-info-square" /> About</Dropdown.Item>
@@ -246,22 +219,6 @@ export default function SidebarTabs(props) {
       {renderTabContent(state.selectedTab, props)}
 
       <ModalDialogAbout show={showAbout} about={{...props.about}} onHide={() => setShowAbout(false)} />
-
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={(confirmed) => {
-          setModalShow(false)
-          if (confirmed){
-            resetApp();
-            props.setAnalysisModal(true);
-          }
-        }
-        }
-        header="New Analysis"
-        content="Start a New Analysis. Make sure to save your old Analysis, if you didn't already."
-        yes="Start"
-        no="Cancel"
-      />
 
       <ModalDialogImport
         show={modalImport}

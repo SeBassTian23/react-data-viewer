@@ -25,7 +25,6 @@ import useToast from "../../hooks/useToast";
 export default function PlotToolbar(props) {
 
   const [modalShow, setModalShow] = useState({ type: null, show: false });
-  const [toastShow, setToastShow] = useState(false);
 
   const dispatch = useDispatch();
 

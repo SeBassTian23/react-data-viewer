@@ -1,45 +1,41 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
-import { thresholdToggle, thresholdDelete } from '../../features/threshold.slice';
-
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm';
+import { thresholdToggle } from '../../features/threshold.slice';
+import useModal from '../../hooks/useModalConfirm';
 
 export default function ThresholdItemMenu(props) {
 
   const dispatch = useDispatch()
+  const modal = useModal()
 
-  const [modalDeleteShow, setModalDeleteShow] = useState(false);
+  const handleDelete = useCallback(() => modal.show("confirm", {
+    header: "Delete Threshold",
+    content: `Removing Thresholds for "${props.name || "Unknown"}" cannot be undone.`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "DELETE_THRESHOLD"
+    }
+  }), [] )
+
+  const handleToggle = () => dispatch(thresholdToggle(props.id))
 
   return (
     <>
       <ButtonGroup size="sm" className="threshold-menu-select">
-        <Button variant="outline-secondary" onClick={() => setModalDeleteShow(true)} >
+        <Button variant="outline-secondary" onClick={handleDelete} >
           <i className="bi-x-lg" />
         </Button>
-        <Button variant="outline-secondary" onClick={() => dispatch(thresholdToggle(props.id))} >
+        <Button variant="outline-secondary" onClick={handleToggle} >
           {props.isSelected && <i className="bi-toggle-on" />}
           {!props.isSelected && <i className="bi-toggle-off" />}
         </Button>
       </ButtonGroup>
-
-      <ModalDialogConfirm
-        show={modalDeleteShow}
-        onHide={(confirmed) => {
-          setModalDeleteShow(false);
-          if (confirmed) {
-            dispatch(thresholdDelete(props.id))
-          }
-        }
-        }
-        header="Delete Threshold"
-        content={<>Removing Thresholds for <strong>"{props.name || "Unknown"}"</strong> cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
     </>
   )
 }

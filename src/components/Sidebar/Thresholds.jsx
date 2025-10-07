@@ -15,26 +15,37 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 import ThresholdItem from './ThresholdItem'
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
 
 import { useSelector, useDispatch } from 'react-redux';
-import { thresholdsReset, thresholdAdd } from '../../features/threshold.slice';
+import { thresholdAdd } from '../../features/threshold.slice';
 
 import useHelp from '../../hooks/useHelp';
+import useModal from '../../hooks/useModalConfirm';
 
 export default function Thresholds(props) {
 
   const state = useSelector(state => state.thresholds);
-  const dispatch = useDispatch();
 
   const [toggleform, setToggleform] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
 
   const help = useHelp();
+  const modal = useModal();
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Threshold Data", "help/md/thresholds.md")
   },[] )
+
+  const handleReset = useCallback(() => modal.show("confirm", {
+    header: "Delete Thresholds",
+    content: `Removing "all Thresholds" cannot be undone.`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      action: "DELETE_THRESHOLDS"
+    }
+  }), [] )
+
+  const handleNew = () => setToggleform(true)
 
   return (
     <>
@@ -46,8 +57,8 @@ export default function Thresholds(props) {
         <Col sm={12}>
           <ButtonToolbar aria-label="Threshold Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Add Threshold">
-              <Button variant='outline-secondary' onClick={() => setToggleform(true)}><i className='bi-plus-circle-fill' /> New</Button>
-              <Button variant='outline-secondary' onClick={() => setModalShow(true)}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleNew}><i className='bi-plus-circle-fill' /> New</Button>
+              <Button variant='outline-secondary' onClick={handleReset}><i className='bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>
@@ -62,21 +73,6 @@ export default function Thresholds(props) {
           </ListGroup>
         </Col>
       </Row>
-
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={(confirmed) => {
-          setModalShow(false);
-          if (confirmed)
-            dispatch(thresholdsReset())
-        }
-        }
-        header="Delete Thresholds"
-        content={<>Removing <strong>all Thresholds</strong> cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
-
     </>
   )
 }

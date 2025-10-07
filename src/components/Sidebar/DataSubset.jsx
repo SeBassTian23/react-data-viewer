@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { ReactSortable } from "react-sortablejs";
 
@@ -11,15 +11,14 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
-
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getDatasetCount } from '../../modules/database'
 
-import { datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetDnD } from '../../features/datasubset.slice';
+import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD } from '../../features/datasubset.slice';
 
 import useHelp from '../../hooks/useHelp';
+import useModal from '../../hooks/useModalConfirm';
 
 export default function DataSubset(props) {
 
@@ -27,8 +26,7 @@ export default function DataSubset(props) {
   const dispatch = useDispatch()
 
   const help = useHelp();
-
-  const [modalShow, setModalShow] = useState(false);
+  const modal = useModal();
 
   const showAllSeries = (event) => {
     event.preventDefault()
@@ -50,6 +48,17 @@ export default function DataSubset(props) {
     help.open("Help | Data Selection", "help/md/data-subsets.md")
   },[] )
 
+  const handleClickReset = useCallback(() => modal.show("confirm", {
+    header: "Delete Subsets",
+    content: `Removing "all Subsets" cannot be undone.`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "DELETE_SUBSETS"
+    }
+  }), [] )
+
   return (
     <>
       <Row id="dv-series">
@@ -65,7 +74,7 @@ export default function DataSubset(props) {
                 <Button variant='outline-secondary' onClick={hideAllSeries}><i className='bi-eye-slash-fill' /> Hide All</Button>
               </ButtonGroup>
               <ButtonGroup size='sm' className="me-2" aria-label="Data Subset Reset">
-                <Button variant='outline-secondary' onClick={() => setModalShow(true)}><i className="bi-x-circle" /> Reset</Button>
+                <Button variant='outline-secondary' onClick={handleClickReset}><i className="bi-x-circle" /> Reset</Button>
               </ButtonGroup>
             </ButtonToolbar>
           )
@@ -78,7 +87,7 @@ export default function DataSubset(props) {
             <i className='bi-box-arrow-in-down text-muted fs-1' />
             <span className='d-block text-muted fs-5'>Import Data</span>
             <p className='small'>To Get Started Import Data from a File.</p>
-            <button className="btn btn-primary my-2" onClick={props.setModalImport} title='Import Data'><i className='bi-box-arrow-in-down' /> Import…</button>
+            <button className="btn btn-sm btn-primary my-2" onClick={props.setModalImport} title='Import Data'><i className='bi-box-arrow-in-down' /> Import…</button>
           </div>}
           {(getDatasetCount('data') > 0 && state.length === 0) ? (
             <div className='text-center p-3'>
@@ -96,20 +105,6 @@ export default function DataSubset(props) {
           }
         </Col>
       </Row>
-
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={(confirmed) => {
-          setModalShow(false);
-          if (confirmed)
-            dispatch(datasubsetReset());
-        }
-        }
-        header="Delete Subsets"
-        content={<>Removing all <strong>Subsets</strong> cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
     </>
   )
 }

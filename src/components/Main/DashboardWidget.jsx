@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 
 import Dropdown from 'react-bootstrap/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
@@ -27,10 +26,10 @@ import WelchsTTestPanel from '../Widgets/WelchsTTestPanel'
 import PearsonCorrelationPanel from '../Widgets/PearsonCorrelationPanel'
 import KolmogorovSmirnovPanel from '../Widgets/KolmogorovSmirnovPanel'
 
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
+import useModal from "../../hooks/useModalConfirm";
 
 import { useDispatch } from 'react-redux'
-import { dashboardDeletePanel, dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
+import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
 
 import { widgetSizes } from '../../constants/widget-sizes'
 
@@ -69,6 +68,7 @@ function DashboardWidget(props) {
   const dispatch = useDispatch();
 
   const help = useHelp();
+  const modal = useModal()
 
   const [modalShow, setModalShow] = useState(false);
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
@@ -99,22 +99,21 @@ function DashboardWidget(props) {
     [editTitleHandler]
   );
 
-  const handleDelete = useCallback(
-    () => setModalShow(true),
-    []
-  );
+  const handleDelete = useCallback(() => modal.show("confirm", {
+    header: "Delete Panel",
+    content: `Are you sure you want to delete the "${props?.content?.title || props.title || "Untitled"}" panel?`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "DELETE_PANEL"
+    }
+  }), [] )
 
   const handleCopy = useCallback(
     () => copyToClipboard(props.id),
     [props.id]
   );
-
-  const handleHideModal = useCallback((confirmed) => {
-    setModalShow(false);
-    if (confirmed) {
-      dispatch(dashboardDeletePanel(props.id));
-    }
-  }, [dispatch, props.id]);
 
   useEffect(() => {
     if (titleRef?.current) {
@@ -131,7 +130,7 @@ function DashboardWidget(props) {
     if (!config) return null;
 
     const Component = config.component;
-    if(props.type === 'map')
+    if (props.type === 'map')
       return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
     return <Component id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
   }, [props.type, props.id, props.content, props.darkmode]);
@@ -141,9 +140,9 @@ function DashboardWidget(props) {
     changePanelSize(props.id, size);
   }, [changePanelSize, props.id]);
 
-  const handleClickHelp = useCallback( ()=>{
+  const handleClickHelp = useCallback(() => {
     help.open("Help | Dashboard Widgets", "help/md/dashboard.md")
-  },[] )
+  }, [])
 
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">

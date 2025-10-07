@@ -1,114 +1,50 @@
-import { useState } from "react";
+import { useCallback } from "react";
 
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
 
-import { useDispatch } from 'react-redux';
-
-import { dashboardAddMultiplePanels } from '../../features/dashboard.slice'
-import { datasubsetMultipleAdded, datasubsetReset } from '../../features/datasubset.slice'
-import { mapApplySettings } from '../../features/map.slice'
-import { parametersAddBackup } from '../../features/parameter.slice'
-import { plotUpdate } from '../../features/plot.slice'
-import { thresholdAddBackup } from '../../features/threshold.slice'
-
-import ModalDialogConfirm from '../Dialogs/ModalDialogConfirm'
-
-import { getSingleDatumByField } from '../../modules/database'
+import useModal from "../../hooks/useModalConfirm";
 
 export default function BookmarkItemMenu(props) {
+  
+  const modal = useModal();
 
-  const dispatch = useDispatch()
-
-  const [modalShow, setModalShow] = useState(false);
-  const [modalDeleteShow, setModalDeleteShow] = useState(false);
-
-  function BookmarkApply(id, props) {
-
-    let analysis = getSingleDatumByField(id, 'id', 'bookmarks');
-
-    if (analysis && analysis.store !== undefined) {
-      if (analysis.store.dashboard !== undefined)
-        dispatch(dashboardAddMultiplePanels(analysis.store.dashboard))
-      if (analysis.store.datasubsets !== undefined) {
-        dispatch(datasubsetReset())
-        dispatch(datasubsetMultipleAdded(analysis.store.datasubsets))
-      }
-      if (analysis.store.map !== undefined)
-        dispatch(mapApplySettings(analysis.store.map))
-      if (analysis.store.parameters !== undefined)
-        dispatch(parametersAddBackup(analysis.store.parameters))
-      if (analysis.store.plot !== undefined)
-        dispatch(plotUpdate(analysis.store.plot))
-      if (analysis.store.thresholds !== undefined)
-        dispatch(thresholdAddBackup(analysis.store.thresholds))
-
-      props.setMessage({
-        ...props.message,
-        body: <>Selected bookmark applied</>,
-        header: "Bookmark",
-        icon: 'bi-journal-bookmark-fill',
-        status: 'secondary'
-      });
+  const handleClickApply = useCallback( () => modal.show("confirm", {
+    header: "Load Bookmark",
+    content: `Make sure to save your current work as a "New Bookmark" before loading selected Bookmark`,
+    yes: "Continue",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "APPLY_BOOKMARK"
     }
+  }), [])
 
-    else{
-      props.setMessage({
-        ...props.message,
-        body: <>Failed to apply bookmark</>,
-        header: "Bookmark",
-        icon: 'bi-journal-bookmark-fill',
-        status: 'danger'
-      });
+  const handleClickDelete = useCallback( () => modal.show("confirm", {
+    header: "Delete Bookmark",
+    content: `Removing "${props.name || "Unknown"}" cannot be undone.`,
+    yes: "Delete",
+    no: "Cancel",
+    payload: {
+      id: props.id,
+      action: "DELETE_BOOKMARK"
     }
+  }), [])
 
-    props.setShow(true);
-
-  }
 
   return (
     <>
       <ButtonGroup size="sm" className='bg-white bookmark-menu-btn-group' >
-        <Button variant="outline-secondary" onClick={() => setModalShow(true)} >
+        <Button variant="outline-secondary" onClick={handleClickApply} >
           <i className="bi-journal-arrow-up" />
         </Button>
         <Button variant="outline-secondary" onClick={props.onEditClick} >
           <i className="bi-input-cursor-text" />
         </Button>
-        <Button variant="outline-secondary" onClick={() => setModalDeleteShow(true)} >
+        <Button variant="outline-secondary" onClick={handleClickDelete} >
           <i className="bi-bookmark-x" />
         </Button>
       </ButtonGroup>
-
-      <ModalDialogConfirm
-        show={modalShow}
-        onHide={(confirmed) => {
-          setModalShow(false);
-          if (confirmed) {
-            BookmarkApply(props.id, props);
-          }
-        }
-        }
-        header="Load Bookmark"
-        content={<>Make sure to save your current work as a <strong>New Bookmark</strong> before loading selected Bookmark.</>}
-        yes="Continue"
-        no="Cancel"
-      />
-
-      <ModalDialogConfirm
-        show={modalDeleteShow}
-        onHide={(confirmed) => {
-          setModalDeleteShow(false);
-          if (confirmed) {
-            props.deleteBookmark(props.id);
-          }
-        }
-        }
-        header="Delete Bookmark"
-        content={<>Removing <strong>"{props.name || "Unknown"}"</strong> cannot be undone.</>}
-        yes="Delete"
-        no="Cancel"
-      />
     </>
   )
 }
