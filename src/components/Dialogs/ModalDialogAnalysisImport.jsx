@@ -18,6 +18,8 @@ import { analysisAddBackup, analysisReset, initialState } from '../../features/a
 import loadAnalysisFromFile from '../../utils/data/load-analysis'
 import { bookmarkAddBackup } from '../../features/bookmark.slice';
 
+import useToast from '../../hooks/useToast';
+
 export default function ModalDialogAnalysisImport(props) {
 
   const [isBusy, setIsBusy] = useState(false);
@@ -25,6 +27,8 @@ export default function ModalDialogAnalysisImport(props) {
 
   const fileInput = useRef(null);
   const dispatch = useDispatch();
+
+  const toast = useToast()
 
   const processFile = async () => {
     try {
@@ -88,14 +92,7 @@ export default function ModalDialogAnalysisImport(props) {
             }
           })
             .catch(e => {
-              props.setMessage({
-                ...props.message,
-                body: <>Import failed, <strong>{e}</strong></>,
-                header: "Analysis",
-                icon: 'bi-journal-x',
-                status: 'danger'
-              });
-              props.setShow(true);
+              toast.error(`Import failed, "${e}"`, "Analysis", "bi-journal-x")
             })
             .finally(() => {
               setIsBusy(false);
@@ -110,14 +107,7 @@ export default function ModalDialogAnalysisImport(props) {
     }
     catch (e) {
       setIsBusy(false);
-      props.setMessage({
-        ...props.message,
-        body: <>Import failed, <strong>{e}</strong></>,
-        header: "Analysis",
-        icon: 'bi-journal-x',
-        status: 'danger'
-      });
-      props.setShow(true);
+      toast.error(`Import failed, "${e}"`, "Analysis", "bi-journal-x")
       props.setLoadAnalysis(false);
       return;
     }

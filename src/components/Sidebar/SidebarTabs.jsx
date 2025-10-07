@@ -35,6 +35,7 @@ import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
 import widgets from '../../constants/widgets'
 import useModal from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
+import useToast from '../../hooks/useToast';
 
 export default function SidebarTabs(props) {
 
@@ -42,6 +43,7 @@ export default function SidebarTabs(props) {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const toast = useToast();
   const modal = useModal();
   const addBookmark = useAddBookmark();
 
@@ -58,8 +60,6 @@ export default function SidebarTabs(props) {
   const [startModal, setStartModal] = useState(false);
 
   const [loadAnalysis, setLoadAnalysis] = useState(false);
-  const [show, setShow] = useState(false)
-  const [message, setMessage] = useState({ header: '', body: '', icon: '', status: 'secondary' })
   const [state, setState] = useState({
     selectedTab: 'DataSubsets',
     title: 'Data'
@@ -225,14 +225,10 @@ export default function SidebarTabs(props) {
         onHide={(response) => {
           setModalImport(false);
           if (response) {
-            setMessage({
-              ...message,
-              body: response.success ? <>Data from <strong>{response.message}</strong> imported</> : <>{response.message}</>,
-              header: 'Data Import',
-              icon: response.success ? 'bi-database-check' : 'bi-database-exclamation',
-              status: response.success ? 'success' : 'danger'
-            });
-            setShow(true);
+            if (response.success)
+              toast.success(`Data from "${response.message}" imported`, "Data Import", "bi-database-check")
+            else
+              toast.error(response.message, "Data Import", "bi-database-exclamation")
             navigate('/spreadsheet')
           }
         }
@@ -241,7 +237,7 @@ export default function SidebarTabs(props) {
         no="Cancel"
       />
 
-      <ModalDialogAnalysisImport show={loadAnalysis} setLoadAnalysis={setLoadAnalysis} message={message} setMessage={setMessage} setShow={setShow} />
+      <ModalDialogAnalysisImport show={loadAnalysis} setLoadAnalysis={setLoadAnalysis} />
 
       <ModalDialogBusy show={modalSaveAnalysis} content={"Creating Analysis File…"} onEntered={() => saveAnalysis()} />
 
