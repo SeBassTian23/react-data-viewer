@@ -16,7 +16,18 @@ const loadCSV = (file, delimiter = "") => {
       columns: null, //or array of strings
       delimitersToGuess: [',', '\t', '|', ';', Papa.RECORD_SEP, Papa.UNIT_SEP],
       complete: function (results, file) {
-        return resolve(results)
+
+        // Extract only what you need to minimize memory footprint
+        const data = results.data;
+        const meta = results.meta;
+        
+        // Clear the results object reference
+        results = null;
+        
+        // Return minimal structure
+        resolve({ data, meta });
+
+        // return resolve(results)
       }
     })
   });
