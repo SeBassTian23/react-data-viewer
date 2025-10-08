@@ -273,8 +273,8 @@ export default function Spreadsheet(props) {
           />
           {!source.length && (
             <div className="position-absolute  top-50 start-50 translate-middle text-center">
-              <i class="bi bi-table text-muted fs-1"></i>
-              <p class="small">No data available.</p>
+              <i className="bi bi-table text-muted fs-1"></i>
+              <p className="small">No data available.</p>
             </div>
           )}
         </Col>
