@@ -13,7 +13,9 @@ const packageJson = JSON.parse(
 )
 
 export default defineConfig({
-  base: './',
+  base: process.env.NODE_ENV === 'production' 
+    ? '/react-data-viewer/'
+    : './',
   plugins: [
     react(),
     svgrPlugin({
@@ -39,11 +41,11 @@ export default defineConfig({
     alias: {
       screens: path.resolve(__dirname, './src/screens'),
       stream: 'stream-browserify',
-      assert: 'assert'
+      assert: 'assert',
     },
   },
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     rollupOptions: {
       external: ['fs'],
       output: {
