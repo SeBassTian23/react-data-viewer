@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { ReactSortable } from "react-sortablejs";
 
@@ -40,9 +40,21 @@ export default function DataSubset(props) {
     dispatch(datasubsetHideAll());
   }
 
-  const setList = (request, obj, dragging ) => {
-    dispatch( datasubsetDnD(request) )
-  }
+  const sortableList = useMemo(() => state.map(item => ({ ...item })), [state]); 
+
+  const setList = useCallback(
+    (newList) => {
+      const newIds = newList.map(i => i.id);
+      const oldIds = state.map(i => i.id);
+      const sameOrder = newIds.every((id, idx) => id === oldIds[idx]);
+
+      if (!sameOrder) {
+        dispatch(datasubsetDnD(newList.map(i => i.id)));
+      }
+    },
+    [dispatch, state]
+  );
+
     
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Data Selection", "help/md/data-subsets.md")
@@ -96,7 +108,7 @@ export default function DataSubset(props) {
               <span className='small'>All available data is currently selected. Use the Filter <i className='bi-filter-square' />&nbsp;button to select subsets of data.</span>
             </div>
           ) :
-            <ReactSortable tag='ul' handle='.bi-square-fill' className='list-group list-group-flush mt-2 scrollarea w-100' list={ JSON.parse(JSON.stringify(state)) } setList={ setList } direction={'vertical'} animation={200} delayOnTouchStart={true} delay={2}>
+            <ReactSortable tag='ul' handle='.bi-square-fill' className='list-group list-group-flush mt-2 scrollarea w-100' list={ sortableList } setList={ setList } direction={'vertical'} animation={200} delayOnTouchStart={true} delay={2}>
               {state.map((el, idx) => <DataSubsetItem key={idx} {...el} />)}
             </ReactSortable>
             // <ListGroup as="ul" variant="flush" className='mt-2 scrollarea w-100'>
