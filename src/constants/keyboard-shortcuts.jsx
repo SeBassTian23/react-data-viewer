@@ -1,37 +1,37 @@
 export const KEYBOARD_SHORTCUTS = {
   newAnalysis: {
     apple: "^ ⌘ N",
-    windows: "Win + N",
+    windows: "Alt + Ctrl + N",
     description: "New Analysis"
   },
   saveAnalysis: {
     apple: "⌘ S",
-    windows: "Win + S",
+    windows: "Ctrl + S",
     description: "Save Analysis"
   },
   saveBookmark: {
     apple: "⇧ ⌘ S",
-    windows: "Win + Shift + S",
+    windows: "Ctrl + Shift + S",
     description: "Save Bookmark"
   },
   showBookmarks: {
     apple: "⇧ ⌘ L",
-    windows: "Win + Shift + L",
+    windows: "Ctrl + Shift + L",
     description: "Bookmarks"
   },
   loadAnalysis: {
     apple: "⌘ L",
-    windows: "Win + L",
+    windows: "Ctrl + L",
     description: "Load Analysis"
   },
   importData: {
     apple: "⌘ I",
-    windows: "Win + I",
+    windows: "Ctrl + I",
     description: "Import Data"
   },
   toggleFilter: {
     apple: "⌘ K",
-    windows: "Win + K",
+    windows: "Ctrl + K",
     description: "Toggle Filter/Data Tab"
   }
 };
