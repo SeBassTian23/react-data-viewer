@@ -29,7 +29,7 @@ export default function ModalDialogAnalysisImport(props) {
   const fileInput = useRef(null);
   const dispatch = useDispatch();
 
-  const toast = useToast()
+  const toast = useToast();
 
   const processFile = async () => {
     try {
@@ -107,14 +107,18 @@ export default function ModalDialogAnalysisImport(props) {
 
               if( recent ){
                 recent = JSON.parse(recent)
-                recent.push({
+                
+                const recentEntry = {
                   title: state?.name || "Analysis (Unknown)",
                   notes: state?.notes || "",
                   lastModifiedDate: String(new Date(fileInput.current.files['0'].lastModifiedDate)),
                   name: String(fileInput.current.files['0'].name),
                   size: Number(fileInput.current.files['0'].size),
                   type: String(fileInput.current.files['0'].type),
-                })
+                }
+                
+                addOrMoveToEnd(recent, recentEntry, ['title', 'notes', 'lastModifiedDate', 'name', 'size', 'type']);
+
                 localStorage.setItem('APP_USER_RECENT_FILES', JSON.stringify(recent, null));
               }
             });
@@ -178,4 +182,19 @@ export default function ModalDialogAnalysisImport(props) {
       }
     </>
   );
+}
+
+function addOrMoveToEnd(arr, obj, keysToMatch = []) {
+  // Find index of existing object where ALL keys match
+  const index = arr.findIndex(item => 
+    keysToMatch.every(key => item[key] === obj[key])
+  );
+  
+  if (index !== -1) {
+    // Remove existing object and add to end
+    arr.splice(index, 1);
+  }
+  
+  arr.push(obj);
+  return arr;
 }
