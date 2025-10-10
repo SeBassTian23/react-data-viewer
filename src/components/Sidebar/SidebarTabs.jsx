@@ -10,6 +10,7 @@ import Filters from './Filters'
 import Parameters from './Parameters'
 import Bookmarks from './Bookmarks'
 import Thresholds from './Thresholds'
+import RecentFiles from './RecentFiles'
 
 import ModalDialogAbout from '../Dialogs/ModalDialogAbout'
 import ModalDialogStart from '../Dialogs/ModalDialogStart'
@@ -58,6 +59,7 @@ export default function SidebarTabs(props) {
   const [dashboardMenuInactive, setDashboardMenuInactive] = useState(false);
 
   const [startModal, setStartModal] = useState(false);
+  const [showRecent, setShowRecent] = useState(false);
 
   const [loadAnalysis, setLoadAnalysis] = useState(false);
   const [state, setState] = useState({
@@ -125,6 +127,13 @@ export default function SidebarTabs(props) {
       setDashboardMenuInactive(true)
   }, [location.pathname])
 
+  useEffect(() => {
+    if (localStorage.getItem('APP_USER_RECENT_FILES'))
+      setShowRecent(true)
+    else
+      setShowRecent(false)
+  }, [localStorage.getItem('APP_USER_RECENT_FILES')])  
+
   // Initial Loading
   useEffect(()=>{
     setTimeout(()=>{
@@ -169,6 +178,8 @@ export default function SidebarTabs(props) {
         return <Thresholds />;
       case 'Aliases':
         return <Aliases />;
+      case 'Recent':
+        return <RecentFiles />;
       default:
         return <DataSubset setModalImport={setModalImport} />;
     }
@@ -206,6 +217,7 @@ export default function SidebarTabs(props) {
               <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
+              {showRecent && <Dropdown.Item onClick={() => changeTab('Recent', 'Recent Files')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent Files…</span></Dropdown.Item>}
               <Dropdown.Divider />
               <Dropdown.Item onClick={saveBookmark} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
               <Dropdown.Item onClick={() => changeTab('Bookmarks', 'Bookmarks')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>

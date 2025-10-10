@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 
 import { parameters, importJSON, getFilteredData, dbInit } from '../../modules/database'
 
@@ -22,6 +22,7 @@ import useToast from '../../hooks/useToast';
 
 export default function ModalDialogAnalysisImport(props) {
 
+  const analysisStore = useStore();
   const [isBusy, setIsBusy] = useState(false);
   const [startImport, setStartImport] = useState(false);
 
@@ -97,6 +98,25 @@ export default function ModalDialogAnalysisImport(props) {
             .finally(() => {
               setIsBusy(false);
               props.setLoadAnalysis(false);
+
+              let state = analysisStore.getState().analysis
+              let recent = localStorage.getItem('APP_USER_RECENT_FILES');
+
+              if(!recent && localStorage.getItem('APP_USER_NAME'))
+                recent = JSON.stringify([])
+
+              if( recent ){
+                recent = JSON.parse(recent)
+                recent.push({
+                  title: state?.name || "Analysis (Unknown)",
+                  notes: state?.notes || "",
+                  lastModifiedDate: String(new Date(fileInput.current.files['0'].lastModifiedDate)),
+                  name: String(fileInput.current.files['0'].name),
+                  size: Number(fileInput.current.files['0'].size),
+                  type: String(fileInput.current.files['0'].type),
+                })
+                localStorage.setItem('APP_USER_RECENT_FILES', JSON.stringify(recent, null));
+              }
             });
         }
         else
