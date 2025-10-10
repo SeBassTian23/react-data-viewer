@@ -33,9 +33,10 @@ export default function Dashboard(props) {
           </div> 
         </Row> : 
         <ReactSortable handle='.bi-grip-vertical' className='row px-2 pb-1 pt-5 vh-100 align-content-start flex-wrap' list={ state.map(item => ({ ...item })) } setList={ newState => setList([...newState]) } animation={200} delayOnTouchStart={true} delay={2}>
-          {state.map((item, idx) => (
-            <DashboardWidget key={`${item.id}-${idx}`} {...item} {...props}/>
-            ))}
+          {state.map((item, idx) => {
+            const key = item?.type === 'map'? `${item.id}-${idx}` : item.id
+            return <DashboardWidget key={key} {...item} {...props}/>
+          })}
         </ReactSortable>
       }
     </>

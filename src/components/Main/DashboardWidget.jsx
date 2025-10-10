@@ -72,7 +72,6 @@ function DashboardWidget(props) {
   const help = useHelp();
   const modal = useModal()
 
-  const [modalShow, setModalShow] = useState(false);
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
   const [editTitle, setEditTitle] = useState(false);
 

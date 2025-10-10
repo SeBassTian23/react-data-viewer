@@ -624,3 +624,7 @@ kbd {
   position: absolute !important;
   right: 0.75rem;
 }
+
+#dv-recent-files .list-group-item {
+  background: transparent !important;
+}

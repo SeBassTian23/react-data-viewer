@@ -89,7 +89,7 @@ const datasubsetSlice = createSlice({
       })
     },
     datasubsetDnD(state, action) {
-      const ids = action.payload.map(item => item.id)
+      const ids = action.payload
       const updatedState = []
       state.forEach(function (a) {
         updatedState[ids.indexOf(a.id)] = a;
