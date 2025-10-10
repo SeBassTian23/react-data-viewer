@@ -8,11 +8,16 @@ import App from './App';
 window.addEventListener('beforeunload', (e) => { e.preventDefault(); });
 window.addEventListener('unload', (e) => { e.preventDefault(); });
 
+const base = import.meta.env.BASE_URL;
+const basename = base.endsWith('/') && base.length > 1 
+  ? base.slice(0, -1) 
+  : base;
+
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </React.StrictMode>
