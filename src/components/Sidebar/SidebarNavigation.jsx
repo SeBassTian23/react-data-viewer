@@ -1,12 +1,18 @@
 import { useEffect, useState, useCallback } from 'react'
 import Button from 'react-bootstrap/Button';
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+
+import { useHotkeys } from 'react-hotkeys-hook'
+
+import { ShortcutLabelStr } from '../Main/ShortcutLabel'
 
 import ModalDialogAnalysis from '../Dialogs/ModalDialogAnalysis'
 import ModalDialogUser from '../Dialogs/ModalDialogUser'
 
 export default function SidebarNavigation(props) {
+
+  const navigate = useNavigate()
 
   const [avatar, setAvatar] = useState(null);
 
@@ -30,6 +36,26 @@ export default function SidebarNavigation(props) {
     props.setToggle(prev => !prev);
   }, [props.setToggle]);
 
+  useHotkeys('meta+shift+d', (event) => {
+    event.preventDefault();
+    navigate('/')
+  });
+
+  useHotkeys('meta+shift+p', (event) => {
+    event.preventDefault();
+    navigate('/plot')
+  });
+
+  useHotkeys('meta+shift+m', (event) => {
+    event.preventDefault();
+    navigate('/map')
+  });
+
+  useHotkeys('meta+shift+x', (event) => {
+    event.preventDefault();
+    navigate('/spreadsheet')
+  });
+
   return (
     <nav className="d-flex flex-column text-center border-end vh-100 p-0" id='dv-nav'>
       <a className="navbar-brand p-2 mb-2" href={__APP_URL__} target='_blank'>
@@ -37,25 +63,25 @@ export default function SidebarNavigation(props) {
       </a>
       <ul className="d-flex nav navbar-nav flex-column flex-grow-1 w-100">
         <li className="nav-item">
-          <NavLink className="nav-link px-0" to="/" title="Dashboard">
+          <NavLink className="nav-link px-0" to="/" title={ShortcutLabelStr('showDashboard')}>
             <i className="bi-columns-gap" />
             <span className="d-block">Dashboard</span>
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link px-0" to="/plot" title="Plot">
+          <NavLink className="nav-link px-0" to="/plot" title={ShortcutLabelStr('showPlot')}>
             <i className="bi-graph-up" />
             <span className="d-block">Plot</span>
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link px-0" to="/map" title="Map">
+          <NavLink className="nav-link px-0" to="/map" title={ShortcutLabelStr('showMap')}>
             <i className="bi-globe-americas" />
             <span className="d-block">Map</span>
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link px-0" to="/spreadsheet" title="Spreadsheet">
+          <NavLink className="nav-link px-0" to="/spreadsheet" title={ShortcutLabelStr('showSpreadsheet')}>
             <i className="bi-table" />
             <span className="d-block">Spreadsheet</span>
           </NavLink>

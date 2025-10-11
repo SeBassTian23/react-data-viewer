@@ -33,5 +33,25 @@ export const KEYBOARD_SHORTCUTS = {
     apple: "⌘ K",
     windows: "Ctrl + K",
     description: "Toggle Filter/Data Tab"
+  },
+  showDashboard: {
+    apple: "⇧ ⌘ D",
+    windows: "Ctrl+Shift+D",
+    description: "Show Dashboard"
+  },
+  showPlot: {
+    apple: "⇧ ⌘ P",
+    windows: "Ctrl+Shift+P",
+    description: "Show Plot"
+  },
+  showMap: {
+    apple: "⇧ ⌘ M",
+    windows: "Ctrl+Shift+M",
+    description: "Show Map"
+  },
+  showSpreadsheet: {
+    apple: "⇧ ⌘ X",
+    windows: "Ctrl+Shift+X",
+    description: "Show Spreadsheet"
   }
 };
