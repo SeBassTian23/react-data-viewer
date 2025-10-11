@@ -29,7 +29,7 @@ import ModalDialogImport from '../Dialogs/ModalDialogImport'
 import ModalDialogBusy from '../Dialogs/ModalDialogBusy'
 import ModalDialogAnalysisImport from '../Dialogs/ModalDialogAnalysisImport'
 
-import { KEYBOARD_SHORTCUTS } from '../../constants/keyboard-shortcuts'
+import { ShortcutLabel, ShortcutLabelStr } from '../Main/ShortcutLabel'
 
 import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
 
@@ -152,16 +152,6 @@ export default function SidebarTabs(props) {
     }
   }), [] )
 
-  const ShortcutLabel = ({ shortcutKey }) => {
-    const shortcut = KEYBOARD_SHORTCUTS[shortcutKey];
-    const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator?.platform || navigator.userAgent);
-    return (
-      <small className="text-muted fw-light">
-        {isApple ? shortcut.apple : shortcut.windows}
-      </small>
-    );
-  };
-
   const renderTabContent = (tab) => {
     switch (tab) {
       case 'DataSubsets':
@@ -190,7 +180,7 @@ export default function SidebarTabs(props) {
       <div id="dv-tab-nav">
         <ButtonToolbar className='d-flex align-items-center'>
           <ButtonGroup size="sm" className='w-100' aria-label="Data Toolbar">
-            {(state.selectedTab !== 'DataSubsets') ? <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('DataSubsets', 'Data')} ><i className="bi bi-chevron-left" /> Back</Button> : <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('Filters', 'Filter')}><i className="bi bi-filter" /> Filter</Button>}
+            {(state.selectedTab !== 'DataSubsets') ? <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('DataSubsets', 'Data')} title="Back to Data Subsets" ><i className="bi bi-chevron-left" /> Back</Button> : <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('Filters', 'Filter')} title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter</Button>}
             <DropdownButton size="sm" as={ButtonGroup} className='column-dropdown' variant={props.darkmode? "outline-light" : "outline-dark"} align="end" disabled={dashboardMenuInactive} title={<><i className="bi bi-window-plus" /> Panels</>}>
               <Dropdown.Header>General</Dropdown.Header>
               {widgets.filter( itm => itm.category == 'general').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
