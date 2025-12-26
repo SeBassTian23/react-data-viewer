@@ -20,7 +20,8 @@ const saveAnalysisToFile = (store = null) => {
   let filename = store?.analysis?.saveAs+".zip" || 'my-analysis.zip'
 
   // Download element
-  var blob = new Blob([data], { type: 'application/zip' });
+  const deflate = pako.deflate( JSON.stringify(data), { to: 'string' });
+  var blob = new Blob([deflate], { type: 'application/zip' });
 
   // IE Compatibility
   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
