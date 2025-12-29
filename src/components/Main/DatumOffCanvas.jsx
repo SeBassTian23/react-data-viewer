@@ -173,7 +173,9 @@ function DisplayTableRow(props) {
   return (
     <>
       <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
-      <td className='text-end'>{String(value)}</td>
+      <td className='text-end'>
+        { String(value).match(/https?:\/\//)? <a href={String(value)} target='blank'>{String(value)}</a> : String(value) }
+      </td>
     </>
   )
 }
