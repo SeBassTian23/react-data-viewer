@@ -128,6 +128,12 @@
     .card-body textarea:focus {
       outline: none;
     }
+
+    .card-body > .form-text {
+      padding-right: .5rem !important;
+      padding-left: .5rem !important;
+    }
+
   }
   
   .sortable-ghost {
@@ -627,4 +633,15 @@ kbd {
 
 #dv-recent-files .list-group-item {
   background: transparent !important;
+}
+
+.MapPanelScaleGradient {
+  position: absolute;
+  width: 30%;
+  height: 0.5rem;
+  opacity: 0.8;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  border: 1px solid black;
+  z-index: 999;
 }
