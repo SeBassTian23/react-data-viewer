@@ -148,17 +148,17 @@ function DashboardWidget(props) {
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
-        <Card.Header className="fw-bold d-flex justify-content-between align-items-center" title={props.title || props.content.title || "Untitled"}>
+        <Card.Header className="fw-bold d-flex justify-content-between align-items-center" title={props.title || "Untitled"}>
           <i className='bi-grip-vertical' />
           {!editTitle ?
-            <div className='w-100 text-truncate'>{props.title || props.content.title || "Untitled"}</div> :
+            <div className='w-100 text-truncate'>{props.title || "Untitled"}</div> :
             <Form.Control
               ref={titleRef}
               size={'sm'}
               type="text"
               className='dashboard-title-input'
               onBlur={(e) => editTitleHandler(false)}
-              onKeyUp={(e) => e.key === 'Enter' ? editTitleHandler(false) : null} defaultValue={props.title || props.content.title || "Untitled"}
+              onKeyUp={(e) => e.key === 'Enter' ? editTitleHandler(false) : null} defaultValue={props.title || "Untitled"}
             />
           }
           <Dropdown>

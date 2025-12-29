@@ -38,7 +38,7 @@ export default function PlotToolbar(props) {
     dispatch(dashboardAddPanel({
       content: { ...state },
       linkTo: null,
-      title: state.title !== ""? state.title : "",
+      title: state.title,
       type: "plot"
     }))
     toast.info("Plot added to Dashboard", "Panel", "bi-window-plus")
