@@ -130,11 +130,12 @@ export default function Map(props) {
   const handleClickDashboard = useCallback( ()=> {
     
     const props = store.getState().map
+    const parameterName = store.getState().parameters.find(itm => itm.name == props.colorBy)?.alias || props.colorBy
 
     dispatch(dashboardAddPanel({
       content: props,
       linkTo: null,
-      title: "Map" + (props.colorType === 'histogram' ? ` (${props.colorBy})` : ''),
+      title: `Map${props.colorType === 'histogram' && ` | ${parameterName}`}`,
       type: "map"
     })
     )
