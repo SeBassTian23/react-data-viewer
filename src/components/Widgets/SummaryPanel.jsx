@@ -19,9 +19,11 @@ export default function SummaryPanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -42,7 +44,7 @@ export default function SummaryPanel(props) {
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <CalculateSummary {...props} subsets={subsets} thresholds={thresholds} />
+          <CalculateSummary {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -54,6 +56,7 @@ function CalculateSummary(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 

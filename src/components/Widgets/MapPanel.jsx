@@ -10,6 +10,7 @@ import { mapLayers } from '../../constants/map-layers'
 import { mapApplySettings } from '../../features/map.slice'
 import { ColorGradientColorArray } from '../Main/ColorGradient';
 import { calculateBins } from '../../utils/plot/histogram'
+import linearColorScale from '../../utils/plot/colorscale-css'
 
 import chroma from 'chroma-js'
 import jStat from 'jstat'
@@ -137,6 +138,9 @@ export default function MapPanel(props) {
           parameters={stateParameters}
         />
       </MapContainer>
+      {(props?.colorBy && props?.colorScale) &&
+        <div className="MapPanelScaleGradient" style={{background: linearColorScale( ColorGradientColorArray(props.colorScale) )}}></div>
+      }
     </Card.Body>
   );
 }

@@ -21,9 +21,11 @@ export default function SpearmanCorrelationPanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -44,7 +46,7 @@ export default function SpearmanCorrelationPanel(props) {
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <CalculateSpearmanCorrelation {...props} subsets={subsets} thresholds={thresholds} />
+          <CalculateSpearmanCorrelation {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -56,6 +58,7 @@ function CalculateSpearmanCorrelation(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 
@@ -106,13 +109,13 @@ function CalculateSpearmanCorrelation(props) {
       {table.length === 0 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            Spearman Rank Correlation for selected subsets and "{parameter}" failed.
+            Spearman Rank Correlation for selected subsets and "{parameterName}" failed.
           </span>
         </div>
       }
       {table.length > 0 &&
         <>
-          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameter}".</p>
+          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameterName}".</p>
           {table.map((itm, idx) => {
             return <Table size='sm' key={idx}>
                 <thead className='text-start small'>

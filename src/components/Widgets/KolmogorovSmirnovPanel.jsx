@@ -21,9 +21,11 @@ export default function WelchesTTestPanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -44,7 +46,7 @@ export default function WelchesTTestPanel(props) {
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <CalculateKolmogorovSmirnovTest {...props} subsets={subsets} thresholds={thresholds} />
+          <CalculateKolmogorovSmirnovTest {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -57,6 +59,7 @@ function CalculateKolmogorovSmirnovTest(props) {
   const subsets = props.subsets || []
   const thresholds = props.thresholds
   const alternative = props.alternative
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 
@@ -108,7 +111,7 @@ function CalculateKolmogorovSmirnovTest(props) {
       {table.length === 0 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            Welch's <em>t</em>-Test for selected subsets and "{parameter}" failed.
+            Welch's <em>t</em>-Test for selected subsets and "{parameterName}" failed.
           </span>
         </div>
       }

@@ -20,9 +20,11 @@ export default function ChiSquarePanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -43,7 +45,7 @@ export default function ChiSquarePanel(props) {
       {!state && <PanelInputForm {...props} selectType='string' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <CalculateChiSquare {...props} subsets={subsets} thresholds={thresholds} />
+          <CalculateChiSquare {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -55,6 +57,7 @@ function CalculateChiSquare(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 
@@ -137,14 +140,14 @@ function CalculateChiSquare(props) {
 
   // Calculate p-value
   const p_value = 1 - jStat.chisquare.cdf(x2, dof);
-  const msg = p_value <= ConfidenceInterval ? `Subsets and "${parameter}" seem to be dependent` : `Subsets and "${parameter}" seem not to be dependent`
+  const msg = p_value <= ConfidenceInterval ? `Subsets and "${parameterName}" seem to be dependent` : `Subsets and "${parameterName}" seem not to be dependent`
 
   return (
     <>
       {x2 === 0 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            χ²-Test for selected subsets and "{parameter}" failed.
+            χ²-Test for selected subsets and "{parameterName}" failed.
           </span>
         </div>
       }
@@ -160,7 +163,7 @@ function CalculateChiSquare(props) {
             <tbody>
               <tr className='text-center'>
                 <td>{round(x2, 3) || x2}</td>
-                <td><em>p</em>{(p_value < ConfidenceInterval) ? ' < ' + ConfidenceInterval : ' = ' + p_value.toFixed(3)}</td>
+                <td>{(p_value < ConfidenceInterval) ? ' < ' + ConfidenceInterval : ' = ' + p_value.toFixed(3)}</td>
               </tr>
               <tr>
                 <td colSpan={2} className={p_value > ConfidenceInterval ? 'small text-danger' : 'small'}>{msg}</td>

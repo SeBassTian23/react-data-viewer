@@ -18,9 +18,11 @@ export default function ANOVAPanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -41,7 +43,7 @@ export default function ANOVAPanel(props) {
       {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <CalculateANOVA {...props} subsets={subsets} thresholds={thresholds} />
+          <CalculateANOVA {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -53,6 +55,7 @@ function CalculateANOVA(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 
@@ -74,7 +77,7 @@ function CalculateANOVA(props) {
       {anovadata.length === 0 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            ANOVA for selected subsets and "{parameter}" failed.
+            ANOVA for selected subsets and "{parameterName}" failed.
           </span>
         </div>
       }
@@ -151,7 +154,7 @@ function CalculateANOVA(props) {
             </tr>
           </thead>
           <tbody>
-            {anovadata.groupStatistics.map(row => <tr>
+            {anovadata.groupStatistics.map( (row, idx) => <tr key={idx}>
               <td><i className='bi-square-fill' style={{ 'color': subsets.find(itm => itm?.id == row.label)?.color || '#000' }} />&nbsp;{subsets.find(itm => itm?.id == row.label)?.name}</td>
               <td>{row.n}</td>
               <td>{round(row.mean, 4)}</td>

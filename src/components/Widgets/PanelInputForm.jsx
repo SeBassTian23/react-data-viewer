@@ -67,8 +67,9 @@ export default function PanelInputForm(props) {
           <Col className='d-flex align-items-center mt-auto flex-column p-1'>
             <Button variant="outline-primary" size="sm" onClick={() => {
               let values = getValues()
+              let parameterName = stateParameters.find(itm => itm.name == values.parameter)?.alias || values.parameter
               dispatch(dashboardEditPanel({ id: props.id, content: { ...values } }))
-              dispatch(dashboardEditTitlePanel({ id: props.id, title: `${values.parameter} | ${title}` }))
+              dispatch(dashboardEditTitlePanel({ id: props.id, title: `${parameterName} | ${title}` }))
             }
             }><i className='bi-caret-right' /> Apply</Button>
           </Col>

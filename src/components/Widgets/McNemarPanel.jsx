@@ -22,9 +22,11 @@ export default function McNemarPanel(props) {
   const stateDashboard = useSelector(state => state.dashboard)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
+  const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
   const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
 
   const [state, setState] = useState(false)
 
@@ -45,7 +47,7 @@ export default function McNemarPanel(props) {
       {!state && <PanelInputForm {...props} selectType='string' selectHelp={`Parameter for ${widget.name}`} />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
-          <McNemarTest {...props} subsets={subsets} thresholds={thresholds} />
+          <McNemarTest {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
         </Card.Body>
       </>}
     </>
@@ -57,6 +59,7 @@ function McNemarTest(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
+  const parameterName = props.parameterName
 
   const ConfidenceInterval = props.confidence_level || 0.05
 
@@ -130,20 +133,20 @@ function McNemarTest(props) {
       {tables.length === 0 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            McNemar's Exact Test for selected subsets and "{parameter}" failed.
+            McNemar's Exact Test for selected subsets and "{parameterName}" failed.
           </span>
         </div>
       }
       {tables.length > 30 &&
         <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
           <span className='text-danger small'>
-            The current selection of subsets and the category <strong>"{props.parameter}"</strong> will generate <strong>{tables.length}</strong> tests. Please select fewer subsets or make the filters more stringent to reduce the number of categories.
+            The current selection of subsets and the category <strong>"{parameterName}"</strong> will generate <strong>{tables.length}</strong> tests. Please select fewer subsets or make the filters more stringent to reduce the number of categories.
           </span>
         </div>
       }
       {(tables.length > 0 && tables.length <=30) &&
         <>
-          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameter}".</p>
+          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameterName}".</p>
           {tables.map((table, idx) => {
             return (
               <Table responsive bordered size='sm' className='mt-1' key={idx}>
