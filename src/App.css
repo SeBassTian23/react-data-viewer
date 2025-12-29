@@ -544,9 +544,8 @@ kbd {
 /** Modal User */
 .title-avatar {
   height: 2.375rem;
-  margin-top: .4rem;
-  margin-bottom: -0.3rem;
-  vertical-align: baseline;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
 }
 
 /** Color Gradient */

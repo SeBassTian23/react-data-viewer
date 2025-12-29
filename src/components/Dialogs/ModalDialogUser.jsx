@@ -105,7 +105,7 @@ export default function ModalDialogUser(props) {
     >
       <Modal.Body>
         <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button></span>
-        <span className="d-block fs-4">{props.avatar ? <img src={props.avatar} className='rounded title-avatar' /> : <i className="bi bi bi-person-circle fs-2 text-muted" /> } Profile</span>
+        <span className="d-flex align-items-center fs-4">{props.avatar ? <img src={props.avatar} className='rounded title-avatar me-2' /> : <i className="bi bi-person-circle me-2 fs-2 text-muted" /> } Profile</span>
         <Form className='mt-2'>
 
           <Form.Group className="mb-3">
