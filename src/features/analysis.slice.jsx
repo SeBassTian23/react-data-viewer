@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const initialState = {
-  name: 'New Analysis',
+  name: '',
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
   files: [],
-  saveAs: "new-analysis",
+  saveAs: "analysis",
   notes: "",
   creator: {
     name: localStorage.getItem('APP_USER_NAME'),
@@ -28,7 +28,7 @@ const analysisSlice = createSlice({
     analysisUpdate(state, action) {
       let keys = Object.keys(action.payload);
       let isUpdated = {};
-      keys.forEach( key =>{
+      keys.forEach( key => {
         if(state[key] !== undefined && state[key] !== action.payload[key])
           isUpdated = {updated_at: new Date().toISOString(), app_version: __APP_VERSION__};
       })

@@ -67,12 +67,12 @@ export default function ModalDialogAnalysis(props) {
         <Form className='mt-2'>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
-            <Form.Control ref={refName} type="text" placeholder="My Analysis" defaultValue={store.name} />
+            <Form.Control ref={refName} type="text" placeholder="Analysis Name" defaultValue={store.name} />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Notes</Form.Label>
-            <Form.Control ref={refNotes} as="textarea" rows={3} placeholder='My Analysis Notes…' defaultValue={store.notes} />
+            <Form.Control ref={refNotes} as="textarea" rows={3} placeholder='Analysis Notes…' defaultValue={store.notes} />
           </Form.Group>
 
           {(store?.creator && store?.creator?.name) && <Form.Group className="mb-3">

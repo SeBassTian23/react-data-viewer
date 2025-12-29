@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import loadCSV from '../utils/data/load-csv';
 import loadJSON from '../utils/data/load-json';
@@ -11,6 +11,9 @@ import { datasubsetReset } from '../features/datasubset.slice';
 import { analysisAddFile, analysisAppendFile, analysisUpdate } from '../features/analysis.slice';
 
 export const useFileImport = () => {
+
+  const analysis = useSelector(state => state.analysis)
+
   const [isBusy, setIsBusy] = useState(false);
   const [fileInvalid, setFileInvalid] = useState(false);
   const dispatch = useDispatch();
@@ -53,7 +56,7 @@ export const useFileImport = () => {
             dispatch(analysisAppendFile(fileInfo));
           } else {
             dispatch(analysisAddFile(fileInfo));
-            const initialname = file.name.split(".").slice(0, -1).join(".");
+            const initialname = analysis.name !== '' ? analysis.name : file.name.split(".").slice(0, -1).join(".");
             dispatch(analysisUpdate({ name: initialname, saveAs: initialname }));
           }
           
