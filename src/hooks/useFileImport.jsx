@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import loadCSV from '../utils/data/load-csv';
 import loadJSON from '../utils/data/load-json';
+import parseMultispeQJSON, {isMultispeQData} from '../utils/data/parse-multispeq-json';
 import wideToLong from '../utils/data/wide-to-long';
 import { addDataJSON, parameters } from '../modules/database';
 
@@ -42,6 +43,8 @@ export const useFileImport = () => {
           }
         } else if (file.type === 'application/json') {
           data = await loadJSON(file);
+          if(isMultispeQData(data))
+            data = await parseMultispeQJSON(data);
         } else {
           throw new Error('Unsupported file type');
         }
