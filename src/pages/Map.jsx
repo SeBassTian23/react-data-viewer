@@ -201,10 +201,13 @@ export default function Map(props) {
         let bins = calculateBins(colorValues)
         let colorbars = []
         let nextbin = bins.start
-        while (nextbin <= bins.end) {
+        if(bins.size == 0)
           colorbars.push(f(nextbin).hex())
-          nextbin += bins.size
-        }
+        else
+          while (nextbin <= bins.end) {
+            colorbars.push(f(nextbin).hex())
+            nextbin += bins.size
+          }
 
         const value = stateParameters.find(e => e.name === stateMap.colorBy).alias || stateMap.colorBy
 
