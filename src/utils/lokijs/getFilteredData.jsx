@@ -77,8 +77,11 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
   // Drop rows defined by null cells from selected columns
   let parsedDropna = {}
   if (Array.isArray(dropna)) {
+    parsedDropna['$and'] = []
     for (let c in dropna) {
-      parsedDropna[dropna[c]] = { '$ne': null }
+      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': null }})
+      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': undefined }})
+      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': NaN }})
     }
   }
 

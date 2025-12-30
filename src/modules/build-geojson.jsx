@@ -15,11 +15,6 @@ const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], valueTy
     return item.name
   });
 
-
-  // parameters.filter(item => ['latitude', 'longitude'].includes(item.specialtype)).forEach(item => {
-  //   colNames[item.specialtype] = item.name
-  // })
-
   if (colorBy)
     cols.push(colorBy)
 
@@ -74,7 +69,7 @@ const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], valueTy
     });
   }
 
-  if (Object.entries(latlng).length >= 2)
+  if (Object.keys(latlng).some(i => Object.values(colNames).includes(i)))
     geoJSON.features = latlng[colNames['latitude']].map((row, idx) => {
       return {
         "type": "Feature",
