@@ -9,11 +9,7 @@ import buildGeoJSON from '../../modules/build-geojson';
 import { mapLayers } from '../../constants/map-layers'
 import { mapApplySettings } from '../../features/map.slice'
 import { ColorGradientColorArray } from '../Main/ColorGradient';
-import { calculateBins } from '../../utils/plot/histogram'
 import linearColorScale from '../../utils/plot/colorscale-css'
-
-import chroma from 'chroma-js'
-import jStat from 'jstat'
 
 const geojsonMarkerOptions = {
   radius: 4,
@@ -48,21 +44,6 @@ function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
       map.getContainer()
         .querySelector('.leaflet-pane.leaflet-tile-pane')
         .style.filter = stateMap.filter;
-    }
-
-    // histogram coloring
-    if (props.colorType === 'histogram') {
-      let colorValues = geoJSON.features.map(item => item.properties.colorValue);
-      let scale = ColorGradientColorArray(stateMap.colorScale);
-      let f = chroma.scale(scale).domain([jStat.min(colorValues), jStat.max(colorValues)]);
-      let bins = calculateBins(colorValues);
-
-      let colorbars = [];
-      let nextbin = bins.start;
-      while (nextbin <= bins.end) {
-        colorbars.push(f(nextbin).hex());
-        nextbin += bins.size;
-      }
     }
 
     return () => {
