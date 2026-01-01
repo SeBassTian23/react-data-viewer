@@ -25,7 +25,7 @@ export default function Aliases() {
   return (
     <>
       <Row id="dv-parameters">
-        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
+        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Aliases
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>

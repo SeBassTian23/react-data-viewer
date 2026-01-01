@@ -74,7 +74,7 @@ export default function DataSubset(props) {
   return (
     <>
       <Row id="dv-series">
-        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
+        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Data Selection
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
