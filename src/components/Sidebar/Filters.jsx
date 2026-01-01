@@ -17,7 +17,6 @@ import generateFilterCombinations from '../../utils/data/generateFilterCombinati
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { } from '../../features/parameter.slice'
 import { datasubsetAdded, datasubsetMultipleAdded } from '../../features/datasubset.slice'
 
 import useToast from "../../hooks/useToast";
@@ -68,10 +67,11 @@ export default function Filters() {
                     count: 0,
                     isVisible: true,
                     filter: Object.entries(data).filter((item) => item[1].length > 0).map((item) => {
+                      const dataType = state.find( param => param.name === item[0] || param.alias === item[0] )?.specialtype || state.find( param => param.name === item[0] || param.alias === item[0] )?.type || undefined
                       return {
                         'name': item[0],
-                        'values': item[1],
-                        'type': state.find( param => param.name === item[0] || param.alias === item[0] )?.specialtype || state.find( param => param.name === item[0] || param.alias === item[0] )?.type || undefined
+                        'values': ['latitude','longitude', 'number'].indexOf(dataType) > -1? item[1].map(itm => Number(itm)): item[1],
+                        'type': dataType
                       }
                     })
                   }
@@ -96,10 +96,11 @@ export default function Filters() {
                 if (Object.entries(data).find((item) => item[1].length > 0)) {
                   const selections = Object.entries(data).filter((item) => item[1].length > 0)
                   const filters = selections.map((item) => {
+                    const dataType = state.find( param => param.name === item[0] || param.alias === item[0] )?.specialtype || state.find( param => param.name === item[0] || param.alias === item[0] )?.type || undefined
                     return {
                       'name': item[0],
-                      'values': item[1],
-                      'type': state.find( item => item.name === item[0] || item.alias === item[0] )?.specialtype || state.find( item => item.name === item[0] || item.alias === item[0] )?.type || undefined
+                      'values': ['latitude','longitude', 'number'].indexOf(dataType) > -1? item[1].map(itm => Number(itm)): item[1],
+                      'type': dataType
                     }
                   })
 
