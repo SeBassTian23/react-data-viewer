@@ -21,6 +21,18 @@ const parameterSlice = createSlice({
         return item
       })
     },
+    parameterFilterToggled(state, action) {
+      return state.map((item, idx) => {
+        if (idx === action.payload) {
+          const updatedItem = {
+            ...item,
+            isFilter: !item.isFilter
+          }
+          return updatedItem
+        }
+        return item
+      })
+    },
     parametersAddBackup(state, action) {
       return action.payload
     },
@@ -43,5 +55,5 @@ const parameterSlice = createSlice({
   }
 })
 
-export const { parametersAdded, parameterToggled, parametersAddBackup, parametersEdit, parametersReset } = parameterSlice.actions
+export const { parametersAdded, parameterToggled, parameterFilterToggled, parametersAddBackup, parametersEdit, parametersReset } = parameterSlice.actions
 export default parameterSlice.reducer

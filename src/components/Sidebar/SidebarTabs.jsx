@@ -8,6 +8,7 @@ import DataSubset from './DataSubset'
 import DataTypes from './DataTypes'
 import Filters from './Filters'
 import Parameters from './Parameters'
+import ParameterFilters from './ParameterFilters'
 import Bookmarks from './Bookmarks'
 import Thresholds from './Thresholds'
 import RecentFiles from './RecentFiles'
@@ -168,6 +169,8 @@ export default function SidebarTabs(props) {
         return <Thresholds />;
       case 'Aliases':
         return <Aliases />;
+      case 'ParameterFilters':
+        return <ParameterFilters />;
       case 'Recent':
         return <RecentFiles />;
       default:
@@ -200,6 +203,7 @@ export default function SidebarTabs(props) {
               <Dropdown.Item onClick={() => changeTab('Parameters', 'Parameters')}><i className="bi bi-toggles" /> Parameters</Dropdown.Item>
               <Dropdown.Item onClick={() => changeTab('DataTypes', 'Data Types')}><i className="bi bi-123" /> Data Types</Dropdown.Item>
               <Dropdown.Item onClick={() => changeTab('Aliases', 'Aliases')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
+              <Dropdown.Item onClick={() => changeTab('ParameterFilters', 'Filters')}><i className="bi bi-funnel" /> Filters</Dropdown.Item>
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
               <Dropdown.Item onClick={handleNewAnalysis} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>

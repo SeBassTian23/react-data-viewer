@@ -1,6 +1,6 @@
 # Filter
 
-Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd><i class="bi bi-windows"></i> + K</kbd> <kbd>⌘ K</kbd>.
+Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd><i class="bi bi-windows"></i> + K</kbd> <kbd>⌘ K</kbd>. Parameter, if not already available as a Filter, can be selected as such.
 
 ## Selections
 
@@ -26,3 +26,11 @@ Three options are availble, allowing the selection of `date-time`, `date` and `t
 + `date-time` - Select year, month, day, hour, and minute.
 + `date` - Select year, month, and day.
 + `time` - Select hour and minute. 
+
+## Assign Parameters as Filters
+
+By default, catergorical parameters (`string`, `color`) as well as `date-time` are selected as a filters. But, also numerical values can be categories and used as filters. To use these, select **Data** -> **Filters** from the Sidebar Menu and select the numberical Parameter you want to add as a filter to create subsets.
+
+Should the invisible <i class="bi bi-eye-slash-fill"> icon appear next to the Parameter name, the parameter is not active and needs to be activated navigating to **Data** -> **Parameters**.
+
+Parameters that are `unknown`, an `object` or an `array` cannot be selected as filters and are not listed. 
