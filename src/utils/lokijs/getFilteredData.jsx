@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { getColumnNames } from "../../modules/database";
 
 dayjs.extend(isBetween);
 
@@ -79,7 +80,7 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
   if (Array.isArray(dropna)) {
     parsedDropna['$and'] = []
     // Make unique list of dropna elements and remove None,
-    const fields = Object.keys(collection.findOne() || {})
+    const fields = getColumnNames(collection);
     dropna = [...new Set(dropna.filter(itm => fields.includes(itm)).filter(itm => !['$loki'].includes(itm)) )];
 
     for (const field of dropna) {
