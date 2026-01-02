@@ -81,7 +81,7 @@ export default function PlotMain(props) {
         }
         }
         onUpdate={(figure) => {
-          console.log('onUpdate')
+          // console.log('onUpdate')
           // console.log('Current Plot:', figure);
           // console.log('State:', state);
         }}

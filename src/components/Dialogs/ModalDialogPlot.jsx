@@ -139,9 +139,6 @@ function PlotParameterSelect(props) {
     }
   }
 
-  if( props.getValues('plottype') !== state?.plottype )
-    console.log( state )
-
   return (
     <>
       {plotselect &&
