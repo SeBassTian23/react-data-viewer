@@ -78,10 +78,14 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
   let parsedDropna = {}
   if (Array.isArray(dropna)) {
     parsedDropna['$and'] = []
-    for (let c in dropna) {
-      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': null }})
-      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': undefined }})
-      parsedDropna['$and'].push({ [dropna[c]]: { '$ne': NaN }})
+    // Make unique list of dropna elements and remove None,
+    const fields = Object.keys(collection.findOne() || {})
+    dropna = [...new Set(dropna.filter(itm => fields.includes(itm)).filter(itm => !['$loki'].includes(itm)) )];
+
+    for (const field of dropna) {
+      parsedDropna['$and'].push({ [field]: { '$ne': null }})
+      parsedDropna['$and'].push({ [field]: { '$ne': undefined }})
+      parsedDropna['$and'].push({ [field]: { '$ne': NaN }})
     }
   }
 
