@@ -62,7 +62,7 @@ export default function DatumOffCanvas(props) {
               </thead>
               <tbody className='text-break'>
                 {Object.entries(data)
-                  .filter(row => parameters.find(e => e.name === row[0]).isSelected)
+                  .filter(row => parameters.find(e => e.name === row[0])?.isSelected)
                   .map((row, idx) => <tr key={idx}>
                     <DisplayTableRow param={row[0]} paramInfo={parameters.find(e => e.name === row[0])} value={row[1]} idx={idx} darkmode={props.darkmode} />
                   </tr>)
