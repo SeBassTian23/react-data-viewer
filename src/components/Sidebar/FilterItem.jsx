@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 import Form from 'react-bootstrap/Form'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -19,9 +19,11 @@ export default function FilterItem(props) {
 
   const [toggle, setToggle] = useState(false);
 
-  /* Get unique parameter values */
-  let query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })
-  let unique = getUnique(query.data({ removeMeta: true }), props.name)
+  /* Get unique parameter values - only recalculate when props.name changes */
+  const unique = useMemo(() => {
+    const query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })
+    return getUnique(query.data({ removeMeta: true }), props.name)
+  }, [props.name])
 
   return (
     <ListGroup.Item as="li" className='list-group-item-action'>
