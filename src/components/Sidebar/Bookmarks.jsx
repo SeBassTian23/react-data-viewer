@@ -50,7 +50,7 @@ export default function Bookmarks(props) {
           <ButtonToolbar aria-label="Bookmark Menu">
             <ButtonGroup size='sm' className="me-2">
               <Button variant='outline-secondary' onClick={handleClickSave}><i className='bi-bookmark-plus' /> Save Bookmark</Button>
-              <Button variant='outline-secondary' onClick={handleClickReset}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClickReset} disabled={!state.length > 0}><i className='bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>

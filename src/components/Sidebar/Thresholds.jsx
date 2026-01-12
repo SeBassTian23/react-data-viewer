@@ -58,7 +58,7 @@ export default function Thresholds(props) {
           <ButtonToolbar aria-label="Threshold Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Add Threshold">
               <Button variant='outline-secondary' onClick={handleNew}><i className='bi-plus-circle-fill' /> New</Button>
-              <Button variant='outline-secondary' onClick={handleReset}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleReset} disabled={!state.length > 0}><i className='bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>
