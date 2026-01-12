@@ -17,7 +17,7 @@ const saveAnalysisToFile = (store = null) => {
     db: exportJSON()
   }
 
-  let filename = store?.analysis?.saveAs+".zip" || 'analysis.zip'
+  let filename = store?.analysis?.saveAs || 'analysis.zip'
 
   // Download element
   const deflate = pako.deflate( JSON.stringify(data), { to: 'string' });
