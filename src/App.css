@@ -644,3 +644,7 @@ kbd {
   border: 1px solid black;
   z-index: 999;
 }
+
+pre {
+  font-size: .75rem !important;
+}
