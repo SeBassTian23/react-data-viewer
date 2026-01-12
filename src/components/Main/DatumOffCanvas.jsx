@@ -26,6 +26,11 @@ export default function DatumOffCanvas(props) {
       let query = getSingleDatumByID(props.datumid);
 
       if (query) {
+        let paramList = {}
+        parameters.map( itm => itm.name ).forEach( itm => {
+          paramList[itm] = null;
+        })
+        query = {...paramList, ...query}
         setLoading(false)
         setData(query)
       }
@@ -79,7 +84,7 @@ export default function DatumOffCanvas(props) {
 function DisplayTableRow(props) {
 
   const param = props.param
-  const value = props.value || []
+  const value = props.value
   const idx = props.idx || 0
   const paramInfo = props.paramInfo
 
@@ -93,6 +98,15 @@ function DisplayTableRow(props) {
     setColorline(props.darkmode === 'true' ? '#0dcaf0' : '#1d3557')
 
   }, [props.darkmode]);
+
+  if (!value){
+    return (
+      <>
+        <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
+        <td className='text-end' title="No data available"><i className='bi bi-question-square text-muted' /></td>
+      </>
+    )    
+  }
 
   if (paramInfo.type === 'array') {
     
@@ -163,9 +177,9 @@ function DisplayTableRow(props) {
   if (paramInfo.type === 'object') {
     return (
       <>
-        <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
-        <td>
-          <pre className='text-pre-wrap'>{JSON.stringify(value, null, 2)}</pre>
+        <td colSpan={2}>
+          <em>{paramInfo.alias ? paramInfo.alias : param}</em>
+          <pre className='text-pre-wrap my-2'>{JSON.stringify(value, null, 2)}</pre>
         </td>
       </>
     )
