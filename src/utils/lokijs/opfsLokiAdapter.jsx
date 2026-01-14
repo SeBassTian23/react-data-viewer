@@ -9,8 +9,8 @@ export default class opfsLokiAdapter {
     try {
       if(this.opfs.isSupported()){
         await this.opfs.fileWrite(dbname, dbstring)
+        console.log('Database Saved')
       }
-      console.log('Database Saved')
       callback();
     }
     catch(err) {

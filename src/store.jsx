@@ -19,7 +19,6 @@ const opfsMiddleware = store => next => action => {
   let state = store.getState()
   if( state?.analysis?.saveAs != '' && state?.analysis?.files.length > 0){
     triggerOPFSSync(state.analysis.saveAs + '.json', store.getState());
-    console.log('trigger - save state')
   }
   return result;
 };

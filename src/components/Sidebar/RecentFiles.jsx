@@ -43,9 +43,8 @@ export default function RecentFiles() {
     async function load() {
       if(!init && opfs.isSupported()){
         await opfs.fileList().then( e => {
-          console.log('--')
-          e.map(f => console.log(f.name, f.size) )
-          console.log('--')
+          console.log(e.map(f => `${f.name} | ${f.size}` ))
+          setFileCount(e.length || 0)
           setRecentFiles(e.filter(f => f.name.match(/\.db$/) ))
         })
         await opfs.infoStorage().then( e => setStorage(e))
