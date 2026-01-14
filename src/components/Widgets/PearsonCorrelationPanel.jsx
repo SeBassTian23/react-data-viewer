@@ -123,37 +123,42 @@ function PearsonCorrelationCalculation(props) {
               </tr>
             </thead>
             <tbody className='small' style={{ 'verticalAlign': 'middle' }}>
-              <tr>
-                <td colSpan={2}>{itm.testType}</td>
-              </tr>
-              <tr>
-                <th>t-Statistic</th>
-                <td>{round(itm.tStatistic,4)}</td>
-              </tr>
-              <tr>
-                <th><em>p</em>-value</th>
-                <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceIntervall? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
-              </tr>
-              <tr>
-                <th>Degrees Of Freedom</th>
-                <td>{itm.degreesOfFreedom}</td>
-              </tr>
-              <tr>
-                <th>Sample Means</th>
-                <td>{round(itm.mean1,4)}; {round(itm.mean2,4)}</td>
-              </tr>
-              <tr>
-                <th>Standard Error</th>
-                <td>{round(itm.standardError,4)}</td>
-              </tr>
-              <tr>
-                <th>Confidence Interval (95%)</th>
-                <td>{round(itm.confidenceInterval95[0],4)} - {round(itm.confidenceInterval95[1],4)}</td>
-              </tr>
-              <tr>
-                <th>Alternative</th>
-                <td>{itm.alternative}</td>
-              </tr>
+              {itm.error && <tr>
+                <td colSpan={2} className='text-danger'>{itm.error}</td>
+                </tr>}
+              {!itm.error && <>
+                <tr>
+                  <td colSpan={2}>{itm.testType}</td>
+                </tr>
+                <tr>
+                  <th>t-Statistic</th>
+                  <td>{round(itm.tStatistic,4)}</td>
+                </tr>
+                <tr>
+                  <th><em>p</em>-value</th>
+                  <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceIntervall? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
+                </tr>
+                <tr>
+                  <th>Degrees Of Freedom</th>
+                  <td>{itm.degreesOfFreedom}</td>
+                </tr>
+                <tr>
+                  <th>Sample Means</th>
+                  <td>{round(itm.mean1,4)}; {round(itm.mean2,4)}</td>
+                </tr>
+                <tr>
+                  <th>Standard Error</th>
+                  <td>{round(itm.standardError,4)}</td>
+                </tr>
+                <tr>
+                  <th>Confidence Interval (95%)</th>
+                  <td>{round(itm.confidenceInterval95[0],4)} - {round(itm.confidenceInterval95[1],4)}</td>
+                </tr>
+                <tr>
+                  <th>Alternative</th>
+                  <td>{itm.alternative}</td>
+                </tr>
+              </>}
             </tbody>
           </Table>
         })  
