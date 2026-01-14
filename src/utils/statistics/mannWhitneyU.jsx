@@ -65,10 +65,12 @@ export default function mannWhitneyU(group1, group2, alternative) {
     }
     
     return {
+        testType: 'Mann Whitney U Test',
         U: U,
         z: z,
         pValue: pValue,
         meanRank1: R1 / n1,
-        meanRank2: R2 / n2
+        meanRank2: R2 / n2,
+        alternative
     };
 }

@@ -42,7 +42,7 @@ export default function MannWhitneyUPanel(props) {
 
   return (
     <>
-      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
+      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect}  />}
       {state && <>
         <Card.Body className='p-0 overflow-y'>
           <CalculateMannWhitneyU {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
@@ -96,10 +96,8 @@ function CalculateMannWhitneyU(props) {
   for (let i in combinations) {
     let test = mannWhitneyU(data[combinations[i][0]], data[combinations[i][1]], alternative)
 
-    let test_greater = mannWhitneyU(data[combinations[i][0]], data[combinations[i][1]], 'greater')
-    let test_less = mannWhitneyU(data[combinations[i][0]], data[combinations[i][1]], 'less')
-
     table.push({
+      testType: test.testType,
       compare: combinations[i],
       names: combinations[i].map(itm => series_lookup[itm].name),
       colors: combinations[i].map(itm => series_lookup[itm].color),
@@ -136,24 +134,31 @@ function CalculateMannWhitneyU(props) {
                 </thead>
                 <tbody className='small text-start align-middle'>
                   <tr>
-                    <td>U statistic</td>
+                    <td colSpan={2}>{itm.testType}</td>
+                  </tr>
+                  <tr>
+                    <th>U statistic</th>
                     <td>{round(itm.U,2)}</td>
                   </tr>
                   <tr>
-                    <td>Z score</td>
+                    <th>Z score</th>
                     <td>{round(itm.z,4)}</td>
                   </tr>
                   <tr>
-                    <td><em>p</em>-value ({itm.alternative})</td>
+                    <th><em>p</em>-value</th>
                     <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceInterval? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
                   </tr>
                   <tr>
-                    <td>Group 1 mean rank</td>
+                    <th>Group 1 mean rank</th>
                     <td>{round(itm.meanRank1,2)}</td>
                   </tr>
                   <tr>
-                    <td>Group 2 mean rank</td>
+                    <th>Group 2 mean rank</th>
                     <td>{round(itm.meanRank2,2)}</td>
+                  </tr>
+                  <tr>
+                    <th>Alternative</th>
+                    <td>{itm.alternative}</td>
                   </tr>
                 </tbody>
               </Table>
