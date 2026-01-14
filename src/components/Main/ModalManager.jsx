@@ -12,6 +12,10 @@ import { bookmarksReset, bookmarkDelete } from '../../features/bookmark.slice'
 import { useAppReset } from '../../hooks/useAppReset'
 import { useApplyBookmark } from "../../hooks/useApplyBookmark";
 
+import { saveDatabase, setFilename } from '../../modules/database'
+
+import opfs from '../../modules/opfs'
+
 export default function ModalManager() {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
@@ -68,6 +72,13 @@ export default function ModalManager() {
 
                 case "NEW_ANALYSIS":
                   resetApp();
+                  setFilename('loki.db');
+                  break;
+
+                case "DELETE_CACHED_ANALYSES":
+                  if(opfs.isSupported()){
+                    opfs.clearStorage().then(()=>saveDatabase());
+                  }
                   break;
 
                 default:
