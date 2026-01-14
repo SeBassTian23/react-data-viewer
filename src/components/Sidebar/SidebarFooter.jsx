@@ -34,7 +34,7 @@ export default function SidebarFooter(props) {
 
   return (
     <Row id="dv-sidebar-footer">
-      <Col sm={12} className='border-top d-flex justify-content-evenly'>
+      <Col sm={12} className='border-top d-flex justify-content-evenly align-items-center'>
         <span className='small p-2 px-0' title='Total Number of Rows (Data-Sets)'><i className={count > 0 ? 'bi-database-fill-check' : 'bi-database-fill'} /> {count}</span>
         <span className='small p-2 px-0' title='Parameters - Active (Deactivated)'><i className='bi-toggles' /> {stateParameters.filter(x => x.isSelected).length}
           {(stateParameters.length !== stateParameters.filter(x => x.isSelected).length) && <>({stateParameters.length - stateParameters.filter(x => x.isSelected).length})</>}
@@ -43,7 +43,7 @@ export default function SidebarFooter(props) {
           {(stateThresholds.length !== stateThresholds.filter(x => x.isSelected).length) && <>({stateThresholds.length - stateThresholds.filter(x => x.isSelected).length})</>}
         </span>
         <span className='small p-2 px-0' title='Bookmarks'><i className='bi bi-journal-bookmark-fill' /> {stateBookmarks.length}</span>
-        <span className='small p-2 px-0' title='Bookmarks'><i className='bi bi-memory' /> <span style={{fontSize: '0.5rem', lineHeight: '0.5rem', display: 'inline-block', width: '1rem', padding: '0px'}}>{memory[0]} {memory[1]}</span></span>
+        <span className='small p-2 px-0 d-flex align-items-center' title='Resources'><i className='bi bi-cpu' /> <span style={{fontSize: '0.5rem', lineHeight: '0.5rem', width: '1rem', padding: '0 0 0 0.2rem'}} className="d-flex flex-column"><span>{memory[0]}</span><span>{memory[1]}</span></span></span>
       </Col>
     </Row>
   )
