@@ -1,6 +1,6 @@
 {
   "name": "react-data-viewer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Explore your data sets",
   "author": "Sebastian Kuhlgert <sebastian.kuhlgert@gmail.com>",
