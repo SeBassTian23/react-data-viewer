@@ -17,6 +17,7 @@ import humanFileSize from '../../helpers/humanFileSize'
 
 export default function RecentFiles() {
 
+  const [fileCount, setFileCount] = useState(0);
   const [recentFiles, setRecentFiles] = useState([]);
   const [storage, setStorage] = useState(null);
 
@@ -71,7 +72,7 @@ export default function RecentFiles() {
         <Col sm={12} className='d-flex justify-content-between align-items-center'>
           <ButtonToolbar aria-label="Recent Files Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
-              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!recentFiles.length > 0}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!fileCount > 0}><i className='bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
           {storage && <>
