@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
@@ -131,7 +131,7 @@ function KruskalWallisTest(props) {
 
           <p className='small text-muted p-1'>Results for parameter "{parameterName}" and the selected subsets:{' '}
             { Object.values(series_lookup).map((itm, idx, arr) => {
-               return <><i className='bi-square-fill' style={{ 'color': itm.color }} />&nbsp;{itm.name}{idx<arr.length-1 && ", "}</>
+               return <React.Fragment key={idx}><i className='bi-square-fill' style={{ 'color': itm.color }} />&nbsp;{itm.name}{idx<arr.length-1 && ", "}</React.Fragment>
             })
             }
           </p>
