@@ -1,10 +1,12 @@
 import debounce from 'lodash/debounce';
-import fileWrite from './fileWrite'
+import opfs from '../../modules/opfs'
 
 const triggerOPFSSync = debounce(async (file=null, content={}) => {
   try {
-    if(file)
-      await fileWrite(file, JSON.stringify(content, null, 0) );
+    if(file && opfs.isSupported()){
+      await opfs.fileWrite(file, JSON.stringify(content, null, 0) );
+      console.log('State saved')
+    }
   } catch (error) {
     console.error('Failed to sync to OPFS:', error);
   }
