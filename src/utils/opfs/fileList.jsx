@@ -2,7 +2,7 @@
  * List files in the directory
  * 
  */
-const fileList = async () => {
+const fileList = async (ascending=true) => {
   const root = await navigator.storage.getDirectory();
   const files = [];
 
@@ -21,9 +21,11 @@ const fileList = async () => {
   }
 
   // Sort newest → oldest
-  files.sort((a, b) => b.lastModified - a.lastModified);
+  if(ascending)
+    files.sort((a, b) => b.lastModified - a.lastModified);
 
-  // files.sort((a, b) => a.lastModified - b.lastModified);
+  if(!ascending)
+    files.sort((a, b) => a.lastModified - b.lastModified);
 
   // files.sort((a, b) => a.name.localeCompare(b.name));
 
