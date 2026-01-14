@@ -9,7 +9,16 @@ import getColumnNames from '../utils/lokijs/getColumnNames'
 import countTypes from '../utils/data/countTypes'
 import getSpecialStringType from '../utils/data/getSpecialStringType'
 
-const db = new loki('dataviewer');
+import opfsLokiAdapter from '../utils/lokijs/opfsLokiAdapter'
+
+const db = new loki('loki.db', {
+  autosave: false,
+  autoload: false,
+  adapter: new opfsLokiAdapter(),
+  autosaveInterval: 5000
+});
+
+window.db = db;
 
 export const addCollection = (collection = null) => {
   if (collection)
@@ -212,8 +221,32 @@ const getFilteredData = (collection = 'data', { filters = [], thresholds = [], s
   return getFilteredDataExt(db.getCollection(collection), { filters, thresholds, sortby, dropna })
 }
 
+const isDirty = () => {
+  const collectionNames = db.listCollections().map(c => c.name);
+  return collectionNames.filter(name => db.getCollection(name).dirty).length > 0
+}
+
+const setFilename = (filename) => {
+  db.filename = filename;
+}
+
+const resetFilename = () => {
+  db.filename = 'loki.db';
+}
+
+const saveDatabase = () => {
+  if(db.filename !== 'loki.db')
+    db.saveDatabase()
+}
+const loadDatabase = () => db.loadDatabase()
+const deleteDatabase = () => db.deleteDatabase()
+
 // Export functions, so they are all available through database
 export { getSeries }
 export { getFilteredData }
 export { getUnique }
 export { getColumnNames }
+export { isDirty }
+export { setFilename }
+export { resetFilename }
+export { saveDatabase }
