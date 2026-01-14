@@ -1,10 +1,21 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import RecentFilesItem from '../Sidebar/RecentFilesItem'
+
+import opfs from '../../modules/opfs'
+
 export default function ModalDialogStart(props) {
+
+  const [files, setFiles] = useState([])
+
+  useEffect(() => {
+    opfs.fileList().then( e => setFiles(e.filter(f => f.name.match(/\.db$/) ) ))
+  },[])
 
   return (
     <Modal
@@ -25,6 +36,14 @@ export default function ModalDialogStart(props) {
             <span className='d-block text-muted'>Load Analysis</span>
           </Button>
         </Row>
+        {files.length > 0 && <Row className='border-top pt-2 text-start'>
+          <Col className='px-0'>
+            <span className='d-block text-muted small px-1'>Recent Analyses</span>
+            <ul className='list-group list-group-flush overflow-y-auto small px-1' style={{maxHeight: '200px'}} >
+              {files.map( (el, idx) => <RecentFilesItem key={idx} index={idx} {...el} onHide={props.onHide} />)}
+            </ul>
+          </Col>
+        </Row>}
       </Modal.Body>
     </Modal>
   )

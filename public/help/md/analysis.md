@@ -21,3 +21,11 @@ _Please not that you cannot simply un-zip the analysis file, as the it doesn't c
 ### Save Analysis
 
 To save the current analysis use "Save..." from the drop down menu (shortcut: <kbd>Ctrl + S</kbd> <kbd>⌘ S</kbd>) to save the state of the analysis. Note that once the data is compiled, it is started as a download. Every time the analysis is saved, it is presented as a download, as the browser has no access to your drive. However, the analysis saves your file naming, so the existing file can be overwritten.
+
+### Recent
+
+When loading an analysis from a file on your local machine, or you start a new one, the analysis is saved by the browser locally. Navigate to a list of analyses selecting "Recent..." from the menu and select the analysis you would like to see or continue working on. Loading the analysis, the start dialog will also show the last 3 analyses worked on.
+
+The available space for saving analyses is limited by the browser used, so make sure to also save (download) your analysis to prevent data loss.
+
+_Modern browsers allow to write and read data from a secure location on your computer ([Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system))._

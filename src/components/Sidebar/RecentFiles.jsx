@@ -10,55 +10,85 @@ import Row from 'react-bootstrap/Row'
 
 import RecentFilesItem from './RecentFilesItem'
 import useHelp from '../../hooks/useHelp';
+import useModal from '../../hooks/useModalConfirm';
+import opfs from '../../modules/opfs'
+
+import humanFileSize from '../../helpers/humanFileSize'
 
 export default function RecentFiles() {
 
   const [recentFiles, setRecentFiles] = useState([]);
+  const [storage, setStorage] = useState(null);
 
   const help = useHelp();
+  const modal = useModal();
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Analysis", "help/md/analysis.md")
   },[] )
 
-  const handleClearRecent = useCallback( ()=> {
-    setRecentFiles([]);
-    localStorage.setItem('APP_USER_RECENT_FILES', JSON.stringify(recentFiles, null));
-  }, [] )
-
-  useEffect( ()=>{
-    let files = localStorage.getItem('APP_USER_RECENT_FILES');
-    if( files ) {
-      files = JSON.parse(files);
-      setRecentFiles(files);
+  const handleClearRecent = useCallback(() => modal.show("confirm", {
+    header: "Reset Cached Analyses",
+    content: `Removing "all cached analyses" cannot be undone.`,
+    yes: "Reset",
+    no: "Cancel",
+    payload: {
+      action: "DELETE_CACHED_ANALYSES"
     }
-  },[localStorage.getItem('APP_USER_RECENT_FILES')])
+  }), [] )
+
+  useEffect(() => {
+    let init = false
+
+    async function load() {
+      if(!init && opfs.isSupported()){
+        await opfs.fileList().then( e => {
+          console.log('--')
+          e.map(f => console.log(f.name, f.size) )
+          console.log('--')
+          setRecentFiles(e.filter(f => f.name.match(/\.db$/) ))
+        })
+        await opfs.infoStorage().then( e => setStorage(e))
+      }
+    }
+    
+    load() // Initial
+    const handler = () => load() // change events
+
+    window.addEventListener("opfs-change", handler)
+    return () => {
+      init = true
+      window.removeEventListener("opfs-change", handler)
+    }
+  }, [])
 
   return (
     <>
       <Row id="dv-recent-files">
-        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center">
+        <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Recent Files
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
-        <Col sm={12}>
+        <Col sm={12} className='d-flex justify-content-between align-items-center'>
           <ButtonToolbar aria-label="Recent Files Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
-              <Button variant='outline-secondary' onClick={handleClearRecent}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!recentFiles.length > 0}><i className='bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
+          {storage && <>
+            <span className='text-muted' style={{fontSize: 'x-small'}}>{ humanFileSize(storage.usage) } of { humanFileSize(storage.quota) } used</span>
+          </> }
         </Col>
       </Row>
       <Row className={`h-100 overflow-auto ${recentFiles.length === 0? 'align-content-center': 'align-content-start'}`}>
         <Col sm={12} className='p-2'>
           {recentFiles.length === 0? <div className='text-center'>
               <i className='bi-file-earmark-zip text-muted fs-1' />
-              {/* <span className='d-block text-muted fs-5'>Recent Files</span> */}
               <p className='small'>No Recent Files.</p>
             </div>
             :
           <ListGroup as="ul" variant="flush">
-            {[...recentFiles].reverse().map((el, idx) => <RecentFilesItem key={idx} index={idx} {...el} /> )}
+            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} index={idx} {...el} /> )}
           </ListGroup>
 }
         </Col>
