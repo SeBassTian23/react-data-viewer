@@ -5,7 +5,7 @@ import loadCSV from '../utils/data/load-csv';
 import loadJSON from '../utils/data/load-json';
 import parseMultispeQJSON, {isMultispeQData} from '../utils/data/parse-multispeq-json';
 import wideToLong from '../utils/data/wide-to-long';
-import { addDataJSON, parameters } from '../modules/database';
+import { addDataJSON, parameters, saveDatabase, setFilename } from '../modules/database';
 
 import { parametersAdded } from '../features/parameter.slice';
 import { datasubsetReset } from '../features/datasubset.slice';
@@ -61,7 +61,10 @@ export const useFileImport = () => {
             dispatch(analysisAddFile(fileInfo));
             const initialname = analysis.name !== '' ? analysis.name : file.name.split(".").slice(0, -1).join(".");
             dispatch(analysisUpdate({ name: initialname, saveAs: initialname }));
+            setFilename(initialname+'.db');
           }
+
+          saveDatabase();
           
           onComplete({ success: true, message: file.name });
         } else {

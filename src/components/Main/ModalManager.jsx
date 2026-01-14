@@ -53,11 +53,13 @@ export default function ModalManager() {
                 case "DELETE_BOOKMARKS":
                   deleteAllBookmarksFromDB();
                   dispatch(bookmarksReset());
+                  saveDatabase();
                   break;
 
                 case "DELETE_BOOKMARK":
                   deleteBookmarkFromDB(modal.props?.payload?.id);
-                  dispatch(bookmarkDelete(modal.props?.payload?.id))
+                  dispatch(bookmarkDelete(modal.props?.payload?.id));
+                  saveDatabase();
                   break;
 
                 case "APPLY_BOOKMARK":

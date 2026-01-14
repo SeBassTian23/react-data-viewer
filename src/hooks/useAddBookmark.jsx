@@ -2,6 +2,7 @@ import { useDispatch, useStore } from 'react-redux';
 import addBookmarkToDB from '../utils/data/bookmark'
 import { bookmarkAdd } from '../features/bookmark.slice';
 import useToast from "./useToast";
+import { saveDatabase } from '../modules/database'
 
 export function useAddBookmark() {
 
@@ -22,6 +23,8 @@ export function useAddBookmark() {
       thresholds: bookmark.store.thresholds.length,
       creator: bookmark.creator
     }))
+
+    saveDatabase();
 
     toast.info(`Bookmark "${bookmark.name}" created`, "Bookmark", "bi-bookmark-plus")
   }

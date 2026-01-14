@@ -12,7 +12,7 @@ import BookmarkItemMenu from './BookmarkItemMenu'
 import { useDispatch } from 'react-redux';
 import { bookmarkEdit } from '../../features/bookmark.slice';
 
-import { updateDocByField } from '../../modules/database'
+import { updateDocByField, saveDatabase } from '../../modules/database'
 
 dayjs.extend(localizedFormat)
 
@@ -29,6 +29,8 @@ export default function BookmarkItem(props) {
   
     updateDocByField('id', props.id,  {name: nameUpdated},  'bookmarks');
     dispatch(bookmarkEdit({ id: props.id, name: nameUpdated }));
+
+    saveDatabase();
 
     setShowEdit(false);
   }
