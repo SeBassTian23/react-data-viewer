@@ -10,7 +10,7 @@ import jStat from 'jstat'
  */
 export default function pearsonCorrelation(x, y, alternative = 'two-sided') {
     if (x.length !== y.length) {
-        return {error: 'Arrays must have equal length'};
+        return {error: 'Groups must have equal length'};
     }   
     
     const n = x.length;

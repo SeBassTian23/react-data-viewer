@@ -9,7 +9,7 @@ import jStat from 'jstat'
  */
 export default function linearRegression(x, y) {
     if (x.length !== y.length) {
-        return {error: 'Arrays must have equal length'};
+        return {error: 'Groups must have equal length'};
     }
     
     const n = x.length;
