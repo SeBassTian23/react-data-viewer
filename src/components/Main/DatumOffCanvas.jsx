@@ -103,7 +103,7 @@ function DisplayTableRow(props) {
     return (
       <>
         <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
-        <td className='text-end' title="No data available"><i className='bi bi-question-square text-muted' /></td>
+        <td className='text-end' title="No data available"><i className='bi bi-exclamation-triangle text-muted' /></td>
       </>
     )    
   }
@@ -170,7 +170,7 @@ function DisplayTableRow(props) {
     return (
       <>
         <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
-        <td><i className='bi-palette-fill' style={{ 'color': String(value) }} /> {String(value)}</td>
+        <td className='text-end'><i className='bi-palette-fill' style={{ 'color': String(value) }} /> {String(value)}</td>
       </>
     )
   }
