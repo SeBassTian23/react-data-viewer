@@ -73,7 +73,7 @@ export default function RecentFilesItem(props) {
     return () => {
       cancelled = true
     }
-  }, [props.name])
+  }, [props])
 
 
   return (
