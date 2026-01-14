@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import humanFileSize from '../../helpers/humanFileSize'
+
 import { getDatasetCount } from '../../modules/database'
 
 export default function SidebarFooter(props) {
@@ -26,7 +28,7 @@ export default function SidebarFooter(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       const mem = performance.memory
-      setMemory([(mem.usedJSHeapSize / 1048576).toFixed(2), (mem.totalJSHeapSize / 1048576).toFixed(2)]);
+      setMemory([( mem.usedJSHeapSize / mem.jsHeapSizeLimit * 100 ).toFixed(0) +' %', humanFileSize(mem.usedJSHeapSize, 0) ]);
     }, 1000);
 
     return () => clearInterval(interval); // Cleanup function
@@ -43,7 +45,11 @@ export default function SidebarFooter(props) {
           {(stateThresholds.length !== stateThresholds.filter(x => x.isSelected).length) && <>({stateThresholds.length - stateThresholds.filter(x => x.isSelected).length})</>}
         </span>
         <span className='small p-2 px-0' title='Bookmarks'><i className='bi bi-journal-bookmark-fill' /> {stateBookmarks.length}</span>
-        <span className='small p-2 px-0 d-flex align-items-center' title='Resources'><i className='bi bi-cpu' /> <span style={{fontSize: '0.5rem', lineHeight: '0.5rem', width: '1rem', padding: '0 0 0 0.2rem'}} className="d-flex flex-column"><span>{memory[0]}</span><span>{memory[1]}</span></span></span>
+        <span className='small p-2 px-0 d-flex align-items-center' title='Resources (Memory)'><i className='bi bi-cpu' /> <span style={{fontSize: '0.5rem', lineHeight: '0.5rem', width: '1rem', padding: '0 0 0 0.2rem'}} className="d-flex flex-column w-100 text-end">
+            <span className='text-nowrap'>{memory[0]}</span>
+            <span className='text-nowrap'>{memory[1]}</span>
+          </span>
+        </span>
       </Col>
     </Row>
   )
