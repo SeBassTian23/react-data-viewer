@@ -38,9 +38,9 @@ export default function ModalDialogStart(props) {
         </Row>
         {files.length > 0 && <Row className='border-top pt-2 text-start'>
           <Col className='px-0'>
-            <span className='d-block text-muted small px-1'>Recent Analyses</span>
+            <span className='d-block text-muted small px-1'>Most Recent Analyses</span>
             <ul className='list-group list-group-flush overflow-y-auto small px-1' style={{maxHeight: '200px'}} >
-              {files.map( (el, idx) => <RecentFilesItem key={idx} index={idx} {...el} onHide={props.onHide} />)}
+              {files.slice(0,3).map( (el, idx) => <RecentFilesItem key={idx} index={idx} {...el} onHide={props.onHide} />)}
             </ul>
           </Col>
         </Row>}

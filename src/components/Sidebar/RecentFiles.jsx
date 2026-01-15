@@ -101,7 +101,7 @@ export default function RecentFiles() {
             </div>
             :
           <ListGroup as="ul" variant="flush">
-            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} {...el} hasFilter={filter} /> )}
+            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} {...el} hasFilter={filter} hasMenu={true} /> )}
           </ListGroup>
 }
         </Col>
