@@ -4,8 +4,9 @@
  * @param {string} filename file name
  * @param {string} data data to write
  * @param {boolean} append append to file (default: false)
+ * @param {boolean} dispatch dispatch change event (default: false)
  */
-const fileWrite = async (filename, data, append=false) => {
+const fileWrite = async (filename, data, append=false, dispatch=false) => {
 
   const root = await navigator.storage.getDirectory();
 
@@ -23,7 +24,7 @@ const fileWrite = async (filename, data, append=false) => {
   await writable.write(data);
   await writable.close();
 
-  window.dispatchEvent(new Event("opfs-change"))
+  dispatch && window.dispatchEvent(new Event("opfs-change"))
 }
 
 export default fileWrite

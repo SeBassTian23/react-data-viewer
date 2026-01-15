@@ -2,14 +2,15 @@
  * File remove
  * 
  * @param {string} filename file name
+ * @param {boolean} dispatch dispatch change event (default: false)
  */
-const fileRemove = async (filename) => {
+const fileRemove = async (filename, dispatch=false) => {
 
   const root = await navigator.storage.getDirectory();
 
-  root.removeEntry(name);(filename);
+  await root.removeEntry(filename);
 
-  window.dispatchEvent(new Event("opfs-change"))
+  dispatch && window.dispatchEvent(new Event("opfs-change"))
 }
 
 export default fileRemove
