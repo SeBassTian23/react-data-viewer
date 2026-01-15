@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { showModal, hideModal } from "../features/modal.slice";
 
-export default function useModal() {
+export default function useModalConfirm() {
   const dispatch = useDispatch();
 
   return {

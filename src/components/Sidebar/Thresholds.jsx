@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { thresholdAdd } from '../../features/threshold.slice';
 
 import useHelp from '../../hooks/useHelp';
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 
 export default function Thresholds(props) {
 
@@ -29,7 +29,7 @@ export default function Thresholds(props) {
   const [toggleform, setToggleform] = useState(false);
 
   const help = useHelp();
-  const modal = useModal();
+  const modal = useModalConfirm();
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Threshold Data", "help/md/thresholds.md")

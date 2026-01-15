@@ -15,7 +15,7 @@ import ModalDialogEditSubset from '../Dialogs/ModalDialogEditSubset'
 
 import { useDispatch } from 'react-redux'
 import { datasubsetToggled, datasubsetDblToggled } from '../../features/datasubset.slice'
-import useModal from '../../hooks/useModalConfirm'
+import useModalConfirm from '../../hooks/useModalConfirm'
 
 export default function DataSubsetItem(props) {
 
@@ -67,7 +67,7 @@ function DataSubsetMenu(props) {
 
   const dispatch = useDispatch();
 
-  const modal = useModal();
+  const modal = useModalConfirm();
 
   const handleDelete = useCallback(() => modal.show("confirm", {
     header: "New Analysis",

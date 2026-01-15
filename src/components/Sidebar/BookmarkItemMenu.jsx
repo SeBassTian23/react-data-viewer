@@ -3,11 +3,11 @@ import { useCallback } from "react";
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
 
-import useModal from "../../hooks/useModalConfirm";
+import useModalConfirm from "../../hooks/useModalConfirm";
 
 export default function BookmarkItemMenu(props) {
   
-  const modal = useModal();
+  const modal = useModalConfirm();
 
   const handleClickApply = useCallback( () => modal.show("confirm", {
     header: "Load Bookmark",

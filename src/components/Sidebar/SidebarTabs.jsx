@@ -35,7 +35,7 @@ import { ShortcutLabel, ShortcutLabelStr } from '../Main/ShortcutLabel'
 import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
 
 import widgets from '../../constants/widgets'
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 import useToast from '../../hooks/useToast';
 
@@ -46,7 +46,7 @@ export default function SidebarTabs(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast();
-  const modal = useModal();
+  const modal = useModalConfirm();
   const addBookmark = useAddBookmark();
 
   // Custom Hooks

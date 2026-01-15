@@ -5,12 +5,12 @@ import { ButtonGroup } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
 import { thresholdToggle } from '../../features/threshold.slice';
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 
 export default function ThresholdItemMenu(props) {
 
   const dispatch = useDispatch()
-  const modal = useModal()
+  const modal = useModalConfirm()
 
   const handleDelete = useCallback(() => modal.show("confirm", {
     header: "Delete Threshold",

@@ -18,7 +18,7 @@ import { getDatasetCount } from '../../modules/database'
 import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD } from '../../features/datasubset.slice';
 
 import useHelp from '../../hooks/useHelp';
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 
 export default function DataSubset(props) {
 
@@ -26,7 +26,7 @@ export default function DataSubset(props) {
   const dispatch = useDispatch()
 
   const help = useHelp();
-  const modal = useModal();
+  const modal = useModalConfirm();
 
   const showAllSeries = (event) => {
     event.preventDefault()

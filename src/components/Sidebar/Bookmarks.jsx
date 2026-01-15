@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row'
 import BookmarkItem from './BookmarkItem'
 
 import useHelp from '../../hooks/useHelp';
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 
 export default function Bookmarks(props) {
@@ -19,7 +19,7 @@ export default function Bookmarks(props) {
   const state = useSelector(state => state.bookmarks) || []; 
 
   const help = useHelp();
-  const modal = useModal();
+  const modal = useModalConfirm();
   const addBookmark = useAddBookmark();
 
   const handleClickHelp = useCallback( ()=>{

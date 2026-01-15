@@ -26,7 +26,7 @@ import WelchsTTestPanel from '../Widgets/WelchsTTestPanel'
 import PearsonCorrelationPanel from '../Widgets/PearsonCorrelationPanel'
 import KolmogorovSmirnovPanel from '../Widgets/KolmogorovSmirnovPanel'
 
-import useModal from "../../hooks/useModalConfirm";
+import useModalConfirm from "../../hooks/useModalConfirm";
 
 import { useDispatch } from 'react-redux'
 import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
@@ -70,7 +70,7 @@ function DashboardWidget(props) {
   const dispatch = useDispatch();
 
   const help = useHelp();
-  const modal = useModal()
+  const modal = useModalConfirm()
 
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
   const [editTitle, setEditTitle] = useState(false);

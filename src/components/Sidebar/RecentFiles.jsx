@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form'
 
 import RecentFilesItem from './RecentFilesItem'
 import useHelp from '../../hooks/useHelp';
-import useModal from '../../hooks/useModalConfirm';
+import useModalConfirm from '../../hooks/useModalConfirm';
 import opfs from '../../modules/opfs'
 
 import humanFileSize from '../../helpers/humanFileSize'
@@ -25,7 +25,7 @@ export default function RecentFiles() {
   const [filter, setFilter] = useState('');
 
   const help = useHelp();
-  const modal = useModal();
+  const modal = useModalConfirm();
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Analysis", "help/md/analysis.md")
