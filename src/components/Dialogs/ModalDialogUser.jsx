@@ -22,7 +22,7 @@ export default function ModalDialogUser(props) {
   const refEmail = useRef();
 
   const [allowCookies, setAllowCookies] = useState(() => localStorage.length > 0)
-  const [allowGravatar, setAllowGravatar] = useLocalStorage('APP_USER_GRAVATAR', false, false);
+  const [allowGravatar, setAllowGravatar] = useLocalStorage('APP_USER_GRAVATAR', '', false);
 
   const [userName, setUserName] = useLocalStorage('APP_USER_NAME', '', false);
   const [userEmail, setUserEmail] = useLocalStorage('APP_USER_EMAIL', '', false);
@@ -32,10 +32,36 @@ export default function ModalDialogUser(props) {
 
   const help = useHelp();
 
+  const setAvatar = () => {
+    localStorage.setItem('APP_USER_GRAVATAR', true);
+    let img = localStorage.getItem('APP_USER_AVATAR');
+
+    if(img == '' && getValues('appEmail')?.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm) !== null){
+              
+      let url = getUserAvatarURL( getValues('appEmail') );
+      
+      getBase64ImageFromURL(url).then((base64img) => {
+        localStorage.setItem('APP_USER_AVATAR', base64img)
+        props.setAvatar(base64img)
+      }).catch(()=>{
+        localStorage.setItem('APP_USER_AVATAR', '');
+      });
+    }
+
+    else if( img.startsWith('data:image') ) {
+      props.setAvatar(img)
+    }
+  }
+
   const handleClose = () => {
     if (allowCookies) {
       localStorage.setItem('APP_USER_NAME', getValues('appUser'));
       localStorage.setItem('APP_USER_EMAIL', getValues('appEmail'));
+
+    if (allowCookies && allowGravatar) {
+      setAvatar();
+    }
+
       // dispatch(analysisUpdate({
       //   name: refName.current.value,
       //   notes: refEmail.current.value
@@ -55,29 +81,12 @@ export default function ModalDialogUser(props) {
 
     if (allowCookies && !allowGravatar) {
       localStorage.setItem('APP_USER_GRAVATAR',false)
-      localStorage.setItem('APP_USER_AVATAR',null)
+      localStorage.setItem('APP_USER_AVATAR', '')
       props.setAvatar(null)
     }
 
     if (allowCookies && allowGravatar) {
-      localStorage.setItem('APP_USER_GRAVATAR',true);
-      let img = localStorage.getItem('APP_USER_AVATAR');
-
-      if(img === null || img == 'null' && getValues('appEmail')?.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm) !== null){
-                
-        let url = getUserAvatarURL( getValues('appEmail') );
-        
-        getBase64ImageFromURL(url).then((base64img) => {
-          localStorage.setItem('APP_USER_AVATAR', base64img)
-          props.setAvatar(base64img)
-        }).catch(()=>{
-          localStorage.setItem('APP_USER_AVATAR', null);
-        });
-      }
-
-      else if(img !== null && img != 'null') {
-        props.setAvatar(img)
-      }
+      setAvatar();
     }
 
   }, [allowCookies, allowGravatar, props.avatar])
