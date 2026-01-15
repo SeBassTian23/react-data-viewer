@@ -20,6 +20,7 @@ export default function RecentFiles() {
   const [fileCount, setFileCount] = useState(0);
   const [recentFiles, setRecentFiles] = useState([]);
   const [storage, setStorage] = useState(null);
+  const [sort, setSort] = useState(true);
 
   const help = useHelp();
   const modal = useModal();
@@ -38,15 +39,19 @@ export default function RecentFiles() {
     }
   }), [] )
 
+  const handleClickSort = useCallback( ()=> {
+    setSort( e => !e)
+  },[] )
+
   useEffect(() => {
     let init = false
 
     async function load() {
       if(!init && opfs.isSupported()){
-        await opfs.fileList().then( e => {
+        await opfs.fileList(sort).then( e => {
           console.log(e.map(f => `${f.name} | ${f.size}` ))
           setFileCount(e.length || 0)
-          setRecentFiles(e.filter(f => f.name.match(/\.db$/) ))
+          setRecentFiles( e.filter(f => f.name.endsWith(".db")) )
         })
         await opfs.infoStorage().then( e => setStorage(e))
       }
@@ -60,7 +65,7 @@ export default function RecentFiles() {
       init = true
       window.removeEventListener("opfs-change", handler)
     }
-  }, [])
+  }, [sort])
 
   return (
     <>
@@ -72,7 +77,10 @@ export default function RecentFiles() {
         <Col sm={12} className='d-flex justify-content-between align-items-center'>
           <ButtonToolbar aria-label="Recent Files Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
-              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!fileCount > 0}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!fileCount > 0}><i className='bi bi-x-circle' /> Reset</Button>
+            </ButtonGroup>
+            <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
+              <Button variant='outline-secondary' onClick={handleClickSort} title="Sort by Date" ><i className={`bi bi-sort-${sort? 'down' : 'up'}`} /></Button>
             </ButtonGroup>
           </ButtonToolbar>
           {storage && <>
