@@ -211,7 +211,7 @@ export default function SidebarTabs(props) {
               <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
-              {showRecent && <Dropdown.Item onClick={() => changeTab('Recent', 'Recent Files')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent Files…</span></Dropdown.Item>}
+              <Dropdown.Item onClick={() => changeTab('Recent', 'Recent Files')} className='d-flex justify-content-between align-items-center' disabled={!showRecent}><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={saveBookmark} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
               <Dropdown.Item onClick={() => changeTab('Bookmarks', 'Bookmarks')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
