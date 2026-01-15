@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import ModalDialogConfirm from "../Dialogs/ModalDialogConfirm";
+import ModalDialogBusy from "../Dialogs/ModalDialogBusy";
 import { hideModal } from "../../features/modal.slice";
 
 import { deleteBookmarkFromDB, deleteAllBookmarksFromDB } from '../../utils/data/bookmark'
@@ -86,6 +87,17 @@ export default function ModalManager() {
               }
             }
             dispatch(hideModal());
+          }}
+        />
+      );
+    case "busy":
+      return (
+        <ModalDialogBusy
+          {...modal.props}
+          show={modal.open}
+          onHide={(confirmed) => {
+            if (confirmed)
+              dispatch(hideModal());
           }}
         />
       );
