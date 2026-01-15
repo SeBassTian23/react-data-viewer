@@ -13,6 +13,8 @@ export default function RecentFilesItem(props) {
   const [notes, setNotes] = useState(props.notes || props.title || '')
   const [filesize, setFilesize] = useState(props.size)
 
+  const hasFilter = props.hasFilter || ''
+
   const handleClickRecent = async (file) => {
 
     if(props.onHide)
@@ -75,8 +77,8 @@ export default function RecentFilesItem(props) {
     }
   }, [props])
 
-
   return (
+    (name.toLowerCase().match(hasFilter.toLowerCase()) || notes.toLowerCase().match(hasFilter.toLowerCase()) || hasFilter === '') &&
     <ListGroup.Item as="button" className='list-group-item-action cursor-podinter px-2 py-1 m-0' title={notes}
       onClick={() => handleClickRecent(props)}
     >

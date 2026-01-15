@@ -7,6 +7,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Form from 'react-bootstrap/Form'
 
 import RecentFilesItem from './RecentFilesItem'
 import useHelp from '../../hooks/useHelp';
@@ -21,6 +22,7 @@ export default function RecentFiles() {
   const [recentFiles, setRecentFiles] = useState([]);
   const [storage, setStorage] = useState(null);
   const [sort, setSort] = useState(true);
+  const [filter, setFilter] = useState('');
 
   const help = useHelp();
   const modal = useModal();
@@ -89,6 +91,9 @@ export default function RecentFiles() {
         </Col>
       </Row>
       <Row className={`h-100 overflow-auto ${recentFiles.length === 0? 'align-content-center': 'align-content-start'}`}>
+        <Col sm={12} className='py-1'>
+          <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
+        </Col>
         <Col sm={12} className='p-2'>
           {recentFiles.length === 0? <div className='text-center'>
               <i className='bi-file-earmark-zip text-muted fs-1' />
@@ -96,7 +101,7 @@ export default function RecentFiles() {
             </div>
             :
           <ListGroup as="ul" variant="flush">
-            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} index={idx} {...el} /> )}
+            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} {...el} hasFilter={filter} /> )}
           </ListGroup>
 }
         </Col>
