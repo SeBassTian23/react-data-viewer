@@ -10,7 +10,7 @@ export default function RecentFilesItem(props) {
   const { processAnalysis } = useAnalysisImport();
 
   const [name, setName] = useState(props.name.split('.').slice(0,-1).join('.'))
-  const [notes, setNotes] = useState(props.notes || props.title)
+  const [notes, setNotes] = useState(props.notes || props.title || '')
   const [filesize, setFilesize] = useState(props.size)
 
   const handleClickRecent = async (file) => {
@@ -81,7 +81,7 @@ export default function RecentFilesItem(props) {
       onClick={() => handleClickRecent(props)}
     >
       <strong className='d-block text-truncate'><i className="bi bi-clock-history" /> {name}</strong>
-      <small className='d-block'>{notes}</small>
+      <small className='d-block'>{notes.length < 200? notes : notes.slice(0,199) +'…' }</small>
       <small>{new Date(props.lastModified).toLocaleString()} &bull; {humanFileSize(filesize)}</small>
     </ListGroup.Item>
   )
