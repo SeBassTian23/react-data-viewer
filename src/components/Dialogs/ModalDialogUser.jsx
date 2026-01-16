@@ -56,8 +56,8 @@ export default function ModalDialogUser(props) {
 
   const handleClose = () => {
     if (allowCookies) {
-      localStorage.setItem('APP_USER_NAME', getValues('appUser'));
-      localStorage.setItem('APP_USER_EMAIL', getValues('appEmail'));
+      setUserName( getValues('appUser') )
+      setUserEmail( getValues('appEmail') )
 
     if (allowCookies && allowGravatar) {
       setAvatar();
