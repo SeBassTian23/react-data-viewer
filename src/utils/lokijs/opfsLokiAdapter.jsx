@@ -7,7 +7,7 @@ export default class opfsLokiAdapter {
   }
   async saveDatabase(dbname, dbstring, callback) {    
     try {
-      if(this.opfs.isSupported()){
+      if(this.opfs.isSupported() && localStorage.length > 0){
         await this.opfs.fileWrite(dbname, dbstring, false, true)
         console.log('Database Saved')
       }
