@@ -12,6 +12,7 @@ import { getUserAvatarURL } from '../../utils/user/getUserAvatarURL';
 import { getBase64ImageFromURL } from '../../utils/user/getBase64ImageFromURL';
 
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import opfs from '../../modules/opfs'
 
 import useHelp from '../../hooks/useHelp';
 
@@ -73,9 +74,13 @@ export default function ModalDialogUser(props) {
   useEffect(() => {
 
     if (!allowCookies) {
+      // Remove data from storage
       localStorage.clear();
       props.setAvatar(false);
       setAllowGravatar(false);
+      if( opfs.isSupported() )
+        opfs.clearStorage();
+      // Reset form
       reset();
     }
 
