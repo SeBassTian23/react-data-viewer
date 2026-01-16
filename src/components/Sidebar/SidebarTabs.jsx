@@ -38,6 +38,9 @@ import widgets from '../../constants/widgets'
 import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 import useToast from '../../hooks/useToast';
+import useModalBusy from '../../hooks/useModalBusy';
+
+import opfs from '../../modules/opfs'
 
 export default function SidebarTabs(props) {
 
@@ -128,20 +131,21 @@ export default function SidebarTabs(props) {
       setDashboardMenuInactive(true)
   }, [location.pathname])
 
-  useEffect(() => {
-    if (localStorage.getItem('APP_USER_RECENT_FILES'))
-      setShowRecent(true)
-    else
-      setShowRecent(false)
-  }, [localStorage.getItem('APP_USER_RECENT_FILES')])  
-
   // Initial Loading
   useEffect(()=>{
+    setShowRecent(opfs.isSupported());
     setTimeout(()=>{
       if(location?.pathname == '/')
         setStartModal(true);
     }, 250)
   },[])
+
+  useEffect(()=>{
+    if(localStorage.length === 0)
+      setShowRecent(false);
+    if(opfs.isSupported() && localStorage.length > 0)
+      setShowRecent(true);
+  },[localStorage.length])
 
   const handleNewAnalysis = useCallback(() => modal.show("confirm", {
     header: "New Analysis",
