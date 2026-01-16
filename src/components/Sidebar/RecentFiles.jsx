@@ -78,11 +78,11 @@ export default function RecentFiles() {
         </Col>
         <Col sm={12} className='d-flex justify-content-between align-items-center'>
           <ButtonToolbar aria-label="Recent Files Menu">
-            <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
-              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!fileCount > 0}><i className='bi bi-x-circle' /> Reset</Button>
+            <ButtonGroup size='sm' className="me-2" aria-label="Reset Recent Files">
+              <Button variant='outline-secondary' onClick={handleClearRecent} disabled={!fileCount > 0} title="Remove Cached Files" ><i className='bi bi-x-circle' /> Reset</Button>
             </ButtonGroup>
-            <ButtonGroup size='sm' className="me-2" aria-label="Recent Files">
-              <Button variant='outline-secondary' onClick={handleClickSort} title="Sort by Date" ><i className={`bi bi-sort-${sort? 'down' : 'up'}`} /></Button>
+            <ButtonGroup size='sm' className="me-2" aria-label="Sort Recent Files">
+              <Button variant='outline-secondary' onClick={handleClickSort} disabled={recentFiles.length <= 1} title="Sort by Date" ><i className={`bi bi-sort-${sort? 'down' : 'up'}`} /></Button>
             </ButtonGroup>
           </ButtonToolbar>
           {storage && <>
@@ -90,7 +90,7 @@ export default function RecentFiles() {
           </> }
         </Col>
       </Row>
-      <Row className={`h-100 overflow-auto ${recentFiles.length === 0? 'align-content-center': 'align-content-start'}`}>
+      <Row className={`h-100 overflow-auto align-content-${recentFiles.length === 0? 'stretch': 'start'}`}>
         <Col sm={12} className='py-1'>
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
@@ -100,10 +100,10 @@ export default function RecentFiles() {
               <p className='small'>No Recent Files.</p>
             </div>
             :
-          <ListGroup as="ul" variant="flush">
-            {recentFiles.map((el, idx) => <RecentFilesItem key={idx} {...el} hasFilter={filter} hasMenu={true} /> )}
-          </ListGroup>
-}
+            <ListGroup as="ul" variant="flush">
+              {recentFiles.map((el, idx) => <RecentFilesItem key={idx} {...el} hasFilter={filter} hasMenu={true} /> )}
+            </ListGroup>
+          }
         </Col>
       </Row>
     </>
