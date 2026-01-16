@@ -81,6 +81,12 @@ export default function ModalManager() {
                     opfs.clearStorage().then(()=>saveDatabase());
                   }
                   break;
+                case "DELETE_CACHED_ANALYSIS":
+                  if(opfs.isSupported() && modal.props?.payload?.filename){
+                    const f = modal.props?.payload?.filename
+                    opfs.fileRemove(f).then( () => opfs.fileRemove(f.slice(0,-3) + '.json', true) )
+                  }
+                  break;
 
                 default:
                   console.log('No action found')
@@ -95,10 +101,6 @@ export default function ModalManager() {
         <ModalDialogBusy
           {...modal.props}
           show={modal.open}
-          onHide={(confirmed) => {
-            if (confirmed)
-              dispatch(hideModal());
-          }}
         />
       );
     // add other modal types here...
