@@ -33,17 +33,23 @@ export default function ParameterFilters() {
         </Col>
       </Row>
 
-      <Row className='h-100 overflow-auto align-content-start'>
+      <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'stretch': 'start'}`}>
         <Col sm={12} className='py-1'>
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
         <Col sm={12} className='p-0'>
-          <ListGroup as="ul" variant="flush">
-            {state.filter(itm => ['object', 'array'].indexOf(itm.type) == -1 ).map((el, idx) => {
-              if(el.name.toLowerCase().match(filter.toLowerCase()) || filter === '')
-               return (<ParameterFilterItem key={idx} index={idx} {...el} />)
-            })}
-          </ListGroup>
+          {state.length === 0? <div className='text-center text-muted'>
+              <i className='bi bi-funnel text-muted fs-1' />
+              <p className='small'>Filters</p>
+            </div>
+            :
+            <ListGroup as="ul" variant="flush">
+              {state.filter(itm => ['object', 'array'].indexOf(itm.type) == -1 ).map((el, idx) => {
+                if(el.name.toLowerCase().match(filter.toLowerCase()) || filter === '')
+                return (<ParameterFilterItem key={idx} index={idx} {...el} />)
+              })}
+            </ListGroup>
+          }
         </Col>
       </Row>
     </>

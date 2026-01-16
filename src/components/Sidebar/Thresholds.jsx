@@ -66,11 +66,17 @@ export default function Thresholds(props) {
 
       {toggleform && <ThresholdForm closeform={setToggleform} />}
 
-      <Row className='h-100 overflow-auto'>
-        <Col sm={12} className='h-100 p-0'>
-          <ListGroup as="ul" variant="flush">
-            {state.map((el, idx) => <ThresholdItem key={idx} {...el} />)}
-          </ListGroup>
+      <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'center': 'start'}`}>
+        <Col sm={12} className='p-0'>
+          {state.length === 0 && !toggleform? <div className='text-center text-muted'>
+              <i className='bi bi-bar-chart-steps text-muted fs-1' />
+              <p className='small'>Thresholds</p>
+            </div>
+            :
+            <ListGroup as="ul" variant="flush">
+              {state.map((el, idx) => <ThresholdItem key={idx} {...el} />)}
+            </ListGroup>
+          }         
         </Col>
       </Row>
     </>

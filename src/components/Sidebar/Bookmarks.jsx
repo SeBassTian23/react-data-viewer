@@ -55,13 +55,19 @@ export default function Bookmarks(props) {
           </ButtonToolbar>
         </Col>
       </Row>
-      <Row className='h-100 overflow-auto'>
+      <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'center': 'start'}`}>
         <Col sm={12} className='p-0'>
-          <ListGroup as="ul" variant="flush">
-            {state.map((itm) => (
-              <BookmarkItem key={itm.id} {...itm} {...props} />
-            )).reverse()}
-          </ListGroup>
+          {state.length === 0? <div className='text-center text-muted'>
+              <i className='bi bi-bookmarks text-muted fs-1' />
+              <p className='small'>Bookmarks</p>
+            </div>
+            :
+            <ListGroup as="ul" variant="flush">
+              {state.map((itm) => (
+                <BookmarkItem key={itm.id} {...itm} {...props} />
+              )).reverse()}
+            </ListGroup>
+          }        
         </Col>
       </Row>
     </>

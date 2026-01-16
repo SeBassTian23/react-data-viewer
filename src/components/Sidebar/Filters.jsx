@@ -143,7 +143,7 @@ export default function Filters() {
           {state.length === 0? <div className='text-center'>
               <i className='bi-filter text-muted fs-1' />
               <span className='d-block text-muted fs-5'>Filters</span>
-              <p className='small'>No Filters available.</p>
+              <p className='small'>No Filters available</p>
             </div>
           :
           <ListGroup as="ul" variant="flush" className={`h-100`}>

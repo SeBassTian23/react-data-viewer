@@ -33,14 +33,20 @@ export default function DataTypes() {
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
       </Row>
-      <Row className='h-100 overflow-auto align-content-start'>
+      <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'stretch': 'start'}`}>
         <Col sm={12} className='py-1'>
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
         <Col sm={12} className='p-0'>
-          <ListGroup as="ul" variant="flush">
-            {state.filter(f => f.name.toLowerCase().match(filter.toLowerCase()) || filter === '').map((el, idx) => <DataTypeItem key={idx} {...el} />)}
-          </ListGroup>
+          {state.length === 0? <div className='text-center text-muted'>
+              <i className='bi bi-123 text-muted fs-1' />
+              <p className='small'>Datatypes</p>
+            </div>
+            :
+            <ListGroup as="ul" variant="flush">
+              {state.filter(f => f.name.toLowerCase().match(filter.toLowerCase()) || filter === '').map((el, idx) => <DataTypeItem key={idx} {...el} />)}
+            </ListGroup>
+          }   
         </Col>
       </Row>
     </>

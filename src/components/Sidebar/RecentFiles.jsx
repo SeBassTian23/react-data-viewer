@@ -73,7 +73,7 @@ export default function RecentFiles() {
     <>
       <Row id="dv-recent-files">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
-          Recent Files
+          Recent Analyses
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
         <Col sm={12} className='d-flex justify-content-between align-items-center'>
@@ -95,9 +95,9 @@ export default function RecentFiles() {
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
         <Col sm={12} className='p-2'>
-          {recentFiles.length === 0? <div className='text-center'>
-              <i className='bi-file-earmark-zip text-muted fs-1' />
-              <p className='small'>No Recent Files.</p>
+          {recentFiles.length === 0? <div className='text-center text-muted'>
+              <i className='bi bi-clock-history text-muted fs-1' />
+              <p className='small'>Recent Analyses</p>
             </div>
             :
             <ListGroup as="ul" variant="flush">
