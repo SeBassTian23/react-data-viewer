@@ -30,7 +30,7 @@ export default function GraphPanel(props) {
   const chartId = `chart-${props.id}`
 
   const staticPlot = useCallback(
-    async (datasets, thresholds, settings, darkmode) => {
+    async (datasets, thresholds, settings, darkmode, size) => {
       const plot = buildPlot({
         datasets,
         thresholds,
@@ -50,11 +50,16 @@ export default function GraphPanel(props) {
 
       const gd = await Plotly.newPlot(chartId, plot.data, plot.layout, { staticPlot: true })
       try {
+        let n = 1;
+        if(size === 12)
+          n = 1.5
+        if(size === 4)
+          n = .75
         const img = await Plotly.toImage(gd, {
-          width: 800,
-          height: 457,
-          scale: 2,
-          format: 'webp',
+          width: 800 * n,
+          height: 457 * n,
+          scale: window.devicePixelRatio || 1,
+          format: 'png',
         })
         return img
       } finally {
@@ -72,13 +77,19 @@ export default function GraphPanel(props) {
     const generateImage = async () => {
       setLoading(true)
       try {
-        const img = await staticPlot(stateDatasubsets, stateThresholds, content, props.darkmode)
-        if (!cancelled) setPlotImage(img)
+        if (!cancelled) {
+          const img = await staticPlot(stateDatasubsets, stateThresholds, content, props.darkmode, props?.size?.xl)
+          setPlotImage(img)
+        }
       } catch (err) {
         console.error('[GraphPanel] Failed to generate plot image:', err)
-        if (!cancelled) setPlotImage(null)
+        if (!cancelled) {
+          setPlotImage(null)
+        }
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) {
+          setLoading(false)
+        }
       }
     }
 
@@ -87,7 +98,7 @@ export default function GraphPanel(props) {
     return () => {
       cancelled = true
     }
-  }, [staticPlot, stateDashboard, stateDatasubsets, stateThresholds, props.darkmode, props.id], 250)
+  }, [staticPlot, stateDashboard, stateDatasubsets, stateThresholds, props.darkmode, props.id, props.size.xl], 250)
 
   const linkToView = useCallback(
     (props) => {
