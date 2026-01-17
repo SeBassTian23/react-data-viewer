@@ -7,6 +7,7 @@ import fileList from '../utils/opfs/fileList'
 import fileRemove from '../utils/opfs/fileRemove'
 import infoStorage from '../utils/opfs/infoStorage'
 import clearStorage from '../utils/opfs/clearStorage'
+import isPersistent from '../utils/opfs/isPersistent'
 
 /**
  * Using Files accessing the Origin Private File System
@@ -22,7 +23,8 @@ const opfs = {
   fileList,
   infoStorage,
   clearStorage,
-  fileRemove
+  fileRemove,
+  isPersistent
 }
 
 export default opfs
