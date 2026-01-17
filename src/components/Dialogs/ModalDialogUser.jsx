@@ -28,6 +28,7 @@ export default function ModalDialogUser(props) {
   const refCookies = useRef();
   const refGravatar = useRef();
   const refDragCounter = useRef(0)
+  const fileInput = useRef();
 
   const [allowCookies, setAllowCookies] = useState(() => localStorage.length > 0)
   const [allowGravatar, setAllowGravatar] = useLocalStorage('APP_USER_GRAVATAR', false);
@@ -127,6 +128,11 @@ export default function ModalDialogUser(props) {
     setUserAvatar(null)
   },[])
 
+  const handleClickFolder = useCallback(()=>{
+    if(fileInput.current)
+      fileInput.current.click();
+  },[])
+
   const handleDroppedFile = useCallback((file)=>{
     if (!file || !file.type.startsWith("image/") || !allowCookies || allowGravatar) return;
       const reader = new FileReader();
@@ -161,7 +167,7 @@ export default function ModalDialogUser(props) {
   };
 
   const onFileChange = (e) => {
-    handleFile(e.target.files[0]);
+    handleDroppedFile(e.target.files[0]);
   };
 
   const handleClickHelp = useCallback( ()=>{
@@ -192,9 +198,11 @@ export default function ModalDialogUser(props) {
             </div>
             <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex justify-content-center'>
               <ButtonGroup size='sm' className='mt-1'>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(!userAvatar || allowGravatar)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
                 <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(!userAvatar || allowGravatar)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
               </ButtonGroup>
             </ButtonToolbar>
+            <Form.Control onChange={onFileChange} required type="file" ref={fileInput} multiple={false} accept="image/png, image/webp, image/svg+xml, image/jpeg, image/tiff, image/gif" className='d-none' />
           </Col>
           <Col sm={8}>
             <Form>
