@@ -21,6 +21,7 @@ export default function RecentFiles() {
   const [fileCount, setFileCount] = useState(0);
   const [recentFiles, setRecentFiles] = useState([]);
   const [storage, setStorage] = useState(null);
+  const [persist, setPersist] = useState(false);
   const [sort, setSort] = useState(true);
   const [filter, setFilter] = useState('');
 
@@ -56,6 +57,7 @@ export default function RecentFiles() {
           setRecentFiles( e.filter(f => f.name.endsWith(".db")) )
         })
         await opfs.infoStorage().then( e => setStorage(e))
+        await opfs.isPersistent().then( e => setPersist(e))
       }
     }
     
@@ -86,7 +88,7 @@ export default function RecentFiles() {
             </ButtonGroup>
           </ButtonToolbar>
           {storage && <>
-            <span className='text-muted' style={{fontSize: 'x-small'}}>{ humanFileSize(storage.usage) } of { humanFileSize(storage.quota) } used</span>
+            <span className='text-muted' style={{fontSize: 'x-small'}} title={persist? 'Available Storage' : 'Storage is not persistent. Make sure to save your data regularly'}>{ humanFileSize(storage.usage) } of { humanFileSize(storage.quota) } used {!persist && <i className='bi bi-exclamation-triangle-fill text-warning' />}</span>
           </> }
         </Col>
       </Row>
