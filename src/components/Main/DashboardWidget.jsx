@@ -132,9 +132,9 @@ function DashboardWidget(props) {
 
     const Component = config.component;
     if (props.type === 'map')
-      return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
-    return <Component id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} />;
-  }, [props.type, props.id, props.content, props.darkmode]);
+      return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
+    return <Component id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
+  }, [props.type, props.id, props.content, props.darkmode, props.size.xl]);
 
   const handleClickPanelSize = useCallback((e) => {
     const size = e.currentTarget.dataset.size;
