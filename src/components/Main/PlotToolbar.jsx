@@ -120,7 +120,7 @@ export default function PlotToolbar(props) {
           </DropdownButton>
         </ButtonGroup>}
         <ButtonGroup size='sm' aria-label="Dashboard">
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => { addToDashboard(); setToastShow(true); }}><i className="bi-window-plus" /> Panel</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={addToDashboard}><i className="bi-window-plus" /> Panel</Button>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Save group">
           <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-box-arrow-down" /> Save…</>}>
