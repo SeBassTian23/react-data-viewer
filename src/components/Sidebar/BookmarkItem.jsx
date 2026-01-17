@@ -54,7 +54,7 @@ export default function BookmarkItem(props) {
           <i className="bi-bookmark-check" /> {props.name}
         </span>
       </span>
-      {props?.creator && <>{props.creator?.avatar? <img src={props.creator.avatar} className='rounded-circle bookmark-avatar' /> : <i className='bi bi-person-circle' />} <span className='text-muted'>{props.creator?.name}</span></> }
+      {props?.creator && <>{props.creator?.avatar? <div className='rounded ratio ratio-1x1 d-inline-block bookmark-avatar' style={{background: `url(${props.creator.avatar}) 0% 0% / cover`}}/> : <i className='bi bi-person-square' />} <span className='text-muted'>{props.creator?.name}</span></> }
       <ul className='list-inline text-muted bookmark-ul-icons'>
         <li className='list-inline-item'><i className='bi-columns-gap' /> {props.dashboard}</li>
         <li className='list-inline-item'><i className='bi-filter' /> {props.datasubsets}</li>

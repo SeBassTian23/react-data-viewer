@@ -609,8 +609,8 @@ kbd {
 }
 
 .bookmark-avatar {
-  height: 1.2rem;
-  margin-top: -0.25rem;
+  width: 1.3rem !important;
+  margin-bottom: -0.25rem;
 }
 
 .bookmark-menu-btn-group {

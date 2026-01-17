@@ -153,7 +153,7 @@ function AnalysisFileInfo(props) {
 function UserProfile(props) {
   return <div className='d-flex align-items-center p-1'>
     <div className="flex-shrink-0 text-center rounded bg-light analysis-user-avatar">
-      {props.avatar ? <img src={props.avatar} width={40} className='rounded' /> : <i className="bi bi bi-person-circle fs-2 text-muted" />}
+      {props.avatar ? <div className='rounded ratio ratio-1x1 d-inline-block' style={{background: `url(${props.avatar}) 0% 0% / cover`}}/> : <i className="bi bi bi-person-circle fs-2 text-muted" />}
     </div>
     <div className='flex-grow-1'>
       <div className="analysis-user-name">{props.name}{ props?.isCreator && <small className='ms-1'>(Creator)</small>}</div>

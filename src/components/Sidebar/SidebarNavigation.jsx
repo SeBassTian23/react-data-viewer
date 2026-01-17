@@ -97,7 +97,7 @@ export default function SidebarNavigation(props) {
         <i className="bi bi-journal-richtext fs-5" />
       </Button>
       <Button type="link" variant={null} className='mx-1 user-profile-btn' title='User' onClick={handleClickUserModal}>
-        {avatar ? <img src={avatar} className='rounded-circle' /> : <i className="bi bi-person-circle fs-5" />}
+        {avatar ? <div className='rounded ratio ratio-1x1' style={{background: `url(${avatar}) 0% 0% / cover`}}/> : <i className="bi bi-person-square fs-5" />}
       </Button>
       <Button type="button" variant={null} className='mx-1' title='Color Mode' onClick={handleClickDarkmode}>
         {props.darkmode ? <i className="bi bi-moon-stars fs-5" /> : <i className="bi bi-sun fs-5" />}
