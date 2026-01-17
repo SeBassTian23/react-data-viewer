@@ -110,7 +110,7 @@ export default function SidebarNavigation(props) {
       </Button>
 
       <ModalDialogAnalysis setModalImport={props.setModalImport} show={props.analysisModal} onHide={() => props.setAnalysisModal(false)} />
-      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} avatar={avatar} setAvatar={setAvatar} />
+      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} darkmode={props.darkmode} setAvatar={setAvatar} />
     </nav>
   )
 }
