@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useLocalStorage(key, initialValue, writeDefaults = true) {
+export function useLocalStorage(key, initialValue='') {
   // Initialize state from localStorage, or fallback to initialValue
   const [value, setValue] = useState(() => {
     const storedValue = localStorage.getItem(key);
@@ -15,13 +15,18 @@ export function useLocalStorage(key, initialValue, writeDefaults = true) {
 
   // Update localStorage whenever state changes
   useEffect(() => {
-    try {
-      if(writeDefaults)
+    if(value === null)
+      localStorage.removeItem(key)
+    else if(typeof(value) === 'string')
+      localStorage.setItem(key, value);
+    else{
+      try {
         localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error("Error setting localStorage:", error);
+      } catch (error) {
+        console.error("Error setting localStorage:", error);
+      }
     }
-  }, [key, value]);
+  }, [value]);
 
   return [value, setValue];
 }
