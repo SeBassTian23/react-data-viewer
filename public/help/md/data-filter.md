@@ -31,6 +31,6 @@ Three options are availble, allowing the selection of `date-time`, `date` and `t
 
 By default, catergorical parameters (`string`, `color`) as well as `date-time` are selected as a filters. But, also numerical values can be categories and used as filters. To use these, select **Data** -> **Filters** from the Sidebar Menu and select the numberical Parameter you want to add as a filter to create subsets.
 
-Should the invisible <i class="bi bi-eye-slash-fill"> icon appear next to the Parameter name, the parameter is not active and needs to be activated navigating to **Data** -> **Parameters**.
+Should the invisible <i class="bi bi-eye-slash-fill"></i> icon appear next to the Parameter name, the parameter is not active and needs to be activated navigating to **Data** -> **Parameters**.
 
 Parameters that are `unknown`, an `object` or an `array` cannot be selected as filters and are not listed. 
