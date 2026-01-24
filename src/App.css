@@ -647,4 +647,14 @@ kbd {
 
 pre {
   font-size: .75rem !important;
+
+.list-group-item {
+  background-color: transparent!important;
+  &:hover {
+    background-color: var(--bs-list-group-bg)!important;
+  }
+  &:has(div.d-block),
+  &:has(select.d-block) {
+    background-color: var(--bs-list-group-bg)!important;
+  }
 }
