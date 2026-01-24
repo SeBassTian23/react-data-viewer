@@ -10,7 +10,7 @@ import { startCase } from 'lodash'
 export default function ColorGradient(props) {
 
   const gradient = linearColorScale(props.colors, props.steps || false)
-  const style = useMemo(() => ({ 'width': '100%', 'height': '22px', 'background': gradient, ...props.style, borderRadius: 'var(--bs-border-radius-sm)' }), []);
+  const style = { 'width': '100%', 'height': '22px', 'background': gradient, ...props.style, borderRadius: 'var(--bs-border-radius-sm)' }
 
   return (
     <div className={props.className || null} style={style}></div>
@@ -60,7 +60,7 @@ export function ColorGradientDropDown(props) {
         {Object.entries(colorGradients).map((category, idx) => {
           return (
             <React.Fragment key={idx}>
-              <Dropdown.Header key={idx} className='text-petite-caps'>{startCase(category)}</Dropdown.Header>
+              <Dropdown.Header key={idx} className='text-petite-caps'>{startCase(category[0])}</Dropdown.Header>
               {Object.keys(category[1]).map(
                 (gradient, idx) => {
                   return (
