@@ -172,7 +172,7 @@ function DashboardWidget(props) {
               <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>
               <Dropdown.Item onClick={handleDelete}><i className="bi-window-x" /> Delete</Dropdown.Item>
               <Dropdown.Divider />
-              {(['map', 'image'].indexOf(props.type) === -1) && <>
+              {(['map', 'image', 'plot'].indexOf(props.type) === -1) && <>
                 <Dropdown.Item onClick={handleCopy}><i className="bi-clipboard" /> Copy</Dropdown.Item>
                 <Dropdown.Divider /> </>}
               <Dropdown.Header>Size</Dropdown.Header>

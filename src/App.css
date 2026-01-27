@@ -674,5 +674,17 @@ pre {
   font-size: 0.75rem !important;
 }
 
+/* Overlay for graphs to prevent the user from interacting in dashboard */
+#dv-main .card-body {
+  position: relative;
+
+  & > .js-plotly-plot::before {
+    content: "";
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+    margin: -0.25rem !important;
   }
 }
