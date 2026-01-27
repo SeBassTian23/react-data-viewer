@@ -38,9 +38,10 @@ export default function ModalDialogPlot(props) {
       if (state.legend)
         setValue('legend', 'show', { shouldTouch: true })
 
-      if (state.plottype)
+      if (state.plottype && plotforms[props.type] !== undefined && plotforms[props.type].some((itm) => itm.type == state.plottype ))
         setValue('plottype', state.plottype, { shouldTouch: true })
-
+      else
+        setValue('plottype', null, { shouldTouch: true })
     }
 
   }, [props.show])
@@ -65,12 +66,13 @@ export default function ModalDialogPlot(props) {
       <Modal.Footer className='flex-nowrap p-0'>
         <Button variant='link' className="fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" onClick={() => { reset(); props.onHide() }}>Close</Button>
         <Button variant='link' className="fw-bold fs-6 text-decoration-none col-6 m-0 rounded-0" onClick={() => {
-          dispatch(plotUpdate(getValues()))
+          if(getValues().plottype)
+            dispatch(plotUpdate(getValues()))
           reset();
           props.onHide()
         }
         }
-        disabled={parameters.length === 0? true : false}
+        disabled={(parameters.length === 0 || !getValues().plottype)? true : false}
         >Plot</Button>
       </Modal.Footer>
     </Modal>
