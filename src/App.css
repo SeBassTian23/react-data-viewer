@@ -160,6 +160,13 @@
   & li.sortable-chosen i.bi-square-fill {
     cursor: grabbing;
   }
+
+  & .footer-memory {
+    font-size: 0.5rem;
+    line-height: 0.5rem;
+    width: 1rem;
+    padding: 0 0 0 0.2rem;
+  }
 }
 
 /** Documentation */
