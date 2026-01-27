@@ -58,9 +58,6 @@ const scatter3d = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', 
         "thickness": 20,
         "title": {
           "text": parameters.find(e => e.name === input[i].colorscaleaxis)?.alias || input[i].colorscaleaxis,
-          "font": {
-            "size": 14
-          },
           "side": "right"
         }
       }
@@ -68,8 +65,6 @@ const scatter3d = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', 
       marker.cmin = jStat.min(input.map((item) => item.colorscale).flat())
       marker.cauto = false
     }
-
-    // console.log(input[i])
 
     data.push({
       "x": input[i].x,

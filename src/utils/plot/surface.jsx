@@ -51,9 +51,6 @@ const surface = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', pa
         "thickness": 20,
         "title": {
           "text": parameters.find(e => e.name === input[i].colorscaleaxis)?.alias || input[i].colorscaleaxis,
-          "font": {
-            "size": 14
-          },
           "side": "right"
         }
       }

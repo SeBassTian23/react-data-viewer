@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
+import merge from 'lodash/merge'
+import cloneDeep from 'lodash/cloneDeep'
+
 import Table from 'react-bootstrap/Table'
 
 import Offcanvas from 'react-bootstrap/Offcanvas'
@@ -88,13 +91,13 @@ function DisplayTableRow(props) {
   const idx = props.idx || 0
   const paramInfo = props.paramInfo
 
-  const [colorscheme, setColorscheme] = useState({});
+  const [plotLayout, setPlotLayout] = useState(cloneDeep(plotOffcanvasLayout));
   const [colorline, setColorline] = useState('#1d3557');
 
 
   useEffect(() => {
 
-    setColorscheme(props.darkmode === 'true' ? plotLayoutDarkmode : plotLayoutLightmode);
+    setPlotLayout(props.darkmode === 'true' ? merge(cloneDeep(plotOffcanvasLayout), plotLayoutDarkmode) : merge(cloneDeep(plotOffcanvasLayout), plotLayoutLightmode));
     setColorline(props.darkmode === 'true' ? '#0dcaf0' : '#1d3557')
 
   }, [props.darkmode]);
@@ -145,20 +148,14 @@ function DisplayTableRow(props) {
 
     return (
       <td colSpan={2}>
-        <em>{paramInfo.alias ? paramInfo.alias : param}</em>
+        <em className='d-block'>{paramInfo.alias ? paramInfo.alias : param}</em>
         <Plot
           useResizeHandler={true}
           divId={'OffcanvasPlot' + idx}
+          style={{ width: "100%", height: "100%", display: "block" }}
+          className="p-0 overflow-hidden h-100"
           data={data}
-          layout={{
-            ...plotOffcanvasLayout,
-            "xaxis": {
-              ...{"autorange": true},
-              ...colorscheme.xaxis},
-            "yaxis": {
-              ...{"autorange": true},
-              ...colorscheme.yaxis}
-          }}
+          layout={plotLayout}
           config={{
             displayModeBar: false
           }}

@@ -43,15 +43,12 @@ const scatter = ({ input = [], mode = 'markers', gradient = 'Blackbody', shape =
       marker.colorscale = ColorGradientColorArray(gradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || gradient
       marker.showscale = scaleisVisible
       // Prevent the scale from being drawn multiple times
-      // if(scaleisVisible)
-      //   scaleisVisible = false
+      if(scaleisVisible)
+        scaleisVisible = false
       marker.colorbar = {
         "thickness": 20,
         "title": {
           "text": parameters.find(e => e.name === input[i].colorscaleaxis)?.alias || input[i].colorscaleaxis,
-          "font": {
-            "size": 14
-          },
           "side": "right"
         }
       }

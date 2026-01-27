@@ -20,14 +20,16 @@ const plotLayout = {
       text: "x-Axis"
     },
     type: "linear",
-    autorange: true
+    autorange: true,
+    automargin: true
   },
   yaxis: {
     title: {
       text: "y-Axis"
     },
     type: "linear",
-    autorange: true
+    autorange: true,
+    automargin: true
   },
   dragmode: "zoom",
   showlegend: true
@@ -36,20 +38,16 @@ const plotLayout = {
 export default plotLayout
 
 export const plotLayoutDarkmode = {
-  title: {
-    font: {
-      color: '#ffffff'
-    }
+  font: {
+    color: '#ffffff'
   },
   xaxis: {
-    color: '#ffffff',  // Color for axis label and numbers
     gridcolor: '#444444',  // Color of grid lines
     zerolinecolor: '#ffffff',  // Color of the zero line
     tickcolor: '#444444',  // Color of the tick marks
     linecolor: '#444444',  // Color of the axis line    
   },
   yaxis: {
-    color: '#ffffff',  // Color for axis label and numbers
     gridcolor: '#444444',  // Color of grid lines
     zerolinecolor: '#ffffff',  // Color of the zero line
     tickcolor: '#444444',  // Color of the tick marks
@@ -57,29 +55,20 @@ export const plotLayoutDarkmode = {
   },
   modebar: {
     bgcolor: '#212529',
-  },
-  legend: {
-    font: {
-      color: '#ffffff'
-    }
   }
 }
 
 export const plotLayoutLightmode = {
-  title: {
-    font: {
-      color: '#444444'
-    }
+  font: {
+    color: '#444444'
   },
   xaxis: {
-    color: '#444444',  // Color for axis label and numbers
     gridcolor: '#eeeeee',  // Color of grid lines
     zerolinecolor: '#444444',  // Color of the zero line
     tickcolor: '#eeeeee',  // Color of the tick marks
     linecolor: '#eeeeee',  // Color of the axis line    
   },
   yaxis: {
-    color: '#444444',  // Color for axis label and numbers
     gridcolor: '#eeeeee',  // Color of grid lines
     zerolinecolor: '#444444',  // Color of the zero line
     tickcolor: '#eeeeee',  // Color of the tick marks
@@ -87,10 +76,5 @@ export const plotLayoutLightmode = {
   },
   modebar: {
     bgcolor: '#ffffff'
-  },
-  legend: {
-    font: {
-      color: '#444444'
-    }
   }
 }

@@ -148,6 +148,10 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
     default:
       output = { data: [], layout: {} }
   }
+  
+  output.layout.font = {
+    color: darkmode? plotLayoutDarkmode.font.color : plotLayoutLightmode.font.color,
+  }
 
   // Show or hide title
   if (settings?.title && settings.title !== ""){
@@ -157,11 +161,6 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
   // Show or hide legend
   if(settings?.legend && settings.legend === "show"){
     output.layout.showlegend = true
-    output.layout.legend = {
-      font: {
-        color: darkmode? plotLayoutDarkmode.xaxis.color : plotLayoutLightmode.xaxis.color
-      }
-    }
   }
   else
     output.layout.showlegend = false
@@ -187,19 +186,6 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
 
   // Adjust Colorbar for Colormode
   output.data = output.data.map( itm => {
-    if(itm?.marker?.colorbar){
-      itm.marker.colorbar.tickfont = {
-        color: darkmode? plotLayoutDarkmode.xaxis.color : plotLayoutLightmode.xaxis.color
-      }
-      if(itm.marker.colorbar?.title.font){
-        itm.marker.colorbar.title.font.color = darkmode? plotLayoutDarkmode.xaxis.color : plotLayoutLightmode.xaxis.color
-      }
-    }
-    if(itm?.colorbar){
-      itm.colorbar.tickfont = {
-        color: darkmode? plotLayoutDarkmode.xaxis.color : plotLayoutLightmode.xaxis.color
-      }
-    }
     if(itm?.marker?.line?.color && ['barchart-horizontal', 'barchart'].indexOf(settings.plottype) > -1)
       itm.marker.line.color = darkmode? plotLayoutDarkmode.xaxis.color : plotLayoutLightmode.xaxis.color
     return itm

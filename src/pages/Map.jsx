@@ -215,7 +215,7 @@ export default function Map(props) {
         setPlotstate(previous => {
           let layout = plotMapLayout;
           layout.title.text = value
-          layout.title.font.color = props.darkmode ? plotLayoutDarkmode.title.font.color : plotLayoutLightmode.title.font.color
+          layout['font'] = {color: props.darkmode ? plotLayoutDarkmode.font.color : plotLayoutLightmode.font.color}
 
           if (valueType === 'date-time') {
             layout.xaxis.type = "date";
