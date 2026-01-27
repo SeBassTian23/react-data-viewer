@@ -190,16 +190,16 @@ export default function SidebarTabs(props) {
             {(state.selectedTab !== 'DataSubsets') ? <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('DataSubsets', 'Data')} title="Back to Data Subsets" ><i className="bi bi-chevron-left" /> Back</Button> : <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('Filters', 'Filter')} title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter</Button>}
             <DropdownButton size="sm" as={ButtonGroup} className='column-dropdown' variant={props.darkmode? "outline-light" : "outline-dark"} align="end" disabled={dashboardMenuInactive} title={<><i className="bi bi-window-plus" /> Panels</>}>
               <Dropdown.Header>General</Dropdown.Header>
-              {widgets.filter( itm => itm.category == 'general').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
+              {widgets.filter( itm => itm.category == 'general').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
               <Dropdown.Divider />
               <Dropdown.Header>Statistics</Dropdown.Header>
-              {widgets.filter( itm => itm.category == 'statistics').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
+              {widgets.filter( itm => itm.category == 'statistics').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
               <Dropdown.Divider />
               <Dropdown.Header>Continuous/Numerical</Dropdown.Header>
-              {widgets.filter( itm => itm.category == 'statistics_numerical').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
+              {widgets.filter( itm => itm.category == 'statistics_numerical').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
               <Dropdown.Divider />
               <Dropdown.Header>Categorical/Count</Dropdown.Header>
-              {widgets.filter( itm => itm.category == 'statistics_category').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
+              {widgets.filter( itm => itm.category == 'statistics_category').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
               <Dropdown.Header>Data</Dropdown.Header>
