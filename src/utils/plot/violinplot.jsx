@@ -8,7 +8,8 @@ const violinplot = ({ input = [], points = 'outliers', parameters = [] } = {}) =
     xaxis: {
       title: {
         text: null
-      }
+      },
+      visible: false
     },
     yaxis: {
       title: {

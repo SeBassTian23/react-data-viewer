@@ -10,7 +10,8 @@ const boxplot = ({ input = [], boxpoints = 'outliers', parameters = [] } = {}) =
     xaxis: {
       title: {
         text: null
-      }
+      },
+      visible: false
     },
     yaxis: {
       title: {
