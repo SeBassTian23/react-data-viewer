@@ -192,6 +192,12 @@ function PlotParameterSelect(props) {
                           return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
                       })
                     }
+                    else if (option === 'parameters-array') {
+                      return parameters.map((option, idx) => {
+                        if (option.type === 'array' && option.isSelected)
+                          return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
+                      })
+                    }
                     else {
                       let optionStr = option
                       if (option === true)

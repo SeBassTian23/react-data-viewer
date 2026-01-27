@@ -136,6 +136,9 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
     case 'line-y-only':
       output = line({ input: data, mode: 'line-y-only', ...settings, parameters })
       break;
+    case 'line-array-y-only':
+      output = line({ input: data, mode: 'line-array-y-only', ...settings, parameters })
+      break;
     case 'contour':
       output = scatter({ input: data, mode: 'contour', ...settings, parameters })
       break;
