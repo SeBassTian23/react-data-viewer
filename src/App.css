@@ -1,5 +1,5 @@
 :root {
-  --bs-bg-opacity: 1
+  --bs-bg-opacity: 1;
 }
 
 /** Sidebar Navigation */
@@ -14,7 +14,8 @@
     transform: rotate3d(0, 1, 0, 360deg);
   }
   .nav-item:has(> .active) {
-    box-shadow: inset 1px 0px 0px var(--bs-primary),
+    box-shadow:
+      inset 1px 0px 0px var(--bs-primary),
       inset 4px 0px 0px var(--bs-primary);
   }
   .nav-item:hover {
@@ -41,63 +42,64 @@
 #dv-main {
   .card {
     .card-header {
-      padding: .25rem;
+      padding: 0.25rem;
     }
-  
+
     .card-header .bi-grip-vertical {
       cursor: move;
     }
-    
+
     .card-header .bi-grip-vertical:active {
       cursor: grabbing;
     }
 
     .card-header .dashboard-title-input {
-      padding: .1rem;
-      margin: -.1rem; 
+      padding: 0.1rem;
+      margin: -0.1rem;
     }
 
     .card-header > div {
       font-size: small !important;
     }
-  
+
     .card-body {
       aspect-ratio: 1.75;
       overflow-y: auto;
     }
-  
+
     .card-body .list-group.list-group-flush {
       margin: -1rem;
     }
-  
+
     .list-group.list-group-flush li {
       background: transparent;
       padding: 0.25rem 0.5rem;
     }
-  
+
     .leaflet-control-attribution {
       zoom: 0.85;
       display: none;
     }
 
-    .leaflet-bar, .leaflet-control-layers {
+    .leaflet-bar,
+    .leaflet-control-layers {
       border-radius: var(--bs-border-radius);
     }
-    
+
     .leaflet-touch .leaflet-control-layers,
     .leaflet-touch .leaflet-bar {
-      border: 1px solid rgba(0,0,0,0.2);
+      border: 1px solid rgba(0, 0, 0, 0.2);
     }
-    
+
     .leaflet-touch .leaflet-bar a:first-child,
     .leaflet-touch .leaflet-bar a:last-child {
       border-radius: var(--bs-border-radius);
     }
-  
+
     .card-body::-webkit-scrollbar-corner {
       width: 1.25rem;
     }
-    
+
     .card-body > textarea {
       border: 0px;
       resize: none;
@@ -105,7 +107,7 @@
       height: 100%;
       background: none;
     }
-    
+
     & > .bi {
       position: absolute;
       right: 3em;
@@ -116,26 +118,25 @@
       cursor: pointer;
       opacity: 0.6;
     }
-    
+
     & > .bi:hover {
       opacity: 1;
     }
-    
+
     .dropdown button {
       border: none;
     }
-  
+
     .card-body textarea:focus {
       outline: none;
     }
 
     .card-body > .form-text {
-      padding-right: .5rem !important;
-      padding-left: .5rem !important;
+      padding-right: 0.5rem !important;
+      padding-left: 0.5rem !important;
     }
-
   }
-  
+
   .sortable-ghost {
     opacity: 0.25;
     filter: grayscale(1) blur(1.5px);
@@ -237,12 +238,20 @@
 /** Main Container */
 #dv-main {
   /* background: linear-gradient(315deg, rgba(0, 0, 0, 0.1) 2%, transparent 60%); */
-  background: radial-gradient(farthest-corner at 100% 100%, rgba(0, 0, 0, 0.1) 10%, transparent 60%);
+  background: radial-gradient(
+    farthest-corner at 100% 100%,
+    rgba(0, 0, 0, 0.1) 10%,
+    transparent 60%
+  );
 }
 
 body[data-bs-theme="dark"] #dv-main {
   /* background: linear-gradient(315deg, rgba(255, 255, 255, 0.1) 2%, transparent 60%); */
-  background: radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.1) 10%, transparent 60%);
+  background: radial-gradient(
+    farthest-corner at 100% 100%,
+    rgba(255, 255, 255, 0.1) 10%,
+    transparent 60%
+  );
 }
 
 /** Map Darkmode */
@@ -317,28 +326,28 @@ body[data-bs-theme="dark"] .jexcel {
 }
 
 /** Spreadsheet selected cell((s) */
-.jexcel_content{
+.jexcel_content {
   box-shadow: none !important;
   .jexcel {
     .highlight-top {
       border-top: 1px solid var(--bs-primary) !important;
       box-shadow: none !important;
     }
-  
+
     .highlight-left {
       border-left: 1px solid var(--bs-primary) !important;
       box-shadow: none !important;
     }
-  
+
     .highlight-right {
       border-right: 1px solid var(--bs-primary) !important;
     }
-  
+
     .highlight-bottom {
       border-bottom: 1px solid var(--bs-primary) !important;
     }
   }
-  
+
   .jexcel_corner {
     background-color: var(--bs-primary) !important;
     border: 1px solid var(--bs-border-color) !important;
@@ -439,18 +448,18 @@ kbd {
 
 .leaflet-control-layers-base label,
 .leaflet-control-layers-selector {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .sidebar-toggle-icon-stack .bi:last-child {
-    position: absolute;
-    margin-left: -0.8rem;
-    margin-top: 0.385rem;
-    font-size: 0.75rem;
+  position: absolute;
+  margin-left: -0.8rem;
+  margin-top: 0.385rem;
+  font-size: 0.75rem;
 }
 
 .toc-item {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 pre:has(code) {
@@ -474,25 +483,24 @@ kbd {
 
 .ploty-icon {
   height: 1.25rem;
-  margin-top: -0.188rem
+  margin-top: -0.188rem;
 }
 
 .ploty-icon-dist {
   height: 1.125rem;
-  margin-top: -0.188rem
+  margin-top: -0.188rem;
 }
 
 .ploty-icon-matrix {
   height: 1.375rem;
-  margin-top: -0.188rem
+  margin-top: -0.188rem;
 }
 
 .ploty-icon-bar {
   height: 1.375rem;
   margin-top: -0.313rem;
-  rotate: -90deg
+  rotate: -90deg;
 }
-
 
 /** Nav */
 .user-profile-btn > img {
@@ -505,7 +513,6 @@ kbd {
   position: absolute;
   z-index: 500;
 }
-
 
 /* Spreadsheet */
 .spreadsheet-container {
@@ -521,7 +528,7 @@ kbd {
   & .header-rgRow.actual-rgRow {
     height: 35px;
   }
-} 
+}
 
 /** Modal Analysis */
 
@@ -544,8 +551,8 @@ kbd {
 }
 
 .analysis-user-email {
-  font-size: .75rem;
-  line-height: .8125rem;
+  font-size: 0.75rem;
+  line-height: 0.8125rem;
 }
 
 /** Modal User */
@@ -575,7 +582,6 @@ kbd {
   white-space: pre-wrap;
 }
 
-
 .map-histogram-card {
   position: absolute !important;
   bottom: 25px;
@@ -602,13 +608,13 @@ kbd {
 
 .threshold-menu-select {
   position: absolute;
-  top: .1rem;
+  top: 0.1rem;
 }
 
 .alias-menu-select {
   position: absolute !important;
-  right: .625rem;
-  top: .5rem;
+  right: 0.625rem;
+  top: 0.5rem;
 }
 
 .bookmark-ul-icons {
@@ -653,7 +659,8 @@ kbd {
 }
 
 pre {
-  font-size: .75rem !important;
+  font-size: 0.75rem !important;
+}
 
 .list-group-item {
   background-color: transparent!important;
