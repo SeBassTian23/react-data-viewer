@@ -41,8 +41,8 @@ import ErrorBoundary from '../../utils/ErrorBoundary'
 
 const PANEL_REGISTRY = {
   // Pages
-  plot: { component: GraphPanel, title: 'Plot', showEdit: false },
-  graph: { component: GraphPanel, title: 'Plot', showEdit: false },
+  plot: { component: GraphPanel, title: null, showEdit: false },
+  graph: { component: GraphPanel, title: null, showEdit: false },
   map: { component: MapPanel, title: 'Map', showEdit: false },
   // General
   notes: { component: NotesPanel, title: 'Notes', showEdit: false },
