@@ -36,6 +36,7 @@
 .column-dropdown > div {
   column-count: 2;
   inset: auto !important;
+  column-rule: 1px solid var(--bs-border-color);
 }
 
 /** Dashboard */
