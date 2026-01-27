@@ -59,7 +59,8 @@ export const useFileImport = () => {
             dispatch(analysisAppendFile(fileInfo));
           } else {
             dispatch(analysisAddFile(fileInfo));
-            const initialname = analysis.name !== '' ? analysis.name : file.name.split(".").slice(0, -1).join(".");
+            // const initialname = analysis.name !== '' ? analysis.name : file.name.split(".").slice(0, -1).join(".");
+            const initialname = crypto.randomUUID();
             dispatch(analysisUpdate({ name: initialname, saveAs: initialname }));
             setFilename(initialname+'.db');
           }
