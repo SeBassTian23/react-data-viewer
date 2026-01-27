@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch  } from 'react-redux'
 
 import cloneDeep from 'lodash/cloneDeep'
+import debounce from 'lodash/debounce'
 
 import Plot from 'react-plotly.js'
 
@@ -10,6 +11,7 @@ import DatumOffCanvas from './DatumOffCanvas'
 import buildPlot from '../../modules/build-plot'
 import plotLayout from '../../constants/plot-layout'
 
+import { plotUpdate } from '../../features/plot.slice';
 
 export default function PlotMain(props) {
 
@@ -32,13 +34,35 @@ export default function PlotMain(props) {
   const [datumstate, setDatumstate] = useState(false)
   const [datumid, setDatumid] = useState(null)
   const [darkmode, setDarkmode] = useState(false)
+  const [bgUpdate, setBgUpdate] = useState(false)
+
+  const dispatch = useDispatch()
 
   const showDatum = (id) => {
     setDatumstate(true)
     setDatumid(id)
   }
 
+  const saveCamera = (figure) => {
+    if(figure?.layout?.scene?.camera){
+      setBgUpdate(true)
+      dispatch(plotUpdate({...statePlot, camera: figure?.layout?.scene?.camera}))
+    }
+  }
+
+  const debouncedSaveRef = useRef(debounce(saveCamera, 250))
+
   useEffect(() => {
+  debouncedSaveRef.current = debounce(saveCamera, 250)
+  return () => debouncedSaveRef.current.cancel()
+}, [saveCamera])
+
+  useEffect(() => {
+
+    if(bgUpdate){
+      setBgUpdate(false)
+      return
+    }
 
     setDarkmode(props.darkmode);
 
@@ -81,9 +105,10 @@ export default function PlotMain(props) {
         }
         }
         onUpdate={(figure) => {
-          // console.log('onUpdate')
-          // console.log('Current Plot:', figure);
-          // console.log('State:', state);
+          if(figure?.layout?.scene){
+            // console.log('onUpdate:', figure);
+            debouncedSaveRef.current(figure)
+          }
         }}
         onDeselect={(eventData) => {
           props.onSelection(false);

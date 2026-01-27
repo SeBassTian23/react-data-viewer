@@ -1,7 +1,7 @@
 import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 import jStat from 'jstat'
 
-const scatter3d = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', parameters = [] } = {}) => {
+const scatter3d = ({ input = [], mode = 'markers', gradient = 'Blackbody', camera = null, parameters = [] } = {}) => {
 
   let data = []
   let layout = {
@@ -21,9 +21,32 @@ const scatter3d = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', 
           text: 'z-Axis'
         }
       },
-      dragmode: "turntable"
+      dragmode: "turntable",
+      camera: {
+        "up": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+        },
+        "center": {
+            "x": 0.02403915366009736,
+            "y": 0.05229099136403341,
+            "z": -0.14839975251373883
+        },
+        "eye": {
+            "x": 0.5400601603427597,
+            "y": 1.8085400211512366,
+            "z": 0.5540320868623193
+        },
+        "projection": {
+            "type": "perspective"
+        }
+      }
     }
   }
+
+  if(camera)
+    layout.scene.camera = camera
 
   let scaleisVisible = true
 
@@ -49,7 +72,7 @@ const scatter3d = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', 
 
     if (input[i].colorscaleaxis !== 'None') {
       marker.color = input[i].colorscale
-      marker.colorscale = ColorGradientColorArray(colorgradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || colorgradient
+      marker.colorscale = ColorGradientColorArray(gradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || gradient
       marker.showscale = scaleisVisible
       // Prevent the scale from being drawn multiple times
       if (scaleisVisible)
