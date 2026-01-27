@@ -163,6 +163,17 @@
     cursor: grabbing;
   }
 
+  & .list-group-item {
+    background-color: transparent !important;
+    &:hover {
+      background-color: var(--bs-list-group-bg) !important;
+    }
+    &:has(div.d-block),
+    &:has(select.d-block) {
+      background-color: var(--bs-list-group-bg) !important;
+    }
+  }
+
   & .footer-memory {
     font-size: 0.5rem;
     line-height: 0.5rem;
@@ -663,13 +674,5 @@ pre {
   font-size: 0.75rem !important;
 }
 
-.list-group-item {
-  background-color: transparent!important;
-  &:hover {
-    background-color: var(--bs-list-group-bg)!important;
-  }
-  &:has(div.d-block),
-  &:has(select.d-block) {
-    background-color: var(--bs-list-group-bg)!important;
   }
 }
