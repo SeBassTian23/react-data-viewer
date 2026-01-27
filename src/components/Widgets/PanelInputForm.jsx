@@ -24,6 +24,8 @@ export default function PanelInputForm(props) {
   const title = props.title || 'Unnamed'
   const additionalSelect = props.additionalSelect || null
 
+  const hasConfidence = props.confidence !== undefined? props.confidence : true
+
   const stateParameters = useSelector(state => state.parameters)
 
   return (
@@ -55,15 +57,16 @@ export default function PanelInputForm(props) {
               </Form.Select>
             </Col>
           }
-          <Col className='p-1'>
-            <Form.Label className='form-label-header'>Confidence</Form.Label>
-            <Form.Select size='sm' aria-label="Confidence Interval" {...register("confidence_level")} defaultValue='0.05' >
-              {Object.entries(confidenceLevels).map((option, idx) => {
-                return <option key={idx} value={option[1]}>{option[0]}</option>
-              })
-              }
-            </Form.Select>
-          </Col>
+          {hasConfidence && <Col className='p-1'>
+              <Form.Label className='form-label-header'>Confidence</Form.Label>
+              <Form.Select size='sm' aria-label="Confidence Interval" {...register("confidence_level")} defaultValue='0.05' >
+                {Object.entries(confidenceLevels).map((option, idx) => {
+                  return <option key={idx} value={option[1]}>{option[0]}</option>
+                })
+                }
+              </Form.Select>
+            </Col>
+          }
           <Col className='d-flex align-items-center mt-auto flex-column p-1'>
             <Button variant="outline-primary" size="sm" onClick={() => {
               let values = getValues()
