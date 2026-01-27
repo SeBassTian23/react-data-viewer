@@ -30,10 +30,16 @@ export default function SidebarNavigation(props) {
   
   const handleClickDarkmode = useCallback(() => {
     props.setDarkmode(prev => !prev);
+
+    if(localStorage.length > 0)
+      localStorage.setItem('APP_USER_DARKMODE', props.darkmode);
+
   }, [props.setDarkmode]);
   
   const handleClickToggleSidebar = useCallback(() => {
     props.setToggle(prev => !prev);
+    // Trigger for main container, so plot and map resize properly
+    window.dispatchEvent(new Event('resize'));
   }, [props.setToggle]);
 
   useHotkeys('meta+shift+d', (event) => {

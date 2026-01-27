@@ -24,12 +24,20 @@ dbInit();
 
 function App() {
 
-  const [darkmode, setDarkmode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches || false);
+  let initDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches || false;
+  if(localStorage.length > 0 && localStorage.getItem('APP_USER_DARKMODE'))
+    initDarkMode = JSON.parse(localStorage.getItem('APP_USER_DARKMODE'))
+
+  const [darkmode, setDarkmode] = useState(initDarkMode);
 
   useEffect(()=>{
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia("(prefers-color-scheme: dark)").matches
-      setDarkmode(doesMatch)
+
+      if(localStorage.length > 0 && localStorage.getItem('APP_USER_DARKMODE'))
+        setDarkmode(JSON.parse(localStorage.getItem('APP_USER_DARKMODE')))
+      else
+        setDarkmode(doesMatch)
     }
 
     window
