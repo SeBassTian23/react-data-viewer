@@ -128,7 +128,12 @@ function DashboardWidget(props) {
 
   const content = useMemo(() => {
     const config = PANEL_REGISTRY[props.type];
-    if (!config) return null;
+    if (!config) return (
+      <div class="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
+        <i class="bi bi-window fs-2"></i>
+        Unknown or Unsupported Widget
+      </div>
+    );
 
     const Component = config.component;
     if (props.type === 'map')
@@ -166,7 +171,7 @@ function DashboardWidget(props) {
               <i className="bi-three-dots-vertical" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {PANEL_REGISTRY[props.type].showEdit &&
+              {PANEL_REGISTRY[props.type]?.showEdit &&
                 <Dropdown.Item onClick={handleReset}><i className="bi-pencil-square" /> Edit</Dropdown.Item>
               }
               <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>
