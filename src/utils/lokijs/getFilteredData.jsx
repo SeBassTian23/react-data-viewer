@@ -77,7 +77,12 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
 
   // Drop rows defined by null cells from selected columns
   let parsedDropna = {}
-  if (Array.isArray(dropna)) {
+
+  if(typeof(dropna) === 'string'){
+    dropna = [dropna]
+  }
+
+  if (Array.isArray(dropna) && dropna.length > 0) {
     parsedDropna['$and'] = []
     // Make unique list of dropna elements and remove None,
     const fields = getColumnNames(collection);
