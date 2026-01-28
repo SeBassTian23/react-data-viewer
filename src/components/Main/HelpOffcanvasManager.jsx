@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
 
 import Placeholder from 'react-bootstrap/Placeholder'
 import { startCase } from 'lodash'
@@ -60,6 +61,9 @@ export default function HelpOffcanvasManager() {
       })
       .finally(() => {
         setLoading(false);
+        if(offcanvas.anchor){
+          setTimeout(() => document.querySelector(`#${offcanvas.anchor}`)?.scrollIntoView(), 200 )
+        }
       })
   }, [offcanvas.open])
 
@@ -73,7 +77,7 @@ export default function HelpOffcanvasManager() {
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>{title}</Offcanvas.Title>
       </Offcanvas.Header>
-      <Offcanvas.Body>
+      <Offcanvas.Body id="dv-offcanvas-help">
         {loading && <>
           <Placeholder as="h4" animation="glow">
             <Placeholder xs={8} />
@@ -97,7 +101,8 @@ export default function HelpOffcanvasManager() {
               img: ({ node, ...props }) => <img className='img-fluid' alt="" {...props} />
             }}
             rehypePlugins={[
-              rehypeRaw
+              rehypeRaw,
+              rehypeSlug
             ]}
           />
         }

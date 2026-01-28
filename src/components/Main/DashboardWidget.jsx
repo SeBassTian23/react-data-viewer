@@ -41,28 +41,28 @@ import ErrorBoundary from '../../utils/ErrorBoundary'
 
 const PANEL_REGISTRY = {
   // Pages
-  plot: { component: GraphPanel, title: null, showEdit: false },
-  graph: { component: GraphPanel, title: null, showEdit: false },
-  map: { component: MapPanel, title: 'Map', showEdit: false },
+  plot: { component: GraphPanel, title: null, showEdit: false, anchor: 'graphs' },
+  graph: { component: GraphPanel, title: null, showEdit: false, anchor: 'graphs' },
+  map: { component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps' },
   // General
-  notes: { component: NotesPanel, title: 'Notes', showEdit: false },
-  image: { component: ImagePanel, title: 'Image', showEdit: false },
+  notes: { component: NotesPanel, title: 'Notes', showEdit: false, anchor: 'notes' },
+  image: { component: ImagePanel, title: 'Image', showEdit: false, anchor: 'image' },
   // Statistics
-  anova: { component: ANOVAPanel, title: 'ANOVA', showEdit: true },
-  chisquared: { component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true },
-  fishersexact: { component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true },
-  summary: { component: SummaryPanel, title: 'Summary', showEdit: true },
-  ttest: { component: TTestPanel, title: "Student's t-Test", showEdit: true },
-  barnardsexact: { component: BarndardsExactPanel, title: "Barnard's Exact Test", showEdit: true },
-  mannwhitneyu: { component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true },
-  sign: { component: SignPanel, title: "Sign Test", showEdit: true },
-  spearmancorrelation: { component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true },
-  wilcoxonsignedrank: { component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true },
-  mcnemar: { component: McNemarPanel, title: "McNemar's Test", showEdit: true },
-  kruskalwallis: { component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true },
-  welchsttest: { component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true },
-  pearsoncorrelation: { component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true },
-  kolmogorovsmirnov: { component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true },
+  anova: { component: ANOVAPanel, title: 'ANOVA', showEdit: true, anchor: 'one-way-anova' },
+  chisquared: { component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true, anchor: 'chi-squared-test' },
+  fishersexact: { component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true, anchor: 'fishers-exact-test' },
+  summary: { component: SummaryPanel, title: 'Summary', showEdit: true, anchor: 'summary' },
+  ttest: { component: TTestPanel, title: "Student's t-Test", showEdit: true, anchor: 'students-t-test' },
+  barnardsexact: { component: BarndardsExactPanel, title: "Barnard's Exact Test", showEdit: true, anchor: 'barnards-exact-test' },
+  mannwhitneyu: { component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true, anchor: 'mann-whitney-u-test' },
+  sign: { component: SignPanel, title: "Sign Test", showEdit: true, anchor: 'sign-test' },
+  spearmancorrelation: { component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true, anchor: 'spearman-rank-correlation' },
+  wilcoxonsignedrank: { component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test' },
+  mcnemar: { component: McNemarPanel, title: "McNemar's Test", showEdit: true, anchor: 'mcnemars-test' },
+  kruskalwallis: { component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true, anchor: 'kruskal-wallis-test' },
+  welchsttest: { component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true, anchor: 'welchs-t-test' },
+  pearsoncorrelation: { component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true, anchor: 'pearson-rank-correlation' },
+  kolmogorovsmirnov: { component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true, anchor: 'kolmogorov-smirnov-test' },
 };
 
 function DashboardWidget(props) {
@@ -147,7 +147,8 @@ function DashboardWidget(props) {
   }, [changePanelSize, props.id]);
 
   const handleClickHelp = useCallback(() => {
-    help.open("Help | Dashboard Widgets", "help/md/dashboard.md")
+    const anchor = PANEL_REGISTRY[props.type]?.anchor? "#"+PANEL_REGISTRY[props.type].anchor : ""
+    help.open("Help | Dashboard Widgets", "help/md/dashboard.md"+ anchor )
   }, [])
 
   return (
