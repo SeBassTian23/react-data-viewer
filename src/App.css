@@ -184,16 +184,55 @@
 
 /** Documentation */
 #dv-docs {
-  .toc {
-    & {
-      float: right;
-      width: fit-content;
-      border-left: 1px solid var(--bs-border-color);
-      padding: 0.7rem;
-      margin-top: 1rem;
-      margin-left: 0.5rem;
-      margin-bottom: 0.5rem;
+  display: grid;
+  grid-area: main;
+
+  overflow: auto;
+  height: 100vh;
+
+  @media (min-width: 768px) {
+    grid-template-areas:
+      "intro"
+      "toc"
+      "content";
+    grid-template-rows: auto auto 1fr;
+    gap: inherit;
+    & .toc {
+      display: none;
     }
+  }
+
+  @media (min-width: 992px) {
+    grid-template-areas:
+      "intro toc"
+      "content toc";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 4fr 1fr;
+    & .toc {
+      display: block;
+    }
+  }
+
+  & .intro {
+    grid-area: intro;
+  }
+
+  #dv-docs-content {
+    grid-area: content;
+  }
+
+  .toc {
+    grid-area: toc;
+    position: sticky;
+    top: 2.5rem;
+    right: 0;
+    z-index: 2;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+
+    border-left: 1px solid var(--bs-border-color);
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
 
     & ol {
       list-style: none;
@@ -218,7 +257,7 @@
       color: var(--bs-secondary-color);
     }
     & > ol:before {
-      content: "Content";
+      content: "On this page";
       font-size: 1.1rem;
       font-weight: bold;
       border-bottom: 2px solid var(--bs-border-color);
@@ -230,6 +269,15 @@
   & section {
     margin-bottom: 3rem;
   }
+  & a.active {
+    border-left: 3px solid var(--bs-primary);
+    padding-left: 5px;
+    margin-left: -8px;
+  }
+}
+
+.toc-item-h1:nth-child(n + 2) {
+  margin-top: 0.75rem;
 }
 
 .table-w-fit {
@@ -240,6 +288,7 @@
   position: absolute !important;
   bottom: 1rem;
   right: 3rem;
+  z-index: 3;
 }
 
 /** Plotly */

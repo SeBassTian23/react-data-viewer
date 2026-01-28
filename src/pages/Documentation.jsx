@@ -15,6 +15,7 @@ export default function Documentation(props) {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [activeId, setActiveId] = useState('');
 
   useEffect(() => {
 
@@ -45,10 +46,11 @@ export default function Documentation(props) {
 
     Promise.all(fetchChapters).then(responses => {
 
-      let header = `<div class='col py-2 text-center mb-5'>
+      let header = `<div class='col py-2 text-center mb-5 intro'>
         <img src="./logo192.png" alt="App Logo" style="max-width: 5rem"></img>
         <span class='d-block display-6 fw-bold text-body-emphasis'>${__APP_NAME__}</span>
         <span class='d-block fw-bold text-muted'>${__APP_DESCRIPTION__}</span>
+        <small class='d-block text-muted'>v${__APP_VERSION__}</small>
       </div>`
 
       setData(header + responses.map((itm, idx) => {
@@ -61,45 +63,125 @@ export default function Documentation(props) {
 
   }, [])
 
+  // Scroll Spy for Return to Top Button
   useEffect(() => {
-    const container = document.querySelector('#dv-main');
-    const toc = document.querySelector('#dv-main .toc');
-    container.addEventListener('scroll', () => {
-      if (toc && container.scrollTop > (toc.offsetHeight * .6)) {
+    const container = document.querySelector('#dv-docs');
+
+    if (!container) return;
+
+    const handleScroll = () => {
+      const content = document.querySelector('#dv-docs-content');
+      if (content && container.scrollTop > (content.offsetHeight * .1) || container.scrollTop > 300) {
         setShowTopBtn(true);
       } else {
         setShowTopBtn(false);
       }
-    });
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    // Call once on mount to set initial active heading
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
   }, [loading]);
 
-  const scrollToTop = () => {
-    document.querySelector('#dv-main').scrollTo({
+  // Rearange elements once loading has been completed
+  useEffect(() => {
+    const toc = document.querySelector('#dv-main .toc');
+    const intro = document.querySelector('#dv-docs .intro');
+    const content = document.querySelector('#dv-docs-content');
+    const main = document.querySelector('#dv-docs');
+
+    if (!loading && toc && intro && main && content) {
+      main.insertBefore(intro, content)
+      main.insertBefore(toc, content)
+    }
+  }, [loading])
+
+  // Scroll Spy for TOC
+  useEffect(() => {
+    const container = document.querySelector('#dv-docs');
+
+    if (!container) return;
+
+    const handleScroll = () => {
+      const headings = Array.from(document.querySelectorAll('h1, h2'));
+      let current = '';
+
+      headings.some((heading) => {
+        const rect = heading.getBoundingClientRect();
+        // Adjust 100 based on your header height or preference
+        if (rect.top <= 10) {
+          current = heading.id;
+          setActiveId(current);
+          return
+        }
+        return
+      });
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    // Call once on mount to set initial active heading
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [loading]); // Re-attach when loading changes
+
+  // Update TOC based on visible content element
+  useEffect(() => {
+    const updateTocLinks = () => {
+      const tocLinks = document.querySelectorAll('.toc a');
+      tocLinks.forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        const anchorId = href.slice(1);
+
+        if (activeId === anchorId) {
+          link.classList.add('active');
+          if (!isElementFullyVisible(link))
+            link.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest'  // 'start', 'center', 'end', 'nearest'
+            });
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    };
+
+    function isElementFullyVisible(element) {
+      const rect = element.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.bottom <= window.innerHeight
+      );
+    }
+
+    updateTocLinks();
+  }, [activeId]); // Update whenever activeId changes
+
+  const handleClickScrollUp = useCallback(() => {
+    document.querySelector('#dv-docs').scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  };
-
-  const handleClickScrollUp = useCallback(scrollToTop, []);
+  }, []);
 
   return (<>
     <Row className='vh-100 align-items-center'>
-      {!loading && <Col className='overflow-auto' data-bs-spy='scroll' data-bs-target='.toc' data-bs-smooth-scroll='true'>
-        <Row id="dv-docs">
-          <div className="col">
-            <ReactMarkdown
-              children={data}
-              remarkPlugins={[remarkGfm]}
-              components={{
-                blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
-                table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
-                img: ({ node, ...props }) => <img className='img-fluid' alt="" {...props} />
-              }}
-              rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeToc, { headings: ["h1", "h2"] }]]}
-            />
-          </div>
-        </Row>
-        {showTopBtn && <Button className=' scrollup' onClick={handleClickScrollUp}><i className='bi bi-chevron-up' /></Button>}
+      {!loading && <Col className='overflow-auto' id="dv-docs">
+        <div id="dv-docs-content">
+          <ReactMarkdown
+            children={data}
+            remarkPlugins={[remarkGfm]}
+            components={{
+              blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
+              table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
+              img: ({ node, ...props }) => <img className='img-fluid' alt="" {...props} />
+            }}
+            rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeToc, { headings: ["h1", "h2"] }]]}
+          />
+        </div>
+        {showTopBtn && <Button className='scrollup' onClick={handleClickScrollUp}><i className='bi bi-chevron-up' /></Button>}
       </Col>}
       {loading && <Col className='text-center'>
         Loading Documentation…
