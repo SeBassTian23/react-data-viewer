@@ -55,7 +55,6 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
             "colorscale": ColorGradientColorArray(gradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || gradient,
             "showscale": scaleisVisible,
             "colorbar": {
-              "title": 'Index',
               "thickness": 20,
               "title": {
                 "text": parameters.find(e => e.name === input[i].colorscaleaxis)?.alias || input[i].colorscaleaxis,
