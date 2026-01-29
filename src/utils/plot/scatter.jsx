@@ -1,7 +1,7 @@
 import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 import jStat from 'jstat'
 
-const scatter = ({ input = [], mode = 'markers', gradient = 'Blackbody', shape = 'linear', dash = 'solid', parameters = [] } = {}) => {
+const scatter = ({ input = [], mode = 'markers', gradient = 'Viridis', shape = 'linear', dash = 'solid', parameters = [] } = {}) => {
 
   let data = []
   let layout = {

@@ -2,7 +2,7 @@ import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 import chroma from 'chroma-js'
 import jStat from 'jstat'
 
-const line = ({ input = [], mode = 'line', gradient = 'Blackbody', shape = 'linear', dash = 'solid', parameters = [] } = {}) => {
+const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear', dash = 'solid', parameters = [] } = {}) => {
 
   let data = []
   let layout = {

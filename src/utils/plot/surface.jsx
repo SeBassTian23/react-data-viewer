@@ -1,7 +1,7 @@
 import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 import jStat from 'jstat'
 
-const surface = ({ input = [], mode = 'markers', colorgradient = 'Blackbody', parameters = [] } = {}) => {
+const surface = ({ input = [], mode = 'markers', colorgradient = 'Viridis', parameters = [] } = {}) => {
 
   let data = []
   let layout = {

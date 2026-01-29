@@ -1,6 +1,6 @@
 import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 
-const histogram2d = ({ input = [], colorscale = 'Blackbody', parameters = [] } = {}) => {
+const histogram2d = ({ input = [], colorscale = 'Viridis', parameters = [] } = {}) => {
 
   let data = []
   let layout = {
