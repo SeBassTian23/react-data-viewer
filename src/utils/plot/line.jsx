@@ -45,7 +45,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
       })
 
     if(mode === 'line-array-y-only'){
-      const f = input[i]?.colorscaleaxis == 'Row Number'? chroma.scale( ColorGradientColorArray(gradient) ).domain([0, input[i].y.length]) : chroma.scale( ColorGradientColorArray(gradient) ).domain([jStat.min(input[i].colorscale), jStat.max(input[i].colorscale)])|| null
+      const f = input[i]?.colorscaleaxis == 'Row Number'? chroma.scale( ColorGradientColorArray(gradient) ).domain([0, jStat.max(input.map( itm => itm.y.length ))]) : chroma.scale( ColorGradientColorArray(gradient) ).domain([jStat.min(input[i].colorscale), jStat.max(input[i].colorscale)])|| null
 
       let marker = {}
 
@@ -66,8 +66,8 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
               "width": 0
             },
             "cauto": false,
-            "cmin": jStat.min(input.map((item) => item.colorscale).flat()),
-            "cmax": jStat.max(input.map((item) => item.colorscale).flat())
+            "cmin": input[i]?.colorscaleaxis == 'Row Number'? 0 : jStat.min(input.map((item) => item.colorscale).flat()),
+            "cmax": input[i]?.colorscaleaxis == 'Row Number'? jStat.max(input.map( itm => itm.y.length )) :jStat.max(input.map((item) => item.colorscale).flat())
         }
       } 
 
@@ -85,7 +85,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
           "name": input[i].name,
           "showlegend": (input.length > 0) ? true : false,
           "line": {
-            "color": input[i]?.colorscaleaxis == 'None'? input[i].color : f( input[i]?.colorscaleaxis == 'Row Number'? g : input[i].colorscale[g] ).hex(),
+            "color": input[i]?.colorscaleaxis == 'None'? input[i].color : f( input[i]?.colorscaleaxis == 'Row Number'? parseInt(g) : input[i].colorscale[g] ).hex(),
             "width": 1.5,
             "shape": shape,
             // "smoothing": 1,
