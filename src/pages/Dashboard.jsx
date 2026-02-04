@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import { ReactSortable } from "react-sortablejs";
 import Row from 'react-bootstrap/Row';
@@ -6,16 +7,19 @@ import Col from 'react-bootstrap/Col';
 import DashboardWidget from '../components/Main/DashboardWidget'
 import { dashboardDnDPanel } from '../features/dashboard.slice'
 
+const MemoizedDashboardWidget = memo(DashboardWidget)
+
 export default function Dashboard(props) {
 
   const analysis = useSelector(state=>state.analysis)
   const state = useSelector(state=>state.dashboard)
   const dispatch = useDispatch();
 
-  const setList = (request, obj, dragging ) => {
-    const ids = request.map(item => item.id)
-    dispatch( dashboardDnDPanel(ids) )
-  }
+  // Memoize setList so it doesn't change on every render
+  const setList = useCallback((newState) => {
+    const ids = newState.map(item => item.id)
+    dispatch(dashboardDnDPanel(ids))
+  }, [dispatch])
 
   return (
     <>
@@ -35,7 +39,7 @@ export default function Dashboard(props) {
         <ReactSortable handle='.bi-grip-vertical' className='row px-2 pb-1 pt-5 vh-100 align-content-start flex-wrap' list={ state.map(item => ({ ...item })) } setList={ newState => setList([...newState]) } animation={200} delayOnTouchStart={true} delay={2}>
           {state.map((item, idx) => {
             const key = item?.type === 'map'? `${item.id}-${idx}` : item.id
-            return <DashboardWidget key={key} {...item} {...props}/>
+            return <MemoizedDashboardWidget key={key} {...item} {...props}/>
           })}
         </ReactSortable>
       }
