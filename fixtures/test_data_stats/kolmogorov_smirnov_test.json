@@ -1,0 +1,52 @@
+ { 
+  "kolmogorov_smirnov": {
+    "two_sample_identical": {
+            "description": "Two identical distributions",
+            "sample1": [1, 2, 3, 4, 5],
+            "sample2": [1.1, 2.1, 3.1, 4.1, 5.1],
+            "alternative": "two-sided"
+    },
+    "two_sample_different": {
+            "description": "Two completely different distributions",
+            "sample1": [1, 2, 3, 4, 5],
+            "sample2": [10, 11, 12, 13, 14],
+            "alternative": "two-sided"
+    },
+    "two_sample_slight_difference": {
+            "description": "Two distributions with slight difference",
+            "sample1": [1, 2, 3, 4, 5, 6],
+            "sample2": [1.5, 2.5, 3.5, 4.5, 5.5, 6.5],
+            "alternative": "two-sided"
+    },
+    "two_sample_overlap": {
+            "description": "Two overlapping distributions",
+            "sample1": [1, 2, 3, 4, 5],
+            "sample2": [3, 4, 5, 6, 7],
+            "alternative": "two-sided"
+    },
+    "two_sample_greater": {
+            "description": "Two-sample test with greater alternative",
+            "sample1": [2, 3, 4, 5, 6],
+            "sample2": [1, 2, 3, 4, 5],
+            "alternative": "greater"
+    },
+    "two_sample_less": {
+            "description": "Two-sample test with less alternative",
+            "sample1": [1, 2, 3, 4, 5],
+            "sample2": [2, 3, 4, 5, 6],
+            "alternative": "less"
+    },
+    "two_sample_larger_n": {
+            "description": "Two samples with larger sample sizes",
+            "sample1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "sample2": [1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5],
+            "alternative": "two-sided"
+    },
+    "two_sample_unequal_sizes": {
+            "description": "Two samples with unequal sizes",
+            "sample1": [1, 2, 3],
+            "sample2": [1.2, 2.3, 3.1, 4.0, 5.1],
+            "alternative": "two-sided"
+    }
+  }
+}

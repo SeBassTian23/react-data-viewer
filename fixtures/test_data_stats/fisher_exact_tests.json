@@ -1,0 +1,54 @@
+{
+  "fisher_exact": {
+    "simple_association": {
+              "description": "Simple 2x2 table with clear association",
+        "data": [[5, 0], [0, 5]],
+        "alternative": "two-sided"
+    },
+    "no_association": {
+              "description": "No association (uniform distribution)",
+        "data": [[5, 5], [5, 5]],
+        "alternative": "two-sided"
+    },
+    "weak_association": {
+              "description": "Weak association",
+        "data": [[4, 6], [6, 4]],
+        "alternative": "two-sided"
+    },
+    "strong_association": {
+      "description": "Strong association",
+        "data": [[8, 2], [1, 9]],
+        "alternative": "two-sided"
+    },
+    "one_tailed_greater": {
+      "description": "One-tailed test (greater)",
+        "data": [[5, 0], [0, 5]],
+        "alternative": "greater"
+    },
+    "one_tailed_less": {
+      "description": "One-tailed test (less)",
+        "data": [[5, 0], [0, 5]],
+        "alternative": "less"
+    },
+    "sparse_table": {
+      "description": "Sparse table with zeros",
+        "data": [[10, 0], [1, 5]],
+        "alternative": "two-sided"
+    },
+    "unequal_margins": {
+              "description": "Unequal row/column margins",
+        "data": [[3, 7], [8, 2]],
+        "alternative": "two-sided"
+    },
+    "small_sample": {
+      "description": "Very small sample",
+        "data": [[2, 0], [0, 2]],
+        "alternative": "two-sided"
+    },
+    "large_sample": {
+      "description": "Larger sample",
+        "data": [[20, 5], [5, 20]],
+        "alternative": "two-sided"
+    }
+  }
+}

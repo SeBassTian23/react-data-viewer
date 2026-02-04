@@ -1,0 +1,58 @@
+{
+  "barnards_exact": {
+    "simple_case": {
+      "description": "Simple case with moderate difference in proportions",
+      "a": 5,
+      "b": 10,
+      "c": 8,
+      "d": 7,
+      "alternative": "two-sided",
+      "note": "Group 1: 5 successes out of 15 (33%). Group 2: 8 successes out of 15 (53%)"
+    },
+    "large_difference": {
+      "description": "Large difference in proportions",
+      "a": 1,
+      "b": 9,
+      "c": 9,
+      "d": 1,
+      "alternative": "two-sided",
+      "note": "Group 1: 1 success out of 10 (10%). Group 2: 9 successes out of 10 (90%)"
+    },
+    "no_difference": {
+      "description": "No difference in proportions",
+      "a": 5,
+      "b": 5,
+      "c": 5,
+      "d": 5,
+      "alternative": "two-sided",
+      "note": "Both groups: 5 successes out of 10 (50%)"
+    },
+    "small_samples": {
+      "description": "Small sample sizes",
+      "a": 2,
+      "b": 3,
+      "c": 4,
+      "d": 1,
+      "alternative": "two-sided",
+      "note": "Group 1: 2 successes out of 5 (40%). Group 2: 4 successes out of 5 (80%)"
+    },
+    "all_success_group1": {
+      "description": "All successes in group 1",
+      "a": 5,
+      "b": 0,
+      "c": 2,
+      "d": 3,
+      "alternative": "two-sided",
+      "note": "Group 1: 5 successes out of 5 (100%). Group 2: 2 successes out of 5 (40%)"
+    },
+    "rare_event": {
+      "description": "Rare event comparison",
+      "a": 1,
+      "b": 99,
+      "c": 5,
+      "d": 95,
+      "alternative": "two-sided",
+      "note": "Group 1: 1 success out of 100 (1%). Group 2: 5 successes out of 100 (5%)"
+    }
+  }
+}

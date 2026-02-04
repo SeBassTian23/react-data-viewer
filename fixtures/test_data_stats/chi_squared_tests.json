@@ -1,0 +1,44 @@
+{
+  "chi_squared": {
+    "clear_association": {
+        "description": "2x2 table with clear association",
+        "data": [[10, 2], [3, 15]]
+    },
+    "no_association": {
+        "description": "2x2 table with no association",
+        "data": [[5, 5], [5, 5]]
+    },
+    "moderate_association_3x3": {
+        "description": "3x3 table with moderate association",
+        "data": [[10, 5, 2], [4, 9, 6], [3, 2, 14]]
+    },
+    "2x4_table": {
+        "description": "2x4 contingency table",
+        "data": [[8, 2, 5, 3], [2, 8, 3, 5]]
+    },
+    "weak_association": {
+        "description": "2x2 table with weak association",
+        "data": [[12, 8], [10, 10]]
+    },
+    "strong_association": {
+        "description": "2x2 table with strong association",
+        "data": [[20, 1], [1, 20]]
+    },
+    "3x3_balanced": {
+        "description": "3x3 table with balanced data",
+        "data": [[6, 6, 6], [6, 6, 6], [6, 6, 6]]
+    },
+    "3x4_large": {
+        "description": "3x4 table with larger sample size",
+        "data": [[20, 10, 8, 12], [15, 18, 16, 11], [12, 14, 16, 18]]
+    },
+    "4x4_table": {
+        "description": "4x4 contingency table",
+        "data": [[10, 5, 3, 2], [5, 12, 4, 3], [3, 4, 11, 5], [2, 3, 5, 10]]
+    },
+    "2x5_table": {
+        "description": "2x5 contingency table",
+        "data": [[15, 8, 5, 10, 12], [10, 14, 12, 8, 6]]
+    }
+  }
+}

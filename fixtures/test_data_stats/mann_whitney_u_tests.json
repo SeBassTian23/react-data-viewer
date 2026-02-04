@@ -1,0 +1,64 @@
+{
+  "mann_whitney_u": {
+    "clear_difference": {
+      "description": "Two groups with clear difference",
+        "group1": [1, 2, 3, 4, 5],
+        "group2": [6, 7, 8, 9, 10],
+        "alternative": "two-sided"
+    },
+    "no_difference": {
+      "description": "Two groups with no difference",
+        "group1": [1, 2, 3, 4, 5],
+        "group2": [1, 2, 3, 4, 5],
+        "alternative": "two-sided"
+    },
+    "moderate_difference": {
+      "description": "Two groups with moderate difference",
+        "group1": [1, 2, 3, 4, 5],
+        "group2": [4, 5, 6, 7, 8],
+        "alternative": "two-sided"
+    },
+    "with_ties": {
+      "description": "Groups with tied values",
+        "group1": [1, 2, 2, 3, 4],
+        "group2": [3, 4, 4, 5, 6],
+        "alternative": "two-sided"
+    },
+    "unequal_sizes": {
+      "description": "Unequal sample sizes",
+        "group1": [1, 2, 3],
+        "group2": [4, 5, 6, 7, 8],
+        "alternative": "two-sided"
+    },
+    "one_tailed_greater": {
+      "description": "One-tailed test (greater)",
+        "group1": [5, 6, 7, 8, 9],
+        "group2": [1, 2, 3, 4, 5],
+        "alternative": "greater"
+    },
+    "one_tailed_less": {
+      "description": "One-tailed test (less)",
+        "group1": [1, 2, 3, 4, 5],
+        "group2": [5, 6, 7, 8, 9],
+        "alternative": "less"
+    },
+    "large_samples": {
+      "description": "Large sample sizes",
+        "group1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "group2": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "alternative": "two-sided"
+    },
+    "small_samples": {
+      "description": "Small sample sizes",
+        "group1": [1, 2],
+        "group2": [3, 4],
+        "alternative": "two-sided"
+    },
+    "overlapping": {
+      "description": "Overlapping distributions",
+        "group1": [1, 2, 3, 4, 5],
+        "group2": [3, 4, 5, 6, 7],
+        "alternative": "two-sided"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "kruskal_wallis": {
+    "three_groups_clear_diff": {
+        "groups": [
+          [1, 2, 3, 4, 5],
+          [6, 7, 8, 9, 10],
+          [11, 12, 13, 14, 15]
+        ]
+    },
+    "no_difference": {
+        "description": "Three groups with no difference",
+        "groups": [
+          [5, 5, 5, 5, 5],
+          [5, 5, 5, 5, 5],
+          [5, 5, 5, 5, 5]
+        ]
+    },
+    "two_groups_moderate": {
+        "description": "Two groups with moderate difference",
+        "groups": [
+          [1, 2, 3, 4, 5],
+          [4, 5, 6, 7, 8]
+        ]
+    },
+    "four_groups": {
+      "description": "Four groups with variation",
+        "groups": [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]
+    },
+    "with_ties": {
+      "description": "Groups with tied values",
+        "groups": [
+          [1, 2, 2, 3, 4],
+          [3, 4, 4, 5, 6],
+          [5, 6, 6, 7, 8]
+        ]
+    },
+    "unequal_sample_sizes": {
+      "description": "Groups with unequal sample sizes",
+        "groups": [
+          [1, 2, 3],
+          [4, 5, 6, 7, 8, 9],
+          [10, 11, 12, 13]
+        ]
+    },
+    "two_groups_no_diff": {
+      "description": "Two groups with no difference",
+        "groups": [
+          [1, 2, 3, 4, 5],
+          [1, 2, 3, 4, 5]
+        ]
+    },
+    "five_groups": {
+      "description": "Five groups with variation",
+        "groups": [
+          [1, 2],
+          [3, 4],
+          [5, 6],
+          [7, 8],
+          [9, 10]
+        ]
+    },
+    "large_difference": {
+      "description": "Large difference between groups",
+        "groups": [
+          [1, 1, 1, 1, 1],
+          [50, 51, 52, 53, 54],
+          [100, 101, 102, 103, 104]
+        ]
+    },
+    "overlapping_groups": {
+              "description": "Overlapping distributions",
+        "groups": [
+          [1, 2, 3, 4, 5],
+          [3, 4, 5, 6, 7],
+          [5, 6, 7, 8, 9]
+        ]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "spearman_correlation": {
+    "perfect_positive": {
+        "description": "Perfect positive rank correlation",
+        "x": [1, 2, 3, 4, 5],
+        "y": [2, 4, 6, 8, 10]
+    },
+    "perfect_negative": {
+        "description": "Perfect negative rank correlation",
+        "x": [1, 2, 3, 4, 5],
+        "y": [10, 8, 6, 4, 2]
+    },
+    "no_correlation": {
+        "description": "No rank correlation",
+        "x": [1, 2, 3, 4, 5],
+        "y": [5, 2, 4, 1, 3]
+    },
+    "with_ties": {
+        "description": "Data with tied values",
+        "x": [1, 2, 2, 4, 5],
+        "y": [1, 2, 2, 4, 5]
+    },
+    "multiple_ties": {
+        "description": "Multiple ties in both variables",
+        "x": [1, 1, 2, 3, 3, 4, 5, 5],
+        "y": [1, 1, 3, 2, 2, 5, 4, 4]
+    },
+    "moderate_positive": {
+        "description": "Moderate positive rank correlation",
+        "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "y": [1.1, 2.2, 2.9, 4.1, 4.9, 6.2, 7.1, 7.9, 9.1, 10.2]
+    },
+    "strong_negative": {
+        "description": "Strong negative rank correlation",
+        "x": [1, 2, 3, 4, 5, 6],
+        "y": [6.2, 5.1, 4.9, 3.8, 2.9, 1.1]
+    },
+    "non_linear": {
+        "description": "Non-linear relationship (Spearman captures rank order)",
+        "x": [1, 2, 3, 4, 5],
+        "y": [1, 4, 9, 16, 25]
+    },
+    "exponential": {
+        "description": "Exponential relationship",
+        "x": [1, 2, 3, 4, 5],
+        "y": [2.7, 7.4, 20.1, 54.6, 148.4]
+    },
+    "small_sample": {
+        "description": "Small sample with perfect negative correlation",
+        "x": [1, 2, 3],
+        "y": [3, 2, 1]
+    }
+  }
+}

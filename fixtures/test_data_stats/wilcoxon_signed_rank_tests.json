@@ -1,0 +1,64 @@
+{
+  "wilcoxon_signed_rank": {
+    "clear_positive": {
+        "description": "Clear positive difference",
+        "x": [1, 2, 3, 4, 5],
+        "y": [0, 1, 2, 3, 4],
+        "alternative": "two-sided"
+    },
+    "clear_negative": {
+        "description": "Clear negative difference",
+        "x": [5, 4, 3, 2, 1],
+        "y": [6, 5, 4, 3, 2],
+        "alternative": "two-sided"
+    },
+    "mixed_differences": {
+        "description": "Mixed positive and negative differences",
+        "x": [1, 2, 3, 4, 5],
+        "y": [2, 1, 4, 3, 6],
+        "alternative": "two-sided"
+    },
+    "with_zeros": {
+        "description": "Differences with zeros (ignored)",
+        "x": [1, 2, 3, 4, 5],
+        "y": [1, 3, 3, 5, 6],
+        "alternative": "two-sided"
+    },
+    "one_tailed_greater": {
+        "description": "One-tailed test (greater)",
+        "x": [1, 2, 3, 4, 5],
+        "y": [0, 1, 2, 3, 4],
+        "alternative": "greater"
+    },
+    "one_tailed_less": {
+        "description": "One-tailed test (less)",
+        "x": [5, 4, 3, 2, 1],
+        "y": [6, 5, 4, 3, 2],
+        "alternative": "less"
+    },
+    "all_positive": {
+        "description": "All positive differences",
+        "x": [1, 2, 3, 4, 5],
+        "y": [0, 1, 2, 3, 4],
+        "alternative": "two-sided"
+    },
+    "all_negative": {
+        "description": "All negative differences",
+        "x": [5, 4, 3, 2, 1],
+        "y": [6, 5, 4, 3, 2],
+        "alternative": "two-sided"
+    },
+    "balanced": {
+        "description": "Balanced positive and negative",
+        "x": [1, 2, 3, 4, 5, 6],
+        "y": [2, 1, 4, 3, 6, 5],
+        "alternative": "two-sided"
+    },
+    "large_sample": {
+        "description": "Larger sample size (n=25)",
+        "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+        "y": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+        "alternative": "two-sided"
+    }
+  }
+}

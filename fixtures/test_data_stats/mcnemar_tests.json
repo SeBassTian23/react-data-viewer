@@ -1,0 +1,44 @@
+{
+  "mcnemar": {
+    "small_sample_clear_diff": {
+        "description": "Small sample with clear difference (uses exact test)",
+        "contingency_table": [[10, 5], [2, 8]],
+        "continuity_correction": true
+    },
+    "small_sample_no_diff": {
+        "description": "Small sample with no clear difference",
+        "contingency_table": [[8, 3], [5, 6]],
+        "continuity_correction": true
+    },
+    "no_discordant": {
+        "description": "No discordant pairs (perfect agreement)",
+        "contingency_table": [[10, 0], [0, 10]],
+        "continuity_correction": true
+    },
+    "large_sample": {
+        "description": "Large sample (uses chi-squared approximation)",
+        "contingency_table": [[50, 20], [10, 40]],
+        "continuity_correction": true
+    },
+    "perfect_disagreement": {
+        "description": "Symmetric discordant pairs",
+        "contingency_table": [[5, 10], [10, 5]],
+        "continuity_correction": true
+    },
+    "large_asymmetric": {
+        "description": "Large asymmetric discordant pairs",
+        "contingency_table": [[60, 35], [5, 50]],
+        "continuity_correction": true
+    },
+    "no_correction": {
+        "description": "Large sample without continuity correction",
+        "contingency_table": [[50, 20], [10, 40]],
+        "continuity_correction": false
+    },
+    "asymmetric_small": {
+        "description": "Small sample with strong asymmetry",
+        "contingency_table": [[6, 1], [8, 7]],
+        "continuity_correction": true
+    }
+  }
+}

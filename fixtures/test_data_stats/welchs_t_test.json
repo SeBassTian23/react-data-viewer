@@ -1,0 +1,80 @@
+{
+  "welchs_t_test": {
+    "simple_case": {
+      "description": "Two groups with clear difference",
+      "group1": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "group2": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "alternative": "two-sided",
+      "confidence_level": 0.95
+    },
+    "simple_case-2": {
+      "description": "Two groups with clear difference",
+      "group1": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "group2": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "alternative": "less",
+      "confidence_level": 0.95
+    },
+    "equal_means": {
+      "description": "Two groups with equal means",
+      "group1": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "group2": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "alternative": "two-sided",
+      "confidence_level": 0.95
+    },
+    "large_difference": {
+      "description": "Two groups with large difference",
+      "group1": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "group2": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "alternative": "two-sided",
+      "confidence_level": 0.95
+    }
+  }
+}
