@@ -1,6 +1,7 @@
 
 import jStat from 'jstat'
 import getRanks from '../../helpers/getRanks'
+import {getCorrelationStrength} from './helpers'
 
 /**
  * Spearman Rank Correlation
@@ -38,14 +39,38 @@ export default function spearmanCorrelation(x, y) {
     const zLower = z - 1.96 * zSE;
     const zUpper = z + 1.96 * zSE;
     
-    const ciLower = (Math.exp(2 * zLower) - 1) / (Math.exp(2 * zLower) + 1);
-    const ciUpper = (Math.exp(2 * zUpper) - 1) / (Math.exp(2 * zUpper) + 1);
+    let ciLower = (Math.exp(2 * zLower) - 1) / (Math.exp(2 * zLower) + 1);
+    let ciUpper = (Math.exp(2 * zUpper) - 1) / (Math.exp(2 * zUpper) + 1);
+
+    if(rho >= 1){
+      ciLower = 1;
+      ciUpper = 1;
+    }
+    if(rho <= -1){
+      ciLower = -1;
+      ciUpper = -1;
+    }
     
     return {
-        correlation: rho,
-        pValue: pValue,
-        confidenceInterval: [ciLower, ciUpper],
-        n: n,
-        testStatistic: t
+      testType: 'Spearman Correlation',
+      correlation: rho,
+      pValue: isNaN(pValue)? 0 : pValue,
+      confidenceInterval: [ciLower, ciUpper],
+      n: n,
+      testStatistic: t
     };
+}
+
+/**
+ * Interpret Spearman Correlation results
+ * @param {Object} result - Spearman correlation result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretSpearmanCorrelation(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = result.correlation > 0 ? "positive" : "negative";
+  const strength = getCorrelationStrength(Math.abs(result.correlation));
+  
+  return `There is a ${isSignificant ? "statistically significant" : "non-significant"} ${strength} ${direction} monotonic relationship between the variables (ρ=${result.correlation.toFixed(3)}, p=${result.pValue.toFixed(4)}), ${isSignificant ? "indicating" : "suggesting no"} a meaningful rank-based association.`;
 }

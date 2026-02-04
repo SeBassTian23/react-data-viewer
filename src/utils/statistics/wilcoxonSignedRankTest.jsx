@@ -1,6 +1,7 @@
 
 import jStat from 'jstat'
 import getRanks from '../../helpers/getRanks'
+import {getEffectSizeDescription} from './helpers'
 
 /**
  * Wilcoxon Signed-Rank Test
@@ -76,10 +77,25 @@ export default function wilcoxonSignedRankTest(x, y, alternative = 'two-sided') 
     const effectSize = Math.abs(z) / Math.sqrt(n);
     
     return {
+        testType: 'Wilcoxon Signed-Rank test',
         statistic: wPlus,
         pValue: Math.max(0, Math.min(1, pValue)),
         effectSize: effectSize,
         n: n,
         alternative: alternative
     };
+}
+
+/**
+ * Interpret Wilcoxon Signed-Rank test results
+ * @param {Object} result - Wilcoxon result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretWilcoxonSignedRank(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "indicates" : "does not indicate";
+  const effectSize = getEffectSizeDescription(result.effectSize, 'r_effect');
+  
+  return `The paired samples show ${isSignificant ? "a statistically significant" : "no statistically significant"} difference (W+=${result.statistic.toFixed(1)}, p=${result.pValue.toFixed(4)}), ${direction} a ${effectSize} practical difference in paired ranks (r=${result.effectSize.toFixed(2)}).`;
 }

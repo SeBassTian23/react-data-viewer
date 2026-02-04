@@ -1,23 +1,28 @@
-
 import jStat from 'jstat'
 
 /**
- * Bernard's Exact test
- * @param {Array} a - Total in group 1
- * @param {Array} b - Total in group 2
- * @param {Array} c - Successes in group 1
- * @param {Array} d - Successes in group 2
- * @param {boolean} fastMode - (default: 'false')
+ * Barnard's Exact Test
+ * Tests independence in a 2x2 contingency table
+ * 
+ *           Success  Failure
+ *  Group 1    a        b
+ *  Group 2    c        d
+ * 
+ * @param {number} a - Successes in group 1
+ * @param {number} b - Failures in group 1
+ * @param {number} c - Successes in group 2
+ * @param {number} d - Failures in group 2
+ * @param {boolean} fastMode - Use approximations for speed (default: false)
  * @returns {Object} Test results
  */
 export default function barnardsExact(a, b, c, d, fastMode = false) {
-  const n1 = a + c; // Total in group 1
-  const n2 = b + d; // Total in group 2
+  const n1 = a + b; // Total in group 1
+  const n2 = c + d; // Total in group 2
   const x1 = a;     // Successes in group 1
-  const x2 = b;     // Successes in group 2
+  const x2 = c;     // Successes in group 2
 
   if (n1 === 0 || n2 === 0) {
-    throw new Error('Both groups must have at least one observation');
+    return {error: 'Both groups must have at least one observation'};
   }
 
   const p1 = x1 / n1; // Sample proportion 1
@@ -61,9 +66,9 @@ export default function barnardsExact(a, b, c, d, fastMode = false) {
   if (useChiSquareApprox) {
     // Chi-square test for independence (much faster approximation)
     const expected_a = (n1 * (x1 + x2)) / (n1 + n2);
-    const expected_b = (n2 * (x1 + x2)) / (n1 + n2);
-    const expected_c = (n1 * (c + d)) / (n1 + n2);
-    const expected_d = (n2 * (c + d)) / (n1 + n2);
+    const expected_b = (n1 * (b + d)) / (n1 + n2);
+    const expected_c = (n2 * (x1 + x2)) / (n1 + n2);
+    const expected_d = (n2 * (b + d)) / (n1 + n2);
 
     const chiSquare = Math.pow(a - expected_a, 2) / expected_a +
       Math.pow(b - expected_b, 2) / expected_b +
@@ -112,6 +117,7 @@ export default function barnardsExact(a, b, c, d, fastMode = false) {
   const z = (p1 - p2) / se;
 
   return {
+    testType: 'Bernard\'s Exact Test',
     pValue: minPValue,
     testStatistic: testStat,
     p1: p1,
@@ -124,14 +130,23 @@ export default function barnardsExact(a, b, c, d, fastMode = false) {
   };
 }
 
+/**
+ * Interpret Barnard's Exact test results
+ * @param {Object} result - Barnard's Exact result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretBarnardsExact(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "indicates" : "does not indicate";
+  
+  return `Barnard's Exact test shows ${isSignificant ? "a statistically significant" : "no statistically significant"} difference between the two independent proportions (p=${result.pValue.toFixed(4)}), ${direction} a true difference in success rates.`;
+}
+
 function calculatePValueExact(n1, n2, x1, x2, p, testStat) {
   let pValue = 0;
 
-  // Pre-calculate some values to avoid repeated computation
-  const logP = Math.log(p);
-  const log1MinusP = Math.log(1 - p);
-
-  // Cache for binomial coefficients and probabilities
+  // Cache for binomial probabilities
   const binomCache = new Map();
 
   function getCachedBinomProb(k, n, prob) {
@@ -143,6 +158,7 @@ function calculatePValueExact(n1, n2, x1, x2, p, testStat) {
   }
 
   for (let k1 = 0; k1 <= n1; k1++) {
+    const prob1 = getCachedBinomProb(k1, n1, p);
     const prop1 = k1 / n1;
 
     for (let k2 = 0; k2 <= n2; k2++) {
@@ -151,8 +167,6 @@ function calculatePValueExact(n1, n2, x1, x2, p, testStat) {
 
       // If current statistic is at least as extreme
       if (currentStat >= testStat - 1e-10) {
-        // Use cached probabilities
-        const prob1 = getCachedBinomProb(k1, n1, p);
         const prob2 = getCachedBinomProb(k2, n2, p);
         pValue += prob1 * prob2;
       }

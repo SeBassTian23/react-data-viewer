@@ -103,7 +103,7 @@ export default function kolmogorovSmirnovTest(sample1, sample2 = null, cdf = nul
         }
         
         return {
-            testType: 'Two-sample Kolmogorov-Smirnov test',
+            testType: 'Kolmogorov-Smirnov Test',
             dStatistic: dStat,
             pValue: Math.min(pValue, 1),
             sampleSize1: n1,
@@ -111,4 +111,17 @@ export default function kolmogorovSmirnovTest(sample1, sample2 = null, cdf = nul
             alternative: alternative
         };
     }
+}
+
+/**
+ * Interpret Kolmogorov-Smirnov test results
+ * @param {Object} result - KS test result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretKolmogorovSmirnovTest(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "indicates" : "does not indicate";
+  
+  return `The distributions show ${isSignificant ? "a statistically significant" : "no statistically significant"} difference (D=${result.dStatistic.toFixed(3)}, p=${result.pValue.toFixed(4)}), ${direction} that the two samples come from different distributions.`;
 }

@@ -28,6 +28,7 @@ export default function mcnemarTest(contingencyTable, continuityCorrection = tru
     
     if (discordant === 0) {
         return {
+            testType: 'McNemar\'s Test',
             statistic: 0,
             pValue: 1.0,
             method: 'McNemar Test',
@@ -48,6 +49,7 @@ export default function mcnemarTest(contingencyTable, continuityCorrection = tru
         );
         
         return {
+            testType: 'McNemar\'s Test',
             statistic: Math.min(b, c),
             pValue: Math.min(1, pExact),
             method: 'McNemar Exact Test',
@@ -72,6 +74,7 @@ export default function mcnemarTest(contingencyTable, continuityCorrection = tru
     const oddsRatio = b > 0 && c > 0 ? b / c : null;
     
     return {
+        testType: 'McNemar\'s Test',
         statistic: chiSquared,
         pValue: pValue,
         method: method,
@@ -79,4 +82,18 @@ export default function mcnemarTest(contingencyTable, continuityCorrection = tru
         continuityCorrection: continuityCorrection,
         oddsRatio: oddsRatio
     };
+}
+
+/**
+ * Interpret McNemar's test results
+ * @param {Object} result - McNemar result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretMcNemar(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "indicates" : "does not indicate";
+  const discordant = (result.contingencyTable[0][1] + result.contingencyTable[1][0]);
+  
+  return `The paired categorical data show ${isSignificant ? "a statistically significant" : "no statistically significant"} change between conditions (χ²=${result.statistic.toFixed(2)}, p=${result.pValue.toFixed(4)}), ${direction} a significant difference in outcomes across the ${discordant} discordant pairs.`;
 }

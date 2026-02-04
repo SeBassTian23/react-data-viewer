@@ -1,5 +1,6 @@
 
 import jStat from 'jstat'
+import {getCorrelationStrength} from './helpers'
 
 /**
  * Pearson correlation coefficient test
@@ -52,4 +53,18 @@ export default function pearsonCorrelation(x, y, alternative = 'two-sided') {
         confidenceInterval95: ci95,
         alternative: alternative
     };
+}
+
+/**
+ * Interpret Pearson Correlation results
+ * @param {Object} result - Pearson correlation result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretPearsonCorrelation(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = result.correlationCoefficient > 0 ? "positive" : "negative";
+  const strength = getCorrelationStrength(Math.abs(result.correlationCoefficient));
+  
+  return `There is a ${isSignificant ? "statistically significant" : "non-significant"} ${strength} ${direction} correlation between the variables (r=${result.correlationCoefficient.toFixed(3)}, p=${result.pValue.toFixed(4)}), ${isSignificant ? "indicating" : "suggesting no"} a meaningful linear relationship.`;
 }

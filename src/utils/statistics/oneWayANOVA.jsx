@@ -1,5 +1,5 @@
-
 import jStat from 'jstat'
+import {getEffectSizeDescription} from './helpers'
 
 /**
  * One-way ANOVA
@@ -82,4 +82,18 @@ export default function oneWayANOVA(groups, labels = null) {
     overallMean: overallMean,
     totalSampleSize: n
   };
+}
+
+/**
+ * Interpret One-Way ANOVA results
+ * @param {Object} result - ANOVA result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretOneWayANOVA(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "supports" : "does not support";
+  const effectSize = getEffectSizeDescription(result.etaSquared, 'anova');
+  
+  return `The difference between groups is ${isSignificant ? "statistically significant" : "not statistically significant"} (F(${result.degreesOfFreedomBetween},${result.degreesOfFreedomWithin})=${result.fStatistic.toFixed(2)}, p=${result.pValue.toFixed(4)}), ${direction} the hypothesis of group differences with a ${effectSize} effect size (η²=${result.etaSquared.toFixed(4)}).`;
 }

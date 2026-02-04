@@ -1,5 +1,5 @@
-
 import jStat from 'jstat'
+import {getEffectSizeDescription} from './helpers'
 
 /**
  * Kruskal-Wallis Test
@@ -71,10 +71,26 @@ export default function kruskalWallisTest(groups) {
     const etaSquared = (H - df) / (N - 1);
     
     return {
+        testType: 'Kruskal Wallis Test',
         statistic: H,
         pValue: pValue,
         degreesOfFreedom: df,
         effectSize: Math.max(0, etaSquared),
         groupSizes: groupSizes
     };
+}
+
+
+/**
+ * Interpret Kruskal-Wallis test results
+ * @param {Object} result - Kruskal-Wallis result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretKruskalWallis(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "suggests" : "does not suggest";
+  const effectSize = getEffectSizeDescription(result.effectSize, 'epsilon_squared');
+  
+  return `The ${result.groupSizes.length} groups show ${isSignificant ? "statistically significant" : "no statistically significant"} differences in distributions (H(${result.degreesOfFreedom})=${result.statistic.toFixed(2)}, p=${result.pValue.toFixed(4)}), ${direction} a ${effectSize} practical difference (ε²=${result.effectSize.toFixed(4)}).`;
 }

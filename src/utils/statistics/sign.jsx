@@ -1,4 +1,3 @@
-
 import jStat from 'jstat'
 
 /**
@@ -38,12 +37,29 @@ export default function sign(before, after, alternative = 'two-sided' ) {
   }
   
   return {
+    testType: 'Sign Test',
     pairs: before.length,
     non_zero_diff: n,
     sample_diff: `${differences.slice(0, 10).map(d => d.toFixed(2)).join(', ')}${differences.length > 10 ? '...' : ''}`,
     positive,
     negative,
     ignored: before.length - n,
-    pValue
+    pValue,
+    alternative
   }
+}
+
+
+/**
+ * Interpret Sign test results
+ * @param {Object} result - Sign test result object
+ * @param {number} alphaLevel - Significance level (default: 0.05)
+ * @returns {string} One-sentence interpretation
+ */
+export function interpretSignTest(result, alphaLevel = 0.05) {
+  const isSignificant = result.pValue < alphaLevel;
+  const direction = isSignificant ? "indicates" : "does not indicate";
+  const ratio = result.positive > result.negative ? `more positive (${result.positive}:${result.negative})` : `more negative (${result.negative}:${result.positive})`;
+  
+  return `The paired samples show ${isSignificant ? "a statistically significant" : "no statistically significant"} difference in direction (p=${result.pValue.toFixed(4)}), ${direction} a consistent ${ratio} trend across the ${result.non_zero_diff} pairs.`;
 }
