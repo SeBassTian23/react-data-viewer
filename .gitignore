@@ -138,6 +138,11 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Python
+__pycache__
+
+# fixtures (ignore python generated files)
+fixtures/*.json
 
 !**/glob-import/dir/node_modules
 .DS_Store

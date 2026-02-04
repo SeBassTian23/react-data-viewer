@@ -49,7 +49,10 @@
     "start": "vite",
     "build": "vite build --base=/react-data-viewer/",
     "serve": "vite preview",
-    "lint": "eslint **/*.jsx ."
+    "lint": "eslint **/*.jsx .",
+    "pretest": "python3 python/tests/test_statistics.py",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "eslintConfig": {
     "extends": [
