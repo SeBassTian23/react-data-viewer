@@ -2,6 +2,7 @@
 import React from "react";
 
 import Card from 'react-bootstrap/Card'
+import PanelWarning from '../components/Widgets/helpers/PanelWarning'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -9,8 +10,8 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error) {
+    return { hasError: true, message: error.message };
   }
 
   componentDidCatch(error, info) {
@@ -19,8 +20,8 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <Card.Body className='p-0 overflow-y d-flex justify-content-center align-items-center'>
-        <span className="text-danger">Something went wrong with the widget.</span>
+      return <Card.Body className='p-0 overflow-y'>
+        <PanelWarning warning={<>Something went wrong with the widget.<small className="small text-muted d-block">{this.state.message}</small></>}/>
       </Card.Body>;
     }
     return this.props.children;
