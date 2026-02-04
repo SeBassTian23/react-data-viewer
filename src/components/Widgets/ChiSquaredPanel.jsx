@@ -3,53 +3,23 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
-import jStat from 'jstat'
-import round from 'lodash/round';
+import numberFormat from '../../helpers/number-format'
 
-import number2letter from '../../helpers/number2letter';
+import PanelStatistics from './helpers/PanelStatistics'
+import PanelWarning from './helpers/PanelWarning'
 
-import PanelInputForm from './PanelInputForm'
-
-import widgets from '../../constants/widgets'
+import chiSquaredTest, {interpretChiSquaredTest} from '../../utils/statistics/chiSquaredTest'
 
 export default function ChiSquarePanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'barnardsexact');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='string' selectHelp={`Parameter for ${widget.name}`} />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <CalculateChiSquare {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="chisquared" 
+      props={props} 
+      CalculateComponent={CalculateChiSquare}
+    />
+  );
 }
 
 function CalculateChiSquare(props) {
@@ -57,155 +27,149 @@ function CalculateChiSquare(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  let data = {}
-  let columns = []
+  const [results, setResults] = useState(null);
 
-  if (subsets.length > 0) {
-    for (let series in subsets) {
-      let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
-      data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
-
-      let cols = getUnique(query.data({ removeMeta: true }), parameter)
-      columns = [...new Set([...columns, ...cols])]
+  useEffect( () => {
+    
+    if(!parameter){
+      setResults(null);
+      return
     }
-  }
 
+    let data = []
+    let rowLabels = []
+    let colLabels = []
 
-  // Build the data table for the chi2-test
-  let dataTest = {}
-  for (let id in data) {
-    dataTest[id] = data[id].reduce((acc, curr) => {
-      return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
-    }, {});
-    columns.map((itm) => {
-      if (dataTest[id][itm] === undefined)
-        dataTest[id][itm] = 0
-      return itm
-    });
-  }
-
-  // Get the totals for rows
-  let rowTotals = {}
-  for (let id in dataTest) {
-    rowTotals[id] = jStat.sum(Object.values(dataTest[id]))
-  }
-
-  // Get the totals for columns
-  let columnTotals = columns.reduce((acc, curr) => { acc[curr] = 0; return acc }, {})
-  for (let id in dataTest) {
-    for (let col in columns) {
-      columnTotals[columns[col]] += dataTest[id][columns[col]]
-    }
-  }
-
-  // Calculate degrees of freedom
-  const rowCount = subsets.length || 0
-  const colCount = columns.length || 0
-  const dof = (rowCount - 1) * (colCount - 1);
-
-  // Calculate chi2 values and contingincy table
-  let x2_sum = []
-  let table = []
-  let n = jStat.sum(Object.values(rowTotals))
-  for (let id in dataTest) {
-    for (let i in columns) {
-      let col = columns[i]
-      if (columnTotals[col] === 0 || rowTotals[id] === 0)
-        continue
-      let E = (rowTotals[id] * columnTotals[col]) / n
-      // Χ2 = Σ [ (Or,c - Er,c)2 / Er,c ]
-      let chi2 = Math.pow((dataTest[id][col] - E), 2) / E
-      if (!Number.isNaN(chi2))
-        x2_sum.push(chi2)
-
-      let idx = table.findIndex((itm) => itm.id === id)
-      if (idx < 0) {
-        let idxSubset = subsets.findIndex((itm) => itm.id === id)
-        table.push({ id, 'name': subsets[idxSubset].name || "Unknown", 'color': subsets[idxSubset].color || "#000", 'expected': [], 'observed': [], 'x2': [], 'p-value': [] })
-        idx = table.findIndex((itm) => itm.id === id)
+    if (subsets.length > 0) {
+      for (let series in subsets) {
+        let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
+        data.push(getSeries(query.data({ removeMeta: true }), parameter)[parameter] || [])
+        
+        let cols = getUnique(query.data({ removeMeta: true }), parameter)
+        colLabels = [...new Set([...colLabels, ...cols])]
+        
+        rowLabels.push({
+          id: subsets[series].id,
+          name: subsets[series].name,
+          color: subsets[series].color
+        })
       }
-      table[idx]['expected'].push(E)
-      table[idx]['observed'].push(dataTest[id][col])
-      table[idx]['x2'].push(chi2)
-      table[idx]['p-value'].push(1 - jStat.chisquare.cdf(chi2, dof))
     }
-  }
 
-  // Sum x2 values
-  const x2 = jStat.sum(x2_sum);
+    // Build contingency table
+    let contingencyTableData = []
 
-  // Calculate p-value
-  const p_value = 1 - jStat.chisquare.cdf(x2, dof);
-  const msg = p_value <= ConfidenceInterval ? `Subsets and "${parameterName}" seem to be dependent` : `Subsets and "${parameterName}" seem not to be dependent`
+    for(let i in data){
+      let row = []
+      for(let ii in colLabels){
+        row.push( data[i].filter(el => el == colLabels[ii]).length || 0 )
+      }
+      contingencyTableData.push(row)
+    }
+
+    // Run test
+    let test = chiSquaredTest(contingencyTableData);
+
+    // Header Row
+    let resultTable = [];
+    if(!test.error){
+      resultTable.push( [null, ...colLabels, null] );
+      for(let i=0; i<test.rowCount; i++){
+        let row = [rowLabels[i] || null]
+        for(let ii=0; ii<test.colCount; ii++){
+          row.push( test.details.find( itm => itm.row == i && itm.column == ii ) )
+        }
+        row.push(test.rowTotals[i])
+        resultTable.push( row )
+      }
+      // Footer Row
+      resultTable.push( [null, ...test.columnTotals, test.sampleSize] );
+    }
+
+    // Add table to test
+    test = {...test, ...{table: resultTable} }
+
+    setResults(test);
+
+  },[subsets, thresholds, parameter])
 
   return (
     <>
-      {x2 === 0 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            χ²-Test for selected subsets and "{parameterName}" failed.
-          </span>
-        </div>
-      }
-      {x2 > 0 &&
-        <>
+      {(results && results.error) && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed. ${results.error}`}/>}
+      {(results && !results.error) &&<>
           <Table size="sm">
-            <thead className='text-center small'>
+            <tbody className='text-start small'>
               <tr>
-                <th>χ²-value</th>
-                <th><em>p</em>-value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='text-center'>
-                <td>{round(x2, 3) || x2}</td>
-                <td>{(p_value < ConfidenceInterval) ? ' < ' + ConfidenceInterval : ' = ' + p_value.toFixed(3)}</td>
+                <td colSpan={2}>{results.testType}</td>
               </tr>
               <tr>
-                <td colSpan={2} className={p_value > ConfidenceInterval ? 'small text-danger' : 'small'}>{msg}</td>
+                <th>Statistic</th>
+                <td>{numberFormat(results.statistic)}</td>
+              </tr>
+              <tr>
+                <th>p-value</th>
+                <td>{numberFormat(results.pValue)}</td>
+              </tr>
+              <tr>
+                <th>Effect Size</th>
+                <td>{numberFormat(results.effectSize)}</td>
+              </tr>
+              <tr>
+                <th>Sample Size</th>
+                <td>{results.sampleSize}</td>
+              </tr>
+              <tr>
+                <th>Degrees Of Freedom</th>
+                <td>{results.degreesOfFreedom}</td>
               </tr>
             </tbody>
           </Table>
 
           <span className='form-text p-1'>Contingency Table - Observed (Expected)</span>
+
           <Table responsive bordered size="sm" className='align-middle text-center'>
-            <tbody>
-              <tr>
-                <td>&nbsp;</td>
-                {/* {columns.map( (col,idx) => <td className='small' key={idx} style={{"height":"100px","whiteSpace": "nowrap", "verticalAlign": "bottom", "overflow": "hidden"}}> <div className='ps-1' style={{"transform": "rotate(-90deg)", "width": "30px"}}>{col}</div></td> )} */}
-                {columns.map((col, idx) => <td className='small' key={idx} title={col}>{(idx + 1)}</td>)}
-                <td>&nbsp;</td>
-              </tr>
-              {table.map((row, idx) => {
-                return (
-                  <tr key={idx} className='small'>
-                    <td className='text-start text-nowrap' title={row.name}>
-                      <i className='bi-square-fill' style={{ 'color': row.color }} /> {number2letter(idx + 1)}
-                    </td>
-                    {row['p-value'].map((cell, idx) => {
-                      return <td
-                        key={idx}
-                        className={`text-white fw-bold ${cell <= ConfidenceInterval ? 'bg-success' : 'bg-danger'}`}
-                        title={row.name + ' vs.\n' + columns[idx] + '\n' + '𝛸²: ' + row['observed'][idx] + '\n' + 'p-value: ' + cell}>
-                        {row['observed'][idx]}<br /><small className='fw-light'>({round(row['expected'][idx], 1)})</small>
-                      </td>
-                    })}
-                    <td>{Object.values(rowTotals)[idx]}</td>
-                  </tr>
-                )
+            <tbody className='text-center small'>
+              {results && results.table.map( (row, idx, arr) => {
+                return <tr key={idx}>
+                  { row.map( (cell, cidx, carr) => {
+                      // Header row
+                      if(idx == 0)
+                        return <td key={cidx}>{cell}</td>
+
+                      // Footer row
+                      if(idx == arr.length-1)
+                        return <td className={`${cidx == carr.length-1? 'fw-bold' : ''}`} key={cidx}>{cell}</td>
+
+                      // Add row Totals
+                      if(cidx == carr.length-1)
+                        return <td key={cidx}>{cell}</td>
+
+                      if(cidx == 0)
+                        return <td key={cidx} className='text-start'>
+                          <i className='bi-square-fill' style={{ 'color': cell?.color }} /> {cell?.name}
+                        </td>
+
+                      return <td key={cidx} 
+                        className={`${cell?.expectedWarning? 'bg-danger-subtle' : ''}`}
+                        title={'𝛸²: '+ cell?.chiSquared}
+                        >
+                          {cell?.observed}
+                          <br />
+                          <small className='fw-light'>({ numberFormat(cell?.expected)})</small>
+                        </td>
+                  }) }
+                </tr>
               })}
-              <tr className='small text-center'>
-                <td></td>
-                {Object.values(columnTotals).map((itm, idx) => <td key={idx}>{itm}</td>)}
-                <td className='fw-bold'>{n}</td>
-              </tr>
             </tbody>
           </Table>
-          <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
+          
+          <span className='form-text p-1'>Interpretation</span>
+          <p className='small px-2'>{interpretChiSquaredTest(results, confidenceLevel)}</p>
         </>
       }
     </>

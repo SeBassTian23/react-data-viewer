@@ -38,7 +38,7 @@ export default function GraphPanel(props) {
     let statePlot = buildPlot({
       datasets: stateDatasubsets,   // Data Subsets
       thresholds: stateThresholds,  // Data Thresholds
-      settings: { ...content, legend: false, title: false },   // Selections from Modal
+      settings: { ...content.content, legend: false, title: false },   // Selections from Modal
       parameters: stateParameters,  // Available Parameters (Column labels)
       darkmode: props.darkmode      // Darkmode active or not
     })
@@ -73,7 +73,7 @@ export default function GraphPanel(props) {
       config: {
         displayModeBar: false,
         willReadFrequently: true,
-        staticPlot: props.plottype == 'scatter3d'? false : true
+        staticPlot: props.content.plottype == 'scatter3d'? false : true
       }
     });
 

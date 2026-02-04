@@ -2,17 +2,31 @@ const widgets = [
   {
     type: "barnardsexact",
     name: "Barnard's Exact Test",
-    category: "statistics_category"
+    category: "statistics_category",
+    selectType: 'string'
   },
   {
     type: "chisquared",
     name: "Chi-Squared Test",
-    category: "statistics_category"
+    category: "statistics_category",
+    selectType: 'string'
   },
   {
     type: "fishersexact",
     name: "Fisher's Exact Test",
-    category: "statistics_category"
+    category: "statistics_category",
+    selectType: 'string',
+    additionalSelect: {
+      values: {
+        "two-sided": "two-sided",
+        greater: "greater",
+        less: "less"
+      },
+      defaultValue: "two-sided",
+      register_name: "alternative",
+      title: "Alternative"
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "image",
@@ -24,6 +38,7 @@ const widgets = [
     type: "kolmogorovsmirnov",
     name: "Kolmogorov-Smirnov Test",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -33,17 +48,20 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "kruskalwallis",
     name: "Kruskal-Wallis Test",
-    category: "statistics_numerical"
+    category: "statistics_numerical",
+    selectType: 'number'
   },
   {
     type: "mannwhitneyu",
     name: "Mann-Whitney U Test",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -53,12 +71,14 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "mcnemar",
     name: "McNemar's Test",
-    category: "statistics_category"
+    category: "statistics_category",
+    selectType: 'string'
   },
   {
     type: "notes",
@@ -72,12 +92,14 @@ const widgets = [
   {
     type: "anova",
     name: "One-Way ANOVA",
-    category: "statistics_numerical"
+    category: "statistics_numerical",
+    selectType: 'number'
   },
   {
     type: "pearsoncorrelation",
     name: "Pearson Rank Correlation",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -93,6 +115,7 @@ const widgets = [
     type: "sign",
     name: "Sign Test",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -102,17 +125,21 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "spearmancorrelation",
     name: "Spearman Rank Correlation",
-    category: "statistics_numerical"
+    category: "statistics_numerical",
+    selectType: 'number',
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "ttest",
     name: "Student's t-Test",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -122,7 +149,8 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "summary",
@@ -134,6 +162,7 @@ const widgets = [
     type: "welchsttest",
     name: "Welch's t-test",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -143,12 +172,14 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   },
   {
     type: "wilcoxonsignedrank",
     name: "Wilcoxon Signed Rank",
     category: "statistics_numerical",
+    selectType: 'number',
     additionalSelect: {
       values: {
         "two-sided": "two-sided",
@@ -158,7 +189,8 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
   }
 ]
 

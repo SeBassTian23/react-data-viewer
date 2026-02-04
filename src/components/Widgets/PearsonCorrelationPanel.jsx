@@ -3,52 +3,24 @@ import { useSelector } from 'react-redux'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
-import round from 'lodash/round';
+import numberFormat from '../../helpers/number-format'
 
-import PanelInputForm from './PanelInputForm';
+import PanelStatistics from './helpers/PanelStatistics';
+import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
-import widgets from '../../constants/widgets'
-import pearsonCorrelation from '../../utils/statistics/pearsonCorrelation'
+import pearsonCorrelation, {interpretPearsonCorrelation} from '../../utils/statistics/pearsonCorrelation'
 
 export default function PearsonCorrelationPanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'pearsoncorrelation');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect} />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <PearsonCorrelationCalculation {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="pearsoncorrelation" 
+      props={props} 
+      CalculateComponent={PearsonCorrelationCalculation}
+    />
+  );
 }
 
 function PearsonCorrelationCalculation(props) {
@@ -57,65 +29,74 @@ function PearsonCorrelationCalculation(props) {
   const subsets = props.subsets || []
   const thresholds = props.thresholds
   const alternative = props.alternative
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  let data = {}
-  let columns = []
-
-  if (subsets.length > 0) {
-    for (let series in subsets) {
-      if (!subsets[series].isVisible)
-        continue
-      let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
-      data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
-
-      let cols = getUnique(query.data({ removeMeta: true }), parameter)
-      columns = [...new Set([...columns, ...cols])]
+  const [results, setResults] = useState([]);
+  
+  useEffect( () => {
+    
+    if(!parameter){
+      setResults([]);
+      return
     }
-  }
+      
 
-  let ids = Object.keys(data)
-  let combinations = pairs(ids) || []
-  let series_lookup = {}
+    let data = {}
+    let columns = []
 
-  for (let i in ids) {
-    let l = subsets.filter((itm) => itm.id === ids[i])
-    if (l.length > 0)
-      l = l[0]
-    series_lookup[ids[i]] = {
-      name: l.name,
-      color: l.color
-    }
-  }
+    if (subsets.length > 0) {
+      for (let series in subsets) {
+        if (!subsets[series].isVisible)
+          continue
+        let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
+        data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
 
-  // Perform t-test for combinations
-  let table = []
-  for (let i in combinations) {
-    let t = pearsonCorrelation(data[combinations[i][0]], data[combinations[i][1]], 0, alternative)
-    table.push(
-      {
-        compare: combinations[i],
-        names: combinations[i].map(itm => series_lookup[itm].name),
-        colors: combinations[i].map(itm => series_lookup[itm].color),
-        ...t
+        let cols = getUnique(query.data({ removeMeta: true }), parameter)
+        columns = [...new Set([...columns, ...cols])]
       }
-    )
-  }
+    }
+
+    let ids = Object.keys(data)
+    let combinations = pairs(ids) || []
+    let series_lookup = {}
+
+    for (let i in ids) {
+      let l = subsets.filter((itm) => itm.id === ids[i])
+      if (l.length > 0)
+        l = l[0]
+      series_lookup[ids[i]] = {
+        name: l.name,
+        color: l.color
+      }
+    }
+
+    // Perform t-test for combinations
+    let table = []
+    for (let i in combinations) {
+      let t = pearsonCorrelation(data[combinations[i][0]], data[combinations[i][1]], alternative)
+      table.push(
+        {
+          compare: combinations[i],
+          names: combinations[i].map(itm => series_lookup[itm].name),
+          colors: combinations[i].map(itm => series_lookup[itm].color),
+          ...t
+        }
+      )
+    }
+
+    setResults(table);
+
+  },[subsets, thresholds, parameter])
 
   return (
     <>
-      {table.length === 0 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            Pearson Rank Correlation for the selected subsets and "{parameterName}" failed.
-          </span>
-        </div>
-      }
-      {table.length > 0 &&
-        table.map( (itm,idx) =>{
-          return <Table size='sm' key={idx}>
+      {results.length === 0 && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed.`} /> }
+      {results.length > 0 &&
+        results.map( (itm,idx) => <>
+          <Table size='sm' key={idx}>
             <thead className='text-center small'>
               <tr>
                 <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
@@ -132,27 +113,27 @@ function PearsonCorrelationCalculation(props) {
                 </tr>
                 <tr>
                   <th>t-Statistic</th>
-                  <td>{round(itm.tStatistic,4)}</td>
+                  <td>{numberFormat(itm.tStatistic)}</td>
                 </tr>
                 <tr>
                   <th><em>p</em>-value</th>
-                  <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceIntervall? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
+                  <td className={`${itm.pValue < confidenceLevel? 'text-success': 'text-danger'}`}>{numberFormat(itm.pValue)}</td>
                 </tr>
                 <tr>
                   <th>Degrees Of Freedom</th>
                   <td>{itm.degreesOfFreedom}</td>
                 </tr>
                 <tr>
-                  <th>Sample Means</th>
-                  <td>{round(itm.mean1,4)}; {round(itm.mean2,4)}</td>
+                  <th>Sample Size</th>
+                  <td>{itm.sampleSize}</td>
                 </tr>
                 <tr>
-                  <th>Standard Error</th>
-                  <td>{round(itm.standardError,4)}</td>
+                  <th>Correlation Coefficient</th>
+                  <td>{numberFormat(itm.correlationCoefficient)}</td>
                 </tr>
                 <tr>
                   <th>Confidence Interval (95%)</th>
-                  <td>{round(itm.confidenceInterval95[0],4)} - {round(itm.confidenceInterval95[1],4)}</td>
+                  <td>{numberFormat(itm.confidenceInterval95[0])} - {numberFormat(itm.confidenceInterval95[1])}</td>
                 </tr>
                 <tr>
                   <th>Alternative</th>
@@ -161,9 +142,13 @@ function PearsonCorrelationCalculation(props) {
               </>}
             </tbody>
           </Table>
-        })  
+          
+          {!itm.error && <>
+            <span className='form-text p-1' key={idx+'h'}>Interpretation</span>
+            <p className='small px-2' key={idx+'i'}>{interpretPearsonCorrelation(itm, confidenceLevel)}</p>
+          </>}
+        </>)  
       }
-      <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
     </>
   )
 }

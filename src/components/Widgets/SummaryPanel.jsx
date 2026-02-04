@@ -2,53 +2,22 @@ import { useState, useEffect } from 'react'
 
 import { getFilteredData, getSeries } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
-
 import { useSelector } from 'react-redux'
 
-import jStat from 'jstat'
-import round from 'lodash/round';
+import numberFormat from '../../helpers/number-format'
 import Table from 'react-bootstrap/Table';
 
-import PanelInputForm from './PanelInputForm'
-
-import widgets from '../../constants/widgets'
+import PanelStatistics from './helpers/PanelStatistics'
+import statsSummary from '../../utils/statistics/statsSummary'
 
 export default function SummaryPanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'summary');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <CalculateSummary {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="summary" 
+      props={props} 
+      CalculateComponent={CalculateSummary}
+    />
+  );
 }
 
 function CalculateSummary(props) {
@@ -56,94 +25,107 @@ function CalculateSummary(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  let summarydata = []
-
-  if (subsets.length === 0) {
-    let query = getFilteredData('data', { thresholds, dropna: parameter }).data({ removeMeta: true })
-    summarydata.push(getSeries(query, parameter)[parameter] || [])
-  }
-
-  if (subsets.length > 0) {
-    for (let series in subsets) {
-      let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
-      summarydata.push(getSeries(query.data({ removeMeta: true }), parameter)[parameter] || [])
+  const [results, setResults] = useState([]);
+  
+  useEffect( () => {
+    
+    if(!parameter){
+      setResults([]);
+      return
     }
-  }
+        
+    let summary = [];
+  
+    if (subsets.length === 0) {
+      let query = getFilteredData('data', { thresholds, dropna: parameter }).data({ removeMeta: true })
+      let summarydata = getSeries(query, parameter)[parameter] || []
+      summary.push({
+        ...statsSummary(summarydata, 1-confidenceLevel),
+        ...{color: 'blue', name: 'All Data' }
+      })
+    }
+  
+    if (subsets.length > 0) {
+      for (let series in subsets) {
+        let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
+        let summarydata = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
+        summary.push({
+          ...statsSummary(summarydata, 1-confidenceLevel),
+          ...{color: subsets[series].color, name: subsets[series].name }
+        })
+      }
+    }
 
-  let summary = []
+    setResults(summary);
 
-  for (let i in summarydata) {
-    const mean = jStat.mean(summarydata[i]);
-    const confInt = jStat.normalci(mean, ConfidenceInterval, summarydata[i])
-    if (summarydata[i].length > 0)
-      summary.push([
-        ['Sample Size', summarydata[i].length],
-        ['Median', round(jStat.median(summarydata[i]), 3)],
-        ['Average', round(mean, 3)],
-        ['Confidence Interval of Avg.', round(confInt[0], 3) + ' - ' + round(confInt[1], 3)],
-        ['Standard Deviation', round(jStat.stdev(summarydata[i]), 3)],
-        ['Standard Error', round(jStat.stdev(summarydata[i]) / Math.sqrt(summarydata[i].length), 3)],
-        ['Minimum', round(jStat.min(summarydata[i]), 3)],
-        ['Maximum', round(jStat.max(summarydata[i]), 3)],
-        ['Sum', round(jStat.sum(summarydata[i]), 3)]
-      ])
-    else
-      summary.push([])
-  }
+  },[subsets, thresholds, parameter])
 
-  return (
-    <>
-      {props.subsets.length === 0 &&
-        <Table size="sm">
+  return (<>
+    { results.length > 0 && results.map((itm, idx) => {
+      return (
+        <Table size="sm" key={idx}>
+          <thead className='small'>
+            <tr>
+              <th colSpan={2}>
+                <i className="bi-square-fill" style={{ "color": itm.color }}></i>{' '}
+                {itm.name}
+              </th>
+            </tr>
+          </thead>
           <tbody className='small'>
-            {summary[0].map((row, idx) => {
-              return (
-                <tr key={idx}>
-                  <td>{row[0]}</td>
-                  <td>{row[1]}</td>
+            {!itm?
+              <tr>
+                <td colSpan={2} className={'text-danger'}>Subset has no data</td>
+              </tr> : <>
+                <tr>
+                  <td colSpan={2}>Summary - {parameterName}</td>
+                </tr>                  
+                <tr>
+                  <th>Sample Size</th>
+                  <td>{itm.size}</td>
+                </tr>                  
+                <tr>
+                  <th>Median</th>
+                  <td>{numberFormat(itm.median)}</td>
+                </tr>                  
+                <tr>
+                  <th>Average</th>
+                  <td>{numberFormat(itm.average)}</td>
+                </tr>                  
+                <tr>
+                  <th>Confidence Interval ({numberFormat((1-confidenceLevel)*100)}%)</th>
+                  <td>{numberFormat(itm.ci[0])} - {numberFormat(itm.ci[1])}</td>
+                </tr>                  
+                <tr>
+                  <th>Standard Deviation</th>
+                  <td>{numberFormat(itm.sd)}</td>
+                </tr>                  
+                <tr>
+                  <th>Standard Error</th>
+                  <td>{numberFormat(itm.se)}</td>
+                </tr>                  
+                <tr>
+                  <th>Minimum</th>
+                  <td>{numberFormat(itm.min)}</td>
+                </tr>                  
+                <tr>
+                  <th>Maximum</th>
+                  <td>{numberFormat(itm.max)}</td>
                 </tr>
-              )
-            })}
+                <tr>
+                  <th>Sum</th>
+                  <td>{numberFormat(itm.sum)}</td>
+                </tr>                  
+              </>
+            }
           </tbody>
         </Table>
-      }
-      {props.subsets.length > 0 && <>
-        {props.subsets.map((itm, idx) => {
-          return (
-            <Table size="sm" key={idx}>
-              <thead className='small'>
-                <tr>
-                  <th colSpan={2}>
-                    <i className="bi-square-fill" style={{ "color": itm.color }}></i>{' '}
-                    {itm.name}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className='small'>
-                {summary[idx].length === 0 &&
-                  <tr>
-                    <td colSpan={2} className={'text-danger'}>Subset has no data</td>
-                  </tr>
-                }
-                {summary[idx].length > 0 && summary[idx].map((row, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td>{row[0]}</td>
-                      <td>{row[1]}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </Table>
-          )
-        })}
-        <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
-      </>
-      }
-    </>
-  )
+      )
+    })}
+  </>)
 }

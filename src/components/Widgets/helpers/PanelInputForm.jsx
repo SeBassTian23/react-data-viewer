@@ -1,11 +1,9 @@
-import React from 'react'
-
 import { useForm } from 'react-hook-form';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { dashboardEditPanel, dashboardEditTitlePanel } from '../../features/dashboard.slice'
+import { dashboardEditPanel, dashboardEditTitlePanel } from '../../../features/dashboard.slice'
 
-import { confidenceLevels } from '../../constants/confidence-levels'
+import { confidenceLevels } from '../../../constants/confidence-levels'
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -77,6 +75,7 @@ export default function PanelInputForm(props) {
             }><i className='bi-caret-right' /> Apply</Button>
           </Col>
         </Row>
+        {props?.comment && <p className='form-text'>{props.comment}</p>}
       </Card.Body>
     </>
   )

@@ -1,56 +1,27 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
-
 import { useSelector } from 'react-redux'
-
-import round from 'lodash/round';
 
 import Table from 'react-bootstrap/Table';
 
-import PanelInputForm from './PanelInputForm';
+import PanelStatistics from './helpers/PanelStatistics';
+import PanelWarning from './helpers/PanelWarning'
+
+import numberFormat from '../../helpers/number-format'
 
 import pairs from '../../helpers/generate-pairs'
-import widgets from '../../constants/widgets'
-import tTest from '../../utils/statistics/tTest'
+import tTest, {interpretTTest} from '../../utils/statistics/tTest'
 
 export default function TTestPanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'ttest');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect} />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <CalculateTTest {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="ttest" 
+      props={props} 
+      CalculateComponent={CalculateTTest}
+    />
+  );
 }
 
 export function CalculateTTest(props) {
@@ -59,11 +30,19 @@ export function CalculateTTest(props) {
   const subsets = props.subsets || []
   const thresholds = props.thresholds
   const alternative = props.alternative
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  const results = useMemo(() => {
+  const [results, setResults] = useState([]);
+
+  useEffect( () => {
+    
+    if(!parameter){
+      setResults([]);
+      return
+    }
 
     let data = {}
     let columns = []
@@ -97,73 +76,77 @@ export function CalculateTTest(props) {
     // Perform t-test for combinations
     let table = []
     for (let i in combinations) {
-      let t = tTest(data[combinations[i][0]], data[combinations[i][1]], 0, alternative)
+      let test = tTest(data[combinations[i][0]], data[combinations[i][1]], alternative)
       table.push(
         {
           compare: combinations[i],
           names: combinations[i].map(itm => series_lookup[itm].name),
           colors: combinations[i].map(itm => series_lookup[itm].color),
-          ...t
+          ...test
         }
       )
     }
-    return { table, columns };
-  }, [subsets, thresholds, parameter, alternative]);
+
+    setResults(table);
+
+  },[subsets, thresholds, parameter])
 
   return (
     <>
-      {results.table.length === 0 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            Student's <em>t</em>-Test for selected subsets and "{parameterName}" failed.
-          </span>
-        </div>
-      }
-      {results.table.length > 0 && <>
-        {results.table.map( (itm,idx) =>{
-          return <Table size='sm' key={idx}>
-            <thead className='text-center small'>
+      {results.length === 0 && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed.`}/>}
+      {results.length > 0 && <>
+        {results.map( (itm, idx) => <>
+          <Table size='sm' key={idx}>
+            <thead className='text-center small align-middle'>
               <tr>
                 <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
                 <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
               </tr>
             </thead>
-            <tbody className='small' style={{ 'verticalAlign': 'middle' }}>
+            <tbody className='text-center small align-middle'>
               <tr>
-                <td colSpan={2}>{itm.testType}</td>
+                <td colSpan={2} className='text-start'>{itm.testType}</td>
               </tr>
               <tr>
-                <th>t-Statistic</th>
-                <td>{round(itm.tStatistic,4)}</td>
+                <th className='text-start'>t-Statistic</th>
+                <td>{numberFormat(itm.tStatistic)}</td>
               </tr>
               <tr>
-                <th><em>p</em>-value</th>
-                <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceInterval? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
+                <th className='text-start'>p-value</th>
+                <td className={`${itm.pValue < confidenceLevel? 'text-success': 'text-danger'}`}>{numberFormat(itm.pValue, 4)}</td>
               </tr>
               <tr>
-                <th>Degrees Of Freedom</th>
+                <th className='text-start'>Degrees Of Freedom</th>
                 <td>{itm.degreesOfFreedom}</td>
               </tr>
               <tr>
-                <th>Sample Means</th>
-                <td>{round(itm.mean1,4)}; {round(itm.mean2,4)}</td>
+                <th className='text-start'>Sample Means</th>
+                <td>{numberFormat(itm.means[0])} - {numberFormat(itm.means[1])}</td>
               </tr>
               <tr>
-                <th>Standard Error</th>
-                <td>{round(itm.standardError,4)}</td>
+                <th className='text-start'>Mean Difference</th>
+                <td>{numberFormat(itm.meanDifference)}</td>
               </tr>
               <tr>
-                <th>Confidence Interval (95%)</th>
-                <td>{round(itm.confidenceInterval95[0],4)} - {round(itm.confidenceInterval95[1],4)}</td>
+                <th className='text-start'>Standard Error</th>
+                <td>{numberFormat(itm.standardError)}</td>
               </tr>
               <tr>
-                <th>Alternative</th>
+                <th className='text-start'>Confidence Interval (95%)</th>
+                <td>{numberFormat(itm.confidenceInterval[0])} - {numberFormat(itm.confidenceInterval[1])}</td>
+              </tr>
+              <tr>
+                <th className='text-start'>Alternative</th>
                 <td>{itm.alternative}</td>
               </tr>
             </tbody>
           </Table>
-        })}
-        <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
+
+          <span className='form-text p-1' key={idx+'h'}>Interpretation</span>
+          <p className='small px-2' key={idx+'i'}>{interpretTTest(itm, confidenceLevel)}</p>
+
+        </>)}
+
         </>
       }
     </>

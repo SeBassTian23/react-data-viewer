@@ -129,8 +129,8 @@ function DashboardWidget(props) {
   const content = useMemo(() => {
     const config = PANEL_REGISTRY[props.type];
     if (!config) return (
-      <div class="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
-        <i class="bi bi-window fs-2"></i>
+      <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
+        <i className="bi bi-window fs-2"></i>
         Unknown or Unsupported Widget
       </div>
     );
@@ -138,7 +138,7 @@ function DashboardWidget(props) {
     const Component = config.component;
     if (props.type === 'map')
       return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
-    return <Component id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
+    return <Component id={props.id} content={props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
   }, [props.type, props.id, props.content, props.darkmode, props.size.xl]);
 
   const handleClickPanelSize = useCallback((e) => {

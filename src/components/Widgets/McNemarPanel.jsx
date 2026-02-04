@@ -2,56 +2,27 @@ import { useState, useEffect } from 'react'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
-
 import { useSelector } from 'react-redux'
 
 import jStat from 'jstat'
-import round from 'lodash/round';
+import numberFormat from '../../helpers/number-format'
 
 import Table from 'react-bootstrap/Table';
 
-import PanelInputForm from './PanelInputForm';
+import PanelStatistics from './helpers/PanelStatistics';
+import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
-import widgets from '../../constants/widgets'
-import mcnemarTest from '../../utils/statistics/mcnemarTest'
+import mcnemarTest, {interpretMcNemar} from '../../utils/statistics/mcnemarTest'
 
 export default function McNemarPanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'mcnemar');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='string' selectHelp={`Parameter for ${widget.name}`} />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <McNemarTest {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="mcnemar" 
+      props={props} 
+      CalculateComponent={McNemarTest}
+    />
+  );
 }
 
 function McNemarTest(props) {
@@ -59,97 +30,140 @@ function McNemarTest(props) {
   const parameter = props.parameter
   const subsets = props.subsets || []
   const thresholds = props.thresholds
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  let data = {}
-  let columns = []
-
-  if (subsets.length > 0) {
-    for (let series in subsets) {
-      let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
-      data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
-
-      let cols = getUnique(query.data({ removeMeta: true }), parameter)
-      columns = [...new Set([...columns, ...cols])]
-    }
-  }
-
-  //get input data
-  let ids = Object.keys(data)
-  let combinationsIDs = pairs(ids) || []
-  let combinationsCols = pairs(columns) || []
-
-  let subsetInfo = {}
-  ids.forEach((id) => {
-    let idxSubset = subsets.findIndex((itm) => itm.id === id)
-    subsetInfo[id] = {
-      'color': subsets[idxSubset].color || "#000",
-      'name': subsets[idxSubset].name || "Unknown"
-    }
-  })
-
-  let tests = []
-  for (let i in combinationsIDs) {
-    for (let j in combinationsCols) {
-      tests.push({
-        rows: combinationsIDs[i],
-        cols: combinationsCols[j],
-        data: [[
-          data[combinationsIDs[i][0]].filter(itm => itm === combinationsCols[j][0]).length,
-          data[combinationsIDs[i][0]].filter(itm => itm === combinationsCols[j][1]).length
-        ],
-        [
-          data[combinationsIDs[i][1]].filter(itm => itm === combinationsCols[j][0]).length,
-          data[combinationsIDs[i][1]].filter(itm => itm === combinationsCols[j][1]).length
-        ]]
-      })
-    }
-  }
-
-  let tables = []
-  for (let t in tests) {
+  const [results, setResults] = useState([]);
+  
+  useEffect( () => {
     
-    let n = jStat.sum(tests[t].data.flat())
-        
-    let test = mcnemarTest(tests[t].data, true)
-
-    tables.push({
-      ...test,
-      view: [
-        [{ name: '', color: '' }, ...tests[t].cols, ''],
-        [subsetInfo[tests[t].rows[0]], tests[t].data[0][0], tests[t].data[0][1], jStat.sum(tests[t].data[0])],
-        [subsetInfo[tests[t].rows[1]], tests[t].data[1][0], tests[t].data[1][1], jStat.sum(tests[t].data[1])],
-        [{ name: '', color: '' }, jStat.sum([tests[t].data[0][0], tests[t].data[1][0]]), jStat.sum([tests[t].data[0][1], tests[t].data[1][1]]), n]
-      ]
+    if(!parameter){
+      setResults([]);
+      return
     }
-    )
+       
 
-  }
+    let data = {}
+    let columns = []
+
+    if (subsets.length > 0) {
+      for (let series in subsets) {
+        let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
+        data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
+
+        let cols = getUnique(query.data({ removeMeta: true }), parameter)
+        columns = [...new Set([...columns, ...cols])]
+      }
+    }
+
+    //get input data
+    let ids = Object.keys(data)
+    let combinationsIDs = pairs(ids) || []
+    let combinationsCols = pairs(columns) || []
+
+    let subsetInfo = {}
+    ids.forEach((id) => {
+      let idxSubset = subsets.findIndex((itm) => itm.id === id)
+      subsetInfo[id] = {
+        'color': subsets[idxSubset].color || "#000",
+        'name': subsets[idxSubset].name || "Unknown"
+      }
+    })
+
+    let tests = []
+    for (let i in combinationsIDs) {
+      for (let j in combinationsCols) {
+        tests.push({
+          rows: combinationsIDs[i],
+          cols: combinationsCols[j],
+          data: [[
+            data[combinationsIDs[i][0]].filter(itm => itm === combinationsCols[j][0]).length,
+            data[combinationsIDs[i][0]].filter(itm => itm === combinationsCols[j][1]).length
+          ],
+          [
+            data[combinationsIDs[i][1]].filter(itm => itm === combinationsCols[j][0]).length,
+            data[combinationsIDs[i][1]].filter(itm => itm === combinationsCols[j][1]).length
+          ]]
+        })
+      }
+    }
+
+    let tables = []
+    for (let t in tests) {
+      
+      let n = jStat.sum(tests[t].data.flat())
+          
+      let test = mcnemarTest(tests[t].data, true)
+
+      tables.push({
+        ...test,
+        subsets: [
+          subsetInfo[tests[t].rows[0]],
+          subsetInfo[tests[t].rows[1]]
+        ],
+        contingencyTable: tests[t].data,
+        view: [
+          [{ name: '', color: '' }, ...tests[t].cols, ''],
+          [subsetInfo[tests[t].rows[0]], tests[t].data[0][0], tests[t].data[0][1], jStat.sum(tests[t].data[0])],
+          [subsetInfo[tests[t].rows[1]], tests[t].data[1][0], tests[t].data[1][1], jStat.sum(tests[t].data[1])],
+          [{ name: '', color: '' }, jStat.sum([tests[t].data[0][0], tests[t].data[1][0]]), jStat.sum([tests[t].data[0][1], tests[t].data[1][1]]), n]
+        ]
+      }
+      )
+
+    }
+
+    setResults(tables);
+
+  },[subsets, thresholds, parameter])
 
   return (
     <>
-      {tables.length === 0 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            McNemar's Exact Test for selected subsets and "{parameterName}" failed.
-          </span>
-        </div>
-      }
-      {tables.length > 30 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            The current selection of subsets and the category <strong>"{parameterName}"</strong> will generate <strong>{tables.length}</strong> tests. Please select fewer subsets or make the filters more stringent to reduce the number of categories.
-          </span>
-        </div>
-      }
-      {(tables.length > 0 && tables.length <=30) &&
+      {results.length === 0 && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed.`}/>}
+      {results.length > 30 && <PanelWarning warning={<>The current selection of subsets and the category <strong>"{parameterName}"</strong> will generate <strong>{results.length}</strong> tests. Please select fewer subsets or make the filters more stringent to reduce the number of categories.</>}/>}
+      {(results.length > 0 && results.length <=30) &&
         <>
-          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameterName}".</p>
-          {tables.map((table, idx) => {
-            return (
-              <Table responsive bordered size='sm' className='mt-1' key={idx}>
+          {results.map((table, idx) =>
+            <>
+              <Table size='sm' className='mt-1' key={idx}>
+                 <thead className='text-center small'>
+                  <tr>
+                    <th><i className='bi-square-fill' style={{ 'color': table.subsets[0].color }} />&nbsp;{table.subsets[0].name}</th>
+                    <th><i className='bi-square-fill' style={{ 'color': table.subsets[1].color }} />&nbsp;{table.subsets[1].name}</th>
+                  </tr>
+                </thead>
+                <tbody className='text-center small'>
+                  <tr>
+                    <td colSpan={2} className='text-start'>{table.testType}</td>
+                  </tr>
+                  <tr>
+                    <th className='text-start'>Statistic</th>
+                    <td>{numberFormat(table.statistic)}</td>
+                  </tr>
+                  <tr>
+                    <th className='text-start'>p-value</th>
+                    <td className={`${table.pValue < confidenceLevel? 'text-success': 'text-danger'}`}>{numberFormat(table.pValue)}</td>
+                  </tr>
+                  <tr>
+                    <th className='text-start'>Discordant Pairs</th>
+                    <td>{table.discordantPairs}</td>
+                  </tr>
+                  {table?.oddsRatio && <tr>
+                    <th className='text-start'>Odds Ratio</th>
+                    <td>{numberFormat(table.oddsRatio)}</td>
+                  </tr>}
+                  <tr>
+                    <th className='text-start'>Method</th>
+                    <td>{table.method}</td>
+                  </tr>
+                </tbody>
+              </Table>
+
+              <span className='form-text p-1' key={idx+'h1'}>Contingency Table</span>
+
+              <Table responsive bordered size='sm' className='mt-1' key={idx+'t'}>
                 <tbody className='small text-center align-middle'>
                   {table.view.map((row, idx) => {
                     return (
@@ -162,31 +176,12 @@ function McNemarTest(props) {
                     )
                   })}
                 </tbody>
-                <tfoot className='small'>
-                  <tr>
-                    <th colSpan={2}>Statistic</th>
-                    <td colSpan={2}>{round(table.statistic,4)}</td>
-                  </tr>
-                  <tr>
-                    <th colSpan={2}><em>p</em>-value</th>
-                    <td colSpan={2} className={`${table.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{table.pValue < ConfidenceInterval? '< ' + ConfidenceInterval : round(table.pValue, 4)}</td>
-                  </tr>
-                  <tr>
-                    <th colSpan={2}>Discordant Pairs</th>
-                    <td colSpan={2}>{table.discordantPairs}</td>
-                  </tr>
-                  <tr>
-                    <th colSpan={2}>Odds Ratio</th>
-                    <td colSpan={2}>{round(table.oddsRatio,4)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={4}><strong>Method:</strong> {table.method}</td>
-                  </tr>
-                </tfoot>
               </Table>
-            )
-          })}
-          <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
+
+              <span className='form-text p-1' key={idx+'h2'}>Interpretation</span>
+              <p className='small px-2' key={idx+'i'}>{interpretMcNemar(table, confidenceLevel)}</p>
+            </>
+          )}
         </>
       }
     </>

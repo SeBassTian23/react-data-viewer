@@ -11,7 +11,7 @@ export default function NotesPanel(props) {
 
   const notesRef = useRef();
 
-  const [notes, setNotes] = useState(props.text)
+  const [notes, setNotes] = useState(props.content.text)
   const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch()

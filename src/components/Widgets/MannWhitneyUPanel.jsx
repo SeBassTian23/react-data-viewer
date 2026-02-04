@@ -2,54 +2,26 @@ import { useState, useEffect } from 'react'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
-import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
 import { useSelector } from 'react-redux'
 
-import round from 'lodash/round';
+import numberFormat from '../../helpers/number-format'
 
-import PanelInputForm from './PanelInputForm'
+import PanelStatistics from './helpers/PanelStatistics'
+import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
-import widgets from '../../constants/widgets'
-import mannWhitneyU from '../../utils/statistics/mannWhitneyU'
+import mannWhitneyU, {interpretMannWhitneyU} from '../../utils/statistics/mannWhitneyU'
 
 export default function MannWhitneyUPanel(props) {
-
-  const stateDashboard = useSelector(state => state.dashboard)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const stateDatasubsets = useSelector(state => state.datasubsets)
-  const stateParameters = useSelector(state => state.parameters)
-
-  const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
-  const parameterName = stateParameters.find(itm => itm.name == props.parameter)?.alias || props.parameter
-
-  const [state, setState] = useState(false)
-
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard, stateThresholds, stateDatasubsets])
-
-  const widget = widgets.find( itm => itm.type == 'mannwhitneyu');
-
   return (
-    <>
-      {!state && <PanelInputForm {...props} selectType='number' selectHelp={`Parameter for ${widget.name}`} additionalSelect={widget.additionalSelect}  />}
-      {state && <>
-        <Card.Body className='p-0 overflow-y'>
-          <CalculateMannWhitneyU {...props} parameterName={parameterName} subsets={subsets} thresholds={thresholds} />
-        </Card.Body>
-      </>}
-    </>
-  )
+    <PanelStatistics 
+      widgetType="mannwhitneyu" 
+      props={props} 
+      CalculateComponent={CalculateMannWhitneyU}
+    />
+  );
 }
 
 function CalculateMannWhitneyU(props) {
@@ -58,112 +30,119 @@ function CalculateMannWhitneyU(props) {
   const subsets = props.subsets || []
   const thresholds = props.thresholds
   const alternative = props.alternative
-  const parameterName = props.parameterName
+  const stateParameters = useSelector(state => state.parameters)
+  const parameterName = stateParameters.find(itm => itm.name == props?.parameter)?.alias || props?.parameter
 
-  const ConfidenceInterval = props.confidence_level || 0.05
+  const confidenceLevel = props.confidence_level || 0.05
 
-  let data = {}
-  let columns = []
-
-  if (subsets.length > 0) {
-    for (let series in subsets) {
-      if (!subsets[series].isVisible)
-        continue
-      let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
-      data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
-
-      let cols = getUnique(query.data({ removeMeta: true }), parameter)
-      columns = [...new Set([...columns, ...cols])]
+  const [results, setResults] = useState([]);
+  
+  useEffect( () => {
+    
+    if(!parameter){
+      setResults([]);
+      return
     }
-  }
 
-  let ids = Object.keys(data)
-  let combinations = pairs(ids) || []
-  let series_lookup = {}
+    let data = {}
+    let columns = []
 
-  for (let i in ids) {
-    let l = subsets.filter((itm) => itm.id === ids[i])
-    if (l.length > 0)
-      l = l[0]
-    series_lookup[ids[i]] = {
-      name: l.name,
-      color: l.color
+    if (subsets.length > 0) {
+      for (let series in subsets) {
+        if (!subsets[series].isVisible)
+          continue
+        let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
+        data[subsets[series].id] = getSeries(query.data({ removeMeta: true }), parameter)[parameter] || []
+
+        let cols = getUnique(query.data({ removeMeta: true }), parameter)
+        columns = [...new Set([...columns, ...cols])]
+      }
     }
-  }
 
-  // Perform Mann-Whitney U Test for combinations
-  let table = []
-  for (let i in combinations) {
-    let test = mannWhitneyU(data[combinations[i][0]], data[combinations[i][1]], alternative)
+    let ids = Object.keys(data)
+    let combinations = pairs(ids) || []
+    let series_lookup = {}
 
-    table.push({
-      testType: test.testType,
-      compare: combinations[i],
-      names: combinations[i].map(itm => series_lookup[itm].name),
-      colors: combinations[i].map(itm => series_lookup[itm].color),
-      U: test.U,
-      z: test.z,
-      pValue: test.pValue,
-      meanRank1: test.meanRank1,
-      meanRank2: test.meanRank2,
-      alternative
-    })
-  }
+    for (let i in ids) {
+      let l = subsets.filter((itm) => itm.id === ids[i])
+      if (l.length > 0)
+        l = l[0]
+      series_lookup[ids[i]] = {
+        name: l.name,
+        color: l.color
+      }
+    }
 
+    // Perform Mann-Whitney U Test for combinations
+    let table = []
+    for (let i in combinations) {
+      let test = mannWhitneyU(data[combinations[i][0]], data[combinations[i][1]], alternative)
+
+      table.push({
+        testType: test.testType,
+        compare: combinations[i],
+        names: combinations[i].map(itm => series_lookup[itm].name),
+        colors: combinations[i].map(itm => series_lookup[itm].color),
+        U: test.U,
+        z: test.z,
+        pValue: test.pValue,
+        meanRank1: test.meanRank1,
+        meanRank2: test.meanRank2,
+        alternative
+      })
+    }
+
+    setResults(table);
+
+  },[subsets, thresholds, parameter])
 
   return (
     <>
-      {table.length === 0 &&
-        <div className='d-flex justify-content-center align-items-center m-0 p-3 h-100'>
-          <span className='text-danger small'>
-            Mann-Whitney U - Test for selected subsets and "{parameterName}" failed.
-          </span>
-        </div>
-      }
-      {table.length > 0 &&
+      {results.length === 0 && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed.`}/>}
+      {results.length > 0 &&
         <>
-          <p className='form-text'>Tests for all 2x2 combinations between subsets and "{parameterName}".</p>
-
-          {table.map((itm, idx) => {
-            return <Table size='sm' key={idx}>
-                <thead className='text-start small'>
+          {results.map((itm, idx) => <>
+              <Table size='sm' key={idx}>
+                <thead className='text-center small'>
                   <tr>
                     <th><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
                     <th><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
                   </tr>
                 </thead>
-                <tbody className='small text-start align-middle'>
+                <tbody className='small text-center'>
                   <tr>
-                    <td colSpan={2}>{itm.testType}</td>
+                    <td colSpan={2} className='text-start'>{itm.testType}</td>
                   </tr>
                   <tr>
-                    <th>U statistic</th>
-                    <td>{round(itm.U,2)}</td>
+                    <th className='text-start'>U statistic</th>
+                    <td>{numberFormat(itm.U)}</td>
                   </tr>
                   <tr>
-                    <th>Z score</th>
-                    <td>{round(itm.z,4)}</td>
+                    <th className='text-start'>Z score</th>
+                    <td>{numberFormat(itm.z)}</td>
                   </tr>
                   <tr>
-                    <th><em>p</em>-value</th>
-                    <td className={`${itm.pValue < ConfidenceInterval? 'text-success': 'text-danger'}`}>{itm.pValue < ConfidenceInterval? '< ' + ConfidenceInterval : round(itm.pValue, 4)}</td>
+                    <th className='text-start'>p-value</th>
+                    <td className={`${itm.pValue < confidenceLevel? 'text-success': 'text-danger'}`}>{numberFormat(itm.pValue)}</td>
                   </tr>
                   <tr>
-                    <th>Group 1 mean rank</th>
-                    <td>{round(itm.meanRank1,2)}</td>
+                    <th className='text-start'>Group 1 mean rank</th>
+                    <td>{numberFormat(itm.meanRank1)}</td>
                   </tr>
                   <tr>
-                    <th>Group 2 mean rank</th>
-                    <td>{round(itm.meanRank2,2)}</td>
+                    <th className='text-start'>Group 2 mean rank</th>
+                    <td>{numberFormat(itm.meanRank2)}</td>
                   </tr>
                   <tr>
-                    <th>Alternative</th>
+                    <th className='text-start'>Alternative</th>
                     <td>{itm.alternative}</td>
                   </tr>
                 </tbody>
               </Table>
-          })}
-          <span className='form-text text-muted small p-1'>Confidence: <em>p</em> {'<'} {ConfidenceInterval || 'unknown'}</span>
+              
+              <span className='form-text p-1' key={idx+'h'}>Interpretation</span>
+              <p className='small px-2' key={idx+'i'}>{interpretMannWhitneyU(itm, confidenceLevel)}</p>
+            </>)}
         </>
       }
     </>

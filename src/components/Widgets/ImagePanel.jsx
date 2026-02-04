@@ -10,7 +10,6 @@ import { dashboardEditPanel } from '../../features/dashboard.slice'
 
 export default function ImagePanel(props) {
 
-  const stateDashboard = useSelector(state => state.dashboard)
   const dispatch = useDispatch()
 
   const [state, setState] = useState(false)
@@ -35,15 +34,7 @@ export default function ImagePanel(props) {
     reader.readAsDataURL(file);
   }
 
-  useEffect(() => {
-    const itms = stateDashboard.filter((itm) => itm.id === props.id)
-    if (itms.length > 0 && itms[0].content) {
-      setState(true)
-    }
-    else {
-      setState(false)
-    }
-  }, [stateDashboard])
+  useEffect(() => setState( props.content? true : false ), [props.content])
 
   const imageNewTab = (base64String) => {
     let image = new Image();
@@ -52,7 +43,7 @@ export default function ImagePanel(props) {
     newTab.document.body.innerHTML = image.outerHTML;
   }
 
-  const handleClick = useCallback(() => imageNewTab(props.base64))
+  const handleClick = useCallback(() => imageNewTab(props.content.base64))
 
   return (
     <>
@@ -72,15 +63,13 @@ export default function ImagePanel(props) {
         </Card.Body>
       </>}
       {state && <>
-        <Card.Body className='p-1 overflow-y-hidden' style={
+        <Card.Body className='p-1 overflow-y-hidden' role='button' style={
           {
-            "background": `url(${props.base64})`,
+            "background": `url(${props.content.base64})`,
             "backgroundSize": "contain",
             "backgroundPosition": "center",
-            "backgroundRepeat": "no-repeat",
-            "cursor": "pointer"
-          }
-        }
+            "backgroundRepeat": "no-repeat"
+          }}
           title={props.name}
           onClick={handleClick}></Card.Body>
       </>}
