@@ -5,65 +5,19 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 
-import GraphPanel from '../Widgets/GraphPanel'
-import MapPanel from '../Widgets/MapPanel'
-import ImagePanel from '../Widgets/ImagePanel'
-import NotesPanel from '../Widgets/NotesPanel'
-
-import ANOVAPanel from '../Widgets/ANOVAPanel'
-import FishersExactPanel from '../Widgets/FishersExactPanel'
-import ChiSquarePanel from '../Widgets/ChiSquaredPanel'
-import SummaryPanel from '../Widgets/SummaryPanel'
-import TTestPanel from '../Widgets/TTestPanel'
-import BarndardsExactPanel from '../Widgets/BarnardsExactPanel'
-import MannWhitneyUPanel from '../Widgets/MannWhitneyUPanel'
-import SignPanel from '../Widgets/SignPanel'
-import SpearmanCorrelationPanel from '../Widgets/SpearmanCorrelationPanel'
-import WilcoxonSignedRankPanel from '../Widgets/WilcoxonSignedRankPanel'
-import McNemarPanel from '../Widgets/McNemarPanel'
-import KruskalWallisPanel from '../Widgets/KruskalWallisPanel'
-import WelchsTTestPanel from '../Widgets/WelchsTTestPanel'
-import PearsonCorrelationPanel from '../Widgets/PearsonCorrelationPanel'
-import KolmogorovSmirnovPanel from '../Widgets/KolmogorovSmirnovPanel'
-
 import useModalConfirm from "../../hooks/useModalConfirm";
 
 import { useDispatch } from 'react-redux'
 import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
 
 import { widgetSizes } from '../../constants/widget-sizes'
+import widgets from "../../constants/widgets"
 
 import copyToClipboard from '../../helpers/clipboard'
 
 import useHelp from "../../hooks/useHelp";
 
 import ErrorBoundary from '../../utils/ErrorBoundary'
-
-const PANEL_REGISTRY = {
-  // Pages
-  plot: { component: GraphPanel, title: null, showEdit: false, anchor: 'graphs' },
-  graph: { component: GraphPanel, title: null, showEdit: false, anchor: 'graphs' },
-  map: { component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps' },
-  // General
-  notes: { component: NotesPanel, title: 'Notes', showEdit: false, anchor: 'notes' },
-  image: { component: ImagePanel, title: 'Image', showEdit: false, anchor: 'image' },
-  // Statistics
-  anova: { component: ANOVAPanel, title: 'ANOVA', showEdit: true, anchor: 'one-way-anova' },
-  chisquared: { component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true, anchor: 'chi-squared-test' },
-  fishersexact: { component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true, anchor: 'fishers-exact-test' },
-  summary: { component: SummaryPanel, title: 'Summary', showEdit: true, anchor: 'summary' },
-  ttest: { component: TTestPanel, title: "Student's t-Test", showEdit: true, anchor: 'students-t-test' },
-  barnardsexact: { component: BarndardsExactPanel, title: "Barnard's Exact Test", showEdit: true, anchor: 'barnards-exact-test' },
-  mannwhitneyu: { component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true, anchor: 'mann-whitney-u-test' },
-  sign: { component: SignPanel, title: "Sign Test", showEdit: true, anchor: 'sign-test' },
-  spearmancorrelation: { component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true, anchor: 'spearman-rank-correlation' },
-  wilcoxonsignedrank: { component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test' },
-  mcnemar: { component: McNemarPanel, title: "McNemar's Test", showEdit: true, anchor: 'mcnemars-test' },
-  kruskalwallis: { component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true, anchor: 'kruskal-wallis-test' },
-  welchsttest: { component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true, anchor: 'welchs-t-test' },
-  pearsoncorrelation: { component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true, anchor: 'pearson-rank-correlation' },
-  kolmogorovsmirnov: { component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true, anchor: 'kolmogorov-smirnov-test' },
-};
 
 function DashboardWidget(props) {
 
@@ -127,7 +81,7 @@ function DashboardWidget(props) {
   }, [props.size])
 
   const content = useMemo(() => {
-    const config = PANEL_REGISTRY[props.type];
+    const config = widgets.find(itm => itm.type == props.type);
     if (!config) return (
       <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
         <i className="bi bi-window fs-2"></i>
@@ -147,7 +101,7 @@ function DashboardWidget(props) {
   }, [changePanelSize, props.id]);
 
   const handleClickHelp = useCallback(() => {
-    const anchor = PANEL_REGISTRY[props.type]?.anchor? "#"+PANEL_REGISTRY[props.type].anchor : ""
+    const anchor = widgets.find( itm => itm.type == props.type )?.anchor? "#"+widgets.find( itm => itm.type == props.type ).anchor: ""
     help.open("Help | Dashboard Widgets", "help/md/dashboard.md"+ anchor )
   }, [])
 
@@ -172,7 +126,7 @@ function DashboardWidget(props) {
               <i className="bi-three-dots-vertical" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {PANEL_REGISTRY[props.type]?.showEdit &&
+              {widgets.find(itm => itm.type == props.type)?.showEdit &&
                 <Dropdown.Item onClick={handleReset}><i className="bi-pencil-square" /> Edit</Dropdown.Item>
               }
               <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>

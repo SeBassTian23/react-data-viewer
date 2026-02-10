@@ -1,15 +1,55 @@
+import GraphPanel from '../components/Widgets/GraphPanel'
+import MapPanel from '../components/Widgets/MapPanel'
+import ImagePanel from '../components/Widgets/ImagePanel'
+import NotesPanel from '../components/Widgets/NotesPanel'
+
+import ANOVAPanel from '../components/Widgets/ANOVAPanel'
+import FishersExactPanel from '../components/Widgets/FishersExactPanel'
+import ChiSquarePanel from '../components/Widgets/ChiSquaredPanel'
+import SummaryPanel from '../components/Widgets/SummaryPanel'
+import TTestPanel from '../components/Widgets/TTestPanel'
+import BarndardsExactPanel from '../components/Widgets/BarnardsExactPanel'
+import MannWhitneyUPanel from '../components/Widgets/MannWhitneyUPanel'
+import SignPanel from '../components/Widgets/SignPanel'
+import SpearmanCorrelationPanel from '../components/Widgets/SpearmanCorrelationPanel'
+import WilcoxonSignedRankPanel from '../components/Widgets/WilcoxonSignedRankPanel'
+import McNemarPanel from '../components/Widgets/McNemarPanel'
+import KruskalWallisPanel from '../components/Widgets/KruskalWallisPanel'
+import WelchsTTestPanel from '../components/Widgets/WelchsTTestPanel'
+import PearsonCorrelationPanel from '../components/Widgets/PearsonCorrelationPanel'
+import KolmogorovSmirnovPanel from '../components/Widgets/KolmogorovSmirnovPanel'
+
 const widgets = [
+  {
+    type: "plot",
+    name: "Plot",
+    category: "general",
+    icon: "bi-graph",
+    component: GraphPanel, title: null, showEdit: false, anchor: 'graphs'
+  },
+  {
+    type: "map",
+    name: "Map",
+    category: "general",
+    icon: "bi-map",
+    component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps'
+  },
   {
     type: "barnardsexact",
     name: "Barnard's Exact Test",
     category: "statistics_category",
-    selectType: 'string'
+    selectType: 'string',
+    component: BarndardsExactPanel,
+    title: "Barnard's Exact Test",
+    showEdit: true,
+    anchor: 'barnards-exact-test'
   },
   {
     type: "chisquared",
     name: "Chi-Squared Test",
     category: "statistics_category",
-    selectType: 'string'
+    selectType: 'string',
+    component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true, anchor: 'chi-squared-test'
   },
   {
     type: "fishersexact",
@@ -26,13 +66,15 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true, anchor: 'fishers-exact-test'
   },
   {
     type: "image",
     name: "Image",
     category: "general",
-    icon: "bi-image"
+    icon: "bi-image",
+    component: ImagePanel, title: 'Image', showEdit: false, anchor: 'image'
   },
   {
     type: "kolmogorovsmirnov",
@@ -49,13 +91,15 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true, anchor: 'kolmogorov-smirnov-test'
   },
   {
     type: "kruskalwallis",
     name: "Kruskal-Wallis Test",
     category: "statistics_numerical",
-    selectType: 'number'
+    selectType: 'number',
+    component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true, anchor: 'kruskal-wallis-test'
   },
   {
     type: "mannwhitneyu",
@@ -72,13 +116,15 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true, anchor: 'mann-whitney-u-test'
   },
   {
     type: "mcnemar",
     name: "McNemar's Test",
     category: "statistics_category",
-    selectType: 'string'
+    selectType: 'string',
+    component: McNemarPanel, title: "McNemar's Test", showEdit: true, anchor: 'mcnemars-test'
   },
   {
     type: "notes",
@@ -87,13 +133,15 @@ const widgets = [
     icon: "bi-sticky",
     "content": {
       "text": "**Double click** to start *taking* notes…"
-    }
+    },
+    component: NotesPanel, title: 'Notes', showEdit: false, anchor: 'notes'
   },
   {
     type: "anova",
     name: "One-Way ANOVA",
     category: "statistics_numerical",
-    selectType: 'number'
+    selectType: 'number',
+    component: ANOVAPanel, title: 'ANOVA', showEdit: true, anchor: 'one-way-anova'
   },
   {
     type: "pearsoncorrelation",
@@ -109,7 +157,8 @@ const widgets = [
       defaultValue: "two-sided",
       register_name: "alternative",
       title: "Alternative"
-    }
+    },
+    component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true, anchor: 'pearson-rank-correlation'
   },
   {
     type: "sign",
@@ -126,14 +175,16 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: SignPanel, title: "Sign Test", showEdit: true, anchor: 'sign-test'
   },
   {
     type: "spearmancorrelation",
     name: "Spearman Rank Correlation",
     category: "statistics_numerical",
     selectType: 'number',
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true, anchor: 'spearman-rank-correlation'
   },
   {
     type: "ttest",
@@ -150,13 +201,15 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: TTestPanel, title: "Student's t-Test", showEdit: true, anchor: 'students-t-test'
   },
   {
     type: "summary",
     icon: "bi-clipboard-data",
     name: "Summary",
-    category: "statistics"
+    category: "statistics",
+    component: SummaryPanel, title: 'Summary', showEdit: true, anchor: 'summary'
   },
   {
     type: "welchsttest",
@@ -173,7 +226,8 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true, anchor: 'welchs-t-test'
   },
   {
     type: "wilcoxonsignedrank",
@@ -190,7 +244,8 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.'
+    comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
+    component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test'
   }
 ]
 
