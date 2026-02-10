@@ -87,7 +87,7 @@ export default function MapPanel(props) {
     }
   }, [props.layer]);
 
-  const style = useMemo(() => ({ width: '100%', height: '100%', minHeight: '100%', cursor: 'pointer' }),[] )
+  const style = useMemo(() => ({ width: '100%', height: '100%', minHeight: '100%' }),[] )
 
   const handleClick = useCallback(() => linkToView(props))
 
@@ -95,6 +95,7 @@ export default function MapPanel(props) {
     <Card.Body
       onClick={handleClick}
       className="d-flex justify-content-center align-items-center p-0 card-img-bottom"
+      role="button"
     >
       <MapContainer
         key={props.id}
