@@ -1,4 +1,27 @@
+import determineBestK from '../utils/clustering/kmeans'
+
 const handlers = {
+  kmeans: async (payload, taskId) => {
+
+    // Run Task
+    const { best, allResults } = determineBestK(payload.data, {
+      kMin: payload.kMin,
+      kMax: payload.kMax,
+      runsPerK: payload.runsPerK,
+      minSilhouette: payload.minSilhouette,
+      maxIterations: payload.maxIterations,
+      initialization: payload.initialization,
+      // Progress Updates
+      onProgress: (progress) => sendProgress(taskId, progress)
+    })
+    
+    // Check if task was terminated
+    if (activeTasks.get(taskId)?.terminated) {
+      return { success: false, error: 'Task terminated' }
+    }
+
+    return { success: true, result: { best, allResults } }
+  },
   test: async (payload, taskId) => {
 
     let i;

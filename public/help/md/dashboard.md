@@ -135,3 +135,19 @@ An exact test specifically designed for 2×2 contingency tables that provides pr
 
 #### McNemar's Test
 A specialized test for paired categorical data that focuses on changes or disagreements between two related measurements on the same subjects. Unlike other categorical tests, McNemar's test specifically examines the discordant pairs (where responses changed) while ignoring concordant pairs. This makes it perfect for before/after comparisons with categorical outcomes, such as treatment effectiveness, opinion changes, or diagnostic test comparisons.
+
+### Clustering
+
+#### K-Means Clustering
+K-Means is an unsupervised learning algorithm that partitions data into k distinct clusters by iteratively assigning points to the nearest cluster centroid and updating centroids based on cluster membership. It works by minimizing the Within-Cluster Sum of Squares (WCSS)—the sum of squared distances between points and their assigned cluster center. The algorithm alternates between two steps: assigning each point to the closest centroid, then recalculating centroids as the mean of all assigned points. While K-Means is fast and scalable, it requires specifying k in advance, can get stuck in local optima (addressed by running multiple times with different initializations), and performs best on spherical clusters of similar size. It's particularly useful for exploratory data analysis, customer segmentation, image compression, and feature engineering, though metrics like silhouette score, Davies-Bouldin index, and elbow method analysis are essential for determining optimal cluster numbers and validating solution quality.
+
+##### Data Selection
+The dataset for the clustering is generated from all data-subsets that are visible. So if subsets are supposed to be excluded, they don't have to be deleted, but can be hidden. If no subsets are available, all data is used for the clustering. Selected thresholds for parameters that were selected are also taken into account.
+
+##### Adding Clusters
+The clusters for the determined best *k* can be added, generating new subsets named Cluster #1, Cluster#2, … Before the subsets are added, a bookmark is created, so it is easy to return to the previous subsets.
+
+##### Clustering Updates
+In contrast to the statistics widgets, the clustering is not updated after subsets or thresholds are changed. You have to manually run the clustering again.
+
+***Note:*** To try a different clustering, best add a new panel to the dashboard. You can just hide the previous clusters, otherwise they would be taken into account as well. Then run the k-means clustering.

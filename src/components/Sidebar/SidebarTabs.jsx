@@ -200,6 +200,9 @@ export default function SidebarTabs(props) {
               <Dropdown.Divider />
               <Dropdown.Header>Categorical/Count</Dropdown.Header>
               {widgets.filter( itm => itm.category == 'statistics_category').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
+              <Dropdown.Divider />
+              <Dropdown.Header>Clustering</Dropdown.Header>
+              {widgets.filter( itm => itm.category == 'cluster').map( (itm, idx) => <Dropdown.Item key={idx} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-diagram-2"}`} /> {itm.name}</Dropdown.Item> )}
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
               <Dropdown.Header>Data</Dropdown.Header>

@@ -18,6 +18,7 @@ import KruskalWallisPanel from '../components/Widgets/KruskalWallisPanel'
 import WelchsTTestPanel from '../components/Widgets/WelchsTTestPanel'
 import PearsonCorrelationPanel from '../components/Widgets/PearsonCorrelationPanel'
 import KolmogorovSmirnovPanel from '../components/Widgets/KolmogorovSmirnovPanel'
+import KMeansClusterPanel from '../components/Widgets/KMeansClusterPanel'
 
 const widgets = [
   {
@@ -246,6 +247,14 @@ const widgets = [
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
     component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test'
+  },
+  {
+    type: "kmeanscluster",
+    name: "K-Means Cluster",
+    category: "cluster",
+    selectType: 'number',
+    comment: 'The cluster will not update on changes',
+    component: KMeansClusterPanel, title: "K-Means Clustering", showEdit: false, anchor: 'k-means-clustering'
   }
 ]
 
