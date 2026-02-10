@@ -1,4 +1,5 @@
 import { useDispatch, useStore } from 'react-redux';
+import { isEmpty } from 'lodash'
 import { parameters, importJSON, getFilteredData, setFilename, saveDatabase } from '../modules/database';
 import { parametersAdded, parametersReset, parametersAddBackup } from '../features/parameter.slice';
 import { datasubsetReset, datasubsetMultipleAdded } from '../features/datasubset.slice';
@@ -9,15 +10,19 @@ import { thresholdAddBackup, thresholdsReset } from '../features/threshold.slice
 import { analysisAddBackup, analysisReset, initialState } from '../features/analysis.slice';
 import { bookmarkAddBackup } from '../features/bookmark.slice';
 
+import migrateStore from '../utils/data/migrateStore';
+
 export default function useAnalysisImport() {
   const analysisStore = useStore();
   const dispatch = useDispatch();
 
   const processAnalysis = async (analysis, fileName) => {
-    if (!analysis.db) {
+
+    // Check if a database exists. This has to be a string    
+    if (!Object.hasOwn(analysis, 'db') && typeof(analysis.db) !== 'string') {
       throw new Error('No valid database found.');
     }
-
+    
     // Import database
     importJSON(analysis.db);
 
@@ -30,30 +35,25 @@ export default function useAnalysisImport() {
     dispatch(thresholdsReset());
     dispatch(analysisReset());
 
-    // Add base parameters
-    dispatch(parametersAdded(parameters()));
-
     // Restore store state if available
-    if (analysis.store) {
-      if (analysis.store.dashboard !== undefined) {
+    if (Object.hasOwn(analysis, 'store') && !isEmpty(analysis.store) ) {
+
+      // Call Migrate function to sanitze and ensure data consistency
+      analysis.store = migrateStore(analysis.store);
+
+      if (Object.hasOwn(analysis.store, 'dashboard')) 
         dispatch(dashboardAddMultiplePanels(analysis.store.dashboard));
-      }
-      if (analysis.store.datasubsets !== undefined) {
+      if (Object.hasOwn(analysis.store, 'datasubsets'))
         dispatch(datasubsetMultipleAdded(analysis.store.datasubsets));
-      }
-      if (analysis.store.map !== undefined) {
+      if (Object.hasOwn(analysis.store, 'map'))
         dispatch(mapApplySettings(analysis.store.map));
-      }
-      if (analysis.store.parameters !== undefined) {
+      if (Object.hasOwn(analysis.store, 'parameters'))
         dispatch(parametersAddBackup(analysis.store.parameters));
-      }
-      if (analysis.store.plot !== undefined) {
+      if (Object.hasOwn(analysis.store, 'plot'))
         dispatch(plotUpdate(analysis.store.plot));
-      }
-      if (analysis.store.thresholds !== undefined) {
+      if (Object.hasOwn(analysis.store, 'thresholds'))
         dispatch(thresholdAddBackup(analysis.store.thresholds));
-      }
-      if (analysis.store.analysis !== undefined) {
+      if (Object.hasOwn(analysis.store, 'analysis')) {
         dispatch(analysisAddBackup(analysis.store.analysis));
       } else {
         // Create Analysis info for older files
@@ -76,6 +76,10 @@ export default function useAnalysisImport() {
           creator: bookmark?.creator
         }));
       dispatch(bookmarkAddBackup(bookmarks));
+    }
+    else {
+      // Add base parameters
+      dispatch(parametersAdded(parameters()));
     }
 
     let currentAnalysis = analysisStore.getState().analysis
