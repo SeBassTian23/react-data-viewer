@@ -29,6 +29,16 @@ export default function NotesPanel(props) {
   }, [notesRef, edit]);
 
   return <Card.Body className={`ps-1 p-0 ${edit? "overflow-hidden" : ""}`} onDoubleClick={() => {setEdit(true);}}>
-    {edit? <textarea ref={notesRef} onBlur={finishEditing} defaultValue={notes} /> : <ReactMarkdown classNmae='hasText' children={notes} remarkPlugins={[remarkGfm]}/> }
+    {edit? <textarea ref={notesRef} onBlur={finishEditing} defaultValue={notes} /> : 
+      <ReactMarkdown 
+        classNmae='hasText'
+        children={notes}
+        remarkPlugins={[remarkGfm]}
+        components={{
+          blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
+          table: ({ node, ...props }) => <table className='table table-sm table-w-fit' {...props} />,
+        }}
+      />
+    }
   </Card.Body>
 }
