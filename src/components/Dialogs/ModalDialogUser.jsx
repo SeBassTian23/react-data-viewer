@@ -19,6 +19,7 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import opfs from '../../modules/opfs'
 
 import useHelp from '../../hooks/useHelp';
+import useToast from '../../hooks/useToast'
 
 export default function ModalDialogUser(props) {
 
@@ -43,6 +44,7 @@ export default function ModalDialogUser(props) {
   const dispatch = useDispatch();
   
   const help = useHelp();
+  const toast = useToast();
   
   const getGravatar = () => {
     if(getValues('appEmail')?.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm) !== null){
@@ -51,11 +53,11 @@ export default function ModalDialogUser(props) {
 
       if(url){
         getBase64ImageFromURL(url).then((base64img) => {setUserAvatar(base64img)}).catch(()=>{
-          console.log('failed to fetch avatar')
+          toast.error('Failed to Fetch your Gravatar', 'Gravatar', 'bi-person-square')
         });
       }
       else{
-
+        toast.error('Failed to Fetch your Gravatar', 'Gravatar', 'bi-person-square')
       }
     }
   }
@@ -120,7 +122,7 @@ export default function ModalDialogUser(props) {
   }, [])
 
   useEffect( ()=>{
-    if(allowGravatar && !String(userAvatar).startsWith('data:image'))
+    if(allowGravatar)
       getGravatar();
   },[allowGravatar])
 
@@ -198,8 +200,8 @@ export default function ModalDialogUser(props) {
             </div>
             <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex justify-content-center'>
               <ButtonGroup size='sm' className='mt-1'>
-                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(!userAvatar || allowGravatar)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
-                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(!userAvatar || allowGravatar)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(allowGravatar)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(allowGravatar)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
               </ButtonGroup>
             </ButtonToolbar>
             <Form.Control onChange={onFileChange} required type="file" ref={fileInput} multiple={false} accept="image/png, image/webp, image/svg+xml, image/jpeg, image/tiff, image/gif" className='d-none' />
