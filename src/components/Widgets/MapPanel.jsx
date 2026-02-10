@@ -7,18 +7,10 @@ import Card from 'react-bootstrap/Card'
 
 import buildGeoJSON from '../../modules/build-geojson';
 import { mapLayers } from '../../constants/map-layers'
+import { markerOptionsPanel } from '../../constants/map-markers'
 import { mapApplySettings } from '../../features/map.slice'
 import { ColorGradientColorArray } from '../Main/ColorGradient';
 import linearColorScale from '../../utils/plot/colorscale-css'
-
-const geojsonMarkerOptions = {
-  radius: 4,
-  fillColor: "#ff0000",
-  color: "#000",
-  weight: 1,
-  opacity: 1,
-  fillOpacity: 0.8
-};
 
 // Separate layer component so we can use useMap()
 function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
@@ -56,7 +48,7 @@ function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
       ref={geoJsonRef}
       pointToLayer={(feature, latlng) =>
         L.circleMarker(latlng, {
-          ...geojsonMarkerOptions,
+          ...markerOptionsPanel,
           fillColor: feature.properties.fillColor
         })
       }

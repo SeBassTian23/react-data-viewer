@@ -17,6 +17,7 @@ import merge from 'lodash/merge'
 import { EditControl } from "react-leaflet-draw-next"
 
 import { mapLayers } from '../constants/map-layers'
+import { markerOptions } from '../constants/map-markers'
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css'
@@ -79,15 +80,6 @@ function LayerChanges(props) {
 }
 
 export default function Map(props) {
-
-  const geojsonMarkerOptions = {
-    radius: 6,
-    fillColor: "#ff0000",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  };
 
   const stateDatasubsets = useSelector(state => state.datasubsets)
   const stateParameters = useSelector(state => state.parameters)
@@ -287,7 +279,7 @@ export default function Map(props) {
           }
 
             <LayerGroup>
-              <GeoJSON ref={geoJsonRef} pointToLayer={(feature, latlng) => L.circleMarker(latlng, { ...geojsonMarkerOptions, ...{ fillColor: feature.properties.fillColor } })} eventHandlers={{ click: (e) => showDatum(e.sourceTarget.feature.properties.$loki) }} />
+              <GeoJSON ref={geoJsonRef} pointToLayer={(feature, latlng) => L.circleMarker(latlng, { ...markerOptions, ...{ fillColor: feature.properties.fillColor } })} eventHandlers={{ click: (e) => showDatum(e.sourceTarget.feature.properties.$loki) }} />
             </LayerGroup>
 
             <FeatureGroup ref={editRef}>
