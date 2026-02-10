@@ -24,16 +24,16 @@ const widgets = [
   {
     type: "plot",
     name: "Plot",
-    category: "general",
+    category: "external",
     icon: "bi-graph",
-    component: GraphPanel, title: null, showEdit: false, anchor: 'graphs'
+    component: GraphPanel, title: null, showEdit: false, anchor: 'graphs',
   },
   {
     type: "map",
     name: "Map",
-    category: "general",
+    category: "external",
     icon: "bi-map",
-    component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps'
+    component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps',
   },
   {
     type: "barnardsexact",
