@@ -24,7 +24,7 @@ from stats import (
     chi_squared_test
 )
 
-from utils import JSCompatibleEncoder
+from utils import run_tests
 
 def test_and_export_results(input_file):
     """Run tests and export results for JS comparison"""
@@ -227,24 +227,16 @@ def test_and_export_results(input_file):
 
 
     return results
-    
-if __name__ == '__main__':
-    # Specify the directory path
+
+def main():
+    # Specify the directory path for test data
     directory = Path("./fixtures/test_data_stats")
-
-    # Get all files (including subdirectories) using rglob
-    files = [f for f in directory.rglob("*") if f.is_file()]
-
-    # Print the list of files
-    results = dict()
-    for file in files:
-        result = test_and_export_results(file)
-        results.update( result )
-        print(f"✓ Test for { Path(file).stem }")
-
-    # Write to file that JS tests can read
+    
+    # Specify test results output file name
     output_file = './fixtures/test_data_stats.json'
-    with open(output_file, 'w') as f:
-        json.dump(results, f, indent=2, separators=(', ', ': '), ensure_ascii=False, cls=JSCompatibleEncoder)
+    
+    # Run available tests
+    run_tests(test_and_export_results, directory, output_file)
 
-    print(f"✓ Results exported to {output_file}")
+if __name__ == '__main__':
+    main()

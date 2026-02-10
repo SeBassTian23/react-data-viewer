@@ -13,7 +13,7 @@ class JSCompatibleEncoder(json.JSONEncoder):
                 return float(o)
             if isinstance(o, dict):
                 return {k: replace(v) for k, v in o.items()}
-            if isinstance(o, (list, tuple)):
+            if isinstance(o, (list, tuple, np.ndarray)):
                 return [replace(v) for v in o]
             if isinstance(o, (np.int32, np.int64)):
                 return int(o)

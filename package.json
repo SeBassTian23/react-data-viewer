@@ -53,7 +53,7 @@
     "build": "vite build --base=/react-data-viewer/",
     "serve": "vite preview",
     "lint": "eslint **/*.jsx .",
-    "pretest": "python3 python/tests/test_statistics.py",
+    "pretest": "python3 python/__main__.py",
     "test": "vitest",
     "test:ui": "vitest --ui"
   },

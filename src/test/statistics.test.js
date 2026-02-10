@@ -16,29 +16,8 @@ import wilcoxonSignedRankTest from '../utils/statistics/wilcoxonSignedRankTest'
 import fisherExactTest from '../utils/statistics/fisherExactTest'
 import chiSquaredTest from '../utils/statistics/chiSquaredTest'
 
+import reviveSpecialNumbers from './reviveSpecialNumbers'
 import rawResults from '../../fixtures/test_data_stats.json'
-
-function reviveSpecialNumbers(value) {
-  if (value === "NaN") return NaN;
-  if (value === "Infinity") return Infinity;
-  if (value === "-Infinity") return -Infinity;
-
-  if (Array.isArray(value)) {
-    for (let i = 0; i < value.length; i++) {
-      value[i] = reviveSpecialNumbers(value[i]);
-    }
-    return value;
-  }
-
-  if (value !== null && typeof value === "object") {
-    for (const key of Object.keys(value)) {
-      value[key] = reviveSpecialNumbers(value[key]);
-    }
-    return value;
-  }
-
-  return value;
-}
 
 const results = reviveSpecialNumbers(structuredClone(rawResults));
 
