@@ -22,7 +22,7 @@ export default function ParameterFilterItem(props) {
       <Form.Check
         type="switch"
         checked={props.isFilter}
-        onChange={() => dispatch(parameterFilterToggled(props.index))}
+        onChange={() => dispatch(parameterFilterToggled(props.id))}
       />
     </ListGroup.Item>
   )

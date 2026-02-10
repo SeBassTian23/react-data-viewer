@@ -19,7 +19,7 @@ export default function ParameterItem(props) {
       <Form.Check
         type="switch"
         checked={props.isSelected}
-        onChange={() => dispatch(parameterToggled(props.index))}
+        onChange={() => dispatch(parameterToggled(props.id))}
       />
     </ListGroup.Item>
   )

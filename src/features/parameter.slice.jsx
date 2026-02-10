@@ -11,7 +11,7 @@ const parameterSlice = createSlice({
     },
     parameterToggled(state, action) {
       return state.map((item, idx) => {
-        if (idx === action.payload) {
+        if (item.id === action.payload) {
           const updatedItem = {
             ...item,
             isSelected: !item.isSelected
@@ -23,7 +23,7 @@ const parameterSlice = createSlice({
     },
     parameterFilterToggled(state, action) {
       return state.map((item, idx) => {
-        if (idx === action.payload) {
+        if (item.id === action.payload) {
           const updatedItem = {
             ...item,
             isFilter: !item.isFilter
