@@ -6,8 +6,7 @@ import getFilteredDataExt from '../utils/lokijs/getFilteredData'
 import getUnique from '../utils/lokijs/getUnique'
 import getColumnNames from '../utils/lokijs/getColumnNames'
 
-import countTypes from '../utils/data/countTypes'
-import getSpecialStringType from '../utils/data/getSpecialStringType'
+import initParameter from '../utils/data/parameter'
 
 import opfsLokiAdapter from '../utils/lokijs/opfsLokiAdapter'
 
@@ -118,44 +117,7 @@ export const parameters = (collection = 'data') => {
   let dataset = db.getCollection(collection)
 
   return getColumnNames(dataset).sort((a, b) => a.localeCompare(b)).map((el) => {
-
-    let col = getUnique(dataset.data, el).filter(el => (el !== null && el !== undefined));
-
-    let typesMap = countTypes(col)
-    let typesObj = Object.fromEntries(typesMap)
-
-    let parameter = {
-      'id': crypto.randomUUID(),
-      'name': el,
-      'alias': null,
-      'type': 'unknown',
-      'specialtype': null,
-      'isFilter': false,
-      'isSelected': true
-    }
-
-    if (typesMap.size === 1) {
-      parameter.type = Object.keys(typesObj)[0]
-
-      parameter.isFilter = (parameter.type === 'string')
-
-      // Now check again, if it might be a special type
-      if (parameter.type === 'string') {
-        let specialType = getSpecialStringType(col)
-        if (specialType.length === 1 && specialType[0] !== parameter.type) {
-          parameter.specialtype = specialType[0]
-        }
-      }
-      if (parameter.type === 'number' && parameter.name.match(/^\s?(latitude|lat)\s?/i))
-        parameter.specialtype = 'latitude'
-      if (parameter.type === 'number' && parameter.name.match(/^\s?(longitude|lng)\s?/i))
-        parameter.specialtype = 'longitude'
-      if (parameter.type === 'number' && parameter.name.match(/^\s?(time)\s?$/i)) {
-        parameter.specialtype = 'date-time'
-        parameter.isFilter = true
-      }
-    }
-    return parameter
+    return initParameter(dataset.data, el)
   })
 }
 
