@@ -26,6 +26,11 @@ export default function ModalDialogStart(props) {
       centered
     >
       <Modal.Body className="text-center">
+        { localStorage.getItem('APP_USER_NAME') &&
+          <Row className='border-bottom'>
+            <Col className='text-start fs-5 fw-light text-secondary pb-2'>Welcome Back, {localStorage.getItem('APP_USER_NAME').split(' ')[0]}!</Col>
+          </Row>
+        }
         <Row>
           <Button onClick={() => {props.onHide(); props.setAnalysisModal(true);}} variant="link" className='fs-6 text-decoration-none col m-0 rounded-0 border-end'>
             <i className='bi bi-journal-richtext fs-1' />
@@ -38,9 +43,9 @@ export default function ModalDialogStart(props) {
         </Row>
         {files.length > 0 && <Row className='border-top pt-2 text-start'>
           <Col className='px-0'>
-            <span className='d-block text-muted small px-1'>Most Recent Analyses</span>
+            <span className='d-block text-muted small px-1'>Most Recent Analysis</span>
             <ul className='list-group list-group-flush overflow-y-auto small px-1' style={{maxHeight: '200px'}} >
-              {files.slice(0,3).map( (el, idx) => <RecentFilesItem key={idx} index={idx} {...el} onHide={props.onHide} />)}
+              {files.slice(0,1).map( (el, idx) => <RecentFilesItem key={idx} index={idx} {...el} onHide={props.onHide} />)}
             </ul>
           </Col>
         </Row>}
