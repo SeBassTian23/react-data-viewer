@@ -135,7 +135,7 @@ export default function Map(props) {
     dispatch(dashboardAddPanel({
       content: props,
       linkTo: null,
-      title: `Map${props.colorType === 'histogram' && ` | ${parameterName}`}`,
+      title: `Map${props.colorType === 'histogram'?  ` | ${parameterName}` : ''}`,
       type: "map"
     })
     )
