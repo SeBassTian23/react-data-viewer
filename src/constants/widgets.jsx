@@ -27,6 +27,7 @@ const widgets = [
     category: "external",
     icon: "bi-graph",
     component: GraphPanel, title: null, showEdit: false, anchor: 'graphs',
+    tooltip: 'Create interactive visualizations of your data'
   },
   {
     type: "map",
@@ -34,6 +35,7 @@ const widgets = [
     category: "external",
     icon: "bi-map",
     component: MapPanel, title: 'Map', showEdit: false, anchor: 'maps',
+    tooltip: 'Visualize geographic data on an interactive map'
   },
   {
     type: "barnardsexact",
@@ -43,14 +45,16 @@ const widgets = [
     component: BarndardsExactPanel,
     title: "Barnard's Exact Test",
     showEdit: true,
-    anchor: 'barnards-exact-test'
+    anchor: 'barnards-exact-test',
+    tooltip: 'Test for associations in small sample categorical data'
   },
   {
     type: "chisquared",
     name: "Chi-Squared Test",
     category: "statistics_category",
     selectType: 'string',
-    component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true, anchor: 'chi-squared-test'
+    component: ChiSquarePanel, title: '𝜒²-Test', showEdit: true, anchor: 'chi-squared-test',
+    tooltip: 'Test relationships between categorical variables'
   },
   {
     type: "fishersexact",
@@ -68,14 +72,16 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true, anchor: 'fishers-exact-test'
+    component: FishersExactPanel, title: "Fisher's Exact Test", showEdit: true, anchor: 'fishers-exact-test',
+    tooltip: 'Test for independence in 2x2 contingency tables'
   },
   {
     type: "image",
     name: "Image",
     category: "general",
     icon: "bi-image",
-    component: ImagePanel, title: 'Image', showEdit: false, anchor: 'image'
+    component: ImagePanel, title: 'Image', showEdit: false, anchor: 'image',
+    tooltip: 'Add an image to your analysis'
   },
   {
     type: "kolmogorovsmirnov",
@@ -93,14 +99,16 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true, anchor: 'kolmogorov-smirnov-test'
+    component: KolmogorovSmirnovPanel, title: "Kolmogorov-Smirnov Test", showEdit: true, anchor: 'kolmogorov-smirnov-test',
+    tooltip: 'Compare distributions and test goodness-of-fit'
   },
   {
     type: "kruskalwallis",
     name: "Kruskal-Wallis Test",
     category: "statistics_numerical",
     selectType: 'number',
-    component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true, anchor: 'kruskal-wallis-test'
+    component: KruskalWallisPanel, title: "Kruskal-Wallis Test", showEdit: true, anchor: 'kruskal-wallis-test',
+    tooltip: 'Compare multiple groups without assuming normality'
   },
   {
     type: "mannwhitneyu",
@@ -118,14 +126,16 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true, anchor: 'mann-whitney-u-test'
+    component: MannWhitneyUPanel, title: "Mann-Whitney U Test", showEdit: true, anchor: 'mann-whitney-u-test',
+    tooltip: 'Compare two independent groups non-parametrically'
   },
   {
     type: "mcnemar",
     name: "McNemar's Test",
     category: "statistics_category",
     selectType: 'string',
-    component: McNemarPanel, title: "McNemar's Test", showEdit: true, anchor: 'mcnemars-test'
+    component: McNemarPanel, title: "McNemar's Test", showEdit: true, anchor: 'mcnemars-test',
+    tooltip: 'Test changes in paired categorical outcomes'
   },
   {
     type: "notes",
@@ -135,14 +145,16 @@ const widgets = [
     "content": {
       "text": "**Double click** to start *taking* notes…"
     },
-    component: NotesPanel, title: 'Notes', showEdit: false, anchor: 'notes'
+    component: NotesPanel, title: 'Notes', showEdit: false, anchor: 'notes',
+    tooltip: 'Add notes and documentation to your analysis'
   },
   {
     type: "anova",
     name: "One-Way ANOVA",
     category: "statistics_numerical",
     selectType: 'number',
-    component: ANOVAPanel, title: 'ANOVA', showEdit: true, anchor: 'one-way-anova'
+    component: ANOVAPanel, title: 'ANOVA', showEdit: true, anchor: 'one-way-anova',
+    tooltip: 'Compare means across multiple groups'
   },
   {
     type: "pearsoncorrelation",
@@ -159,7 +171,8 @@ const widgets = [
       register_name: "alternative",
       title: "Alternative"
     },
-    component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true, anchor: 'pearson-rank-correlation'
+    component: PearsonCorrelationPanel, title: "Pearson Correlation", showEdit: true, anchor: 'pearson-rank-correlation',
+    tooltip: 'Measure linear relationships between variables'
   },
   {
     type: "sign",
@@ -177,7 +190,8 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: SignPanel, title: "Sign Test", showEdit: true, anchor: 'sign-test'
+    component: SignPanel, title: "Sign Test", showEdit: true, anchor: 'sign-test',
+    tooltip: 'Test differences without assuming data distribution'
   },
   {
     type: "spearmancorrelation",
@@ -185,7 +199,8 @@ const widgets = [
     category: "statistics_numerical",
     selectType: 'number',
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true, anchor: 'spearman-rank-correlation'
+    component: SpearmanCorrelationPanel, title: "Spearman Rank Correlation", showEdit: true, anchor: 'spearman-rank-correlation',
+    tooltip: 'Measure monotonic relationships between ranked data'
   },
   {
     type: "ttest",
@@ -203,14 +218,16 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: TTestPanel, title: "Student's t-Test", showEdit: true, anchor: 'students-t-test'
+    component: TTestPanel, title: "Student's t-Test", showEdit: true, anchor: 'students-t-test',
+    tooltip: 'Compare two group means for statistical significance'
   },
   {
     type: "summary",
     icon: "bi-clipboard-data",
     name: "Summary",
     category: "statistics",
-    component: SummaryPanel, title: 'Summary', showEdit: true, anchor: 'summary'
+    component: SummaryPanel, title: 'Summary', showEdit: true, anchor: 'summary',
+    tooltip: 'View descriptive statistics of your data'
   },
   {
     type: "welchsttest",
@@ -228,7 +245,8 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true, anchor: 'welchs-t-test'
+    component: WelchsTTestPanel, title: "Welch's t-Test", showEdit: true, anchor: 'welchs-t-test',
+    tooltip: 'Compare two groups with unequal variances'
   },
   {
     type: "wilcoxonsignedrank",
@@ -246,7 +264,8 @@ const widgets = [
       title: "Alternative"
     },
     comment: 'Creates tests for all 2x2 combinations between subsets and selected parameter.',
-    component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test'
+    component: WilcoxonSignedRankPanel, title: "Wilcoxon Signed Rank Test", showEdit: true, anchor: 'wilcoxon-signed-rank-test',
+    tooltip: 'Test paired differences without assuming normality'
   },
   {
     type: "kmeanscluster",
@@ -254,7 +273,8 @@ const widgets = [
     category: "cluster",
     selectType: 'number',
     comment: 'The cluster will not update on changes',
-    component: KMeansClusterPanel, title: "K-Means Clustering", showEdit: false, anchor: 'k-means-clustering'
+    component: KMeansClusterPanel, title: "K-Means Clustering", showEdit: false, anchor: 'k-means-clustering',
+    tooltip: 'Automatically group data into distinct clusters'
   }
 ]
 
@@ -262,5 +282,7 @@ const widgets = [
 // Logistic Regression
 // Shapiro-Wilk Test
 // Levene's Test
+
+window.widgets = widgets
 
 export default widgets
