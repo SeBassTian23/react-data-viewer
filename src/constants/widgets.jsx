@@ -272,6 +272,7 @@ const widgets = [
     name: "K-Means Cluster",
     category: "cluster",
     selectType: 'number',
+    icon: 'bi-diagram-2',
     comment: 'The cluster will not update on changes',
     component: KMeansClusterPanel, title: "K-Means Clustering", showEdit: false, anchor: 'k-means-clustering',
     tooltip: 'Automatically group data into distinct clusters'
