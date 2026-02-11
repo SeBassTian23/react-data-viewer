@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 
 import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
@@ -95,8 +95,8 @@ export function CalculateTTest(props) {
     <>
       {results.length === 0 && <PanelWarning warning={`Test for selected subsets and "${parameterName}" failed.`}/>}
       {results.length > 0 && <>
-        {results.map( (itm, idx) => <>
-          <Table size='sm' key={idx}>
+        {results.map( (itm, idx) => <Fragment key={idx}>
+          <Table size='sm' key={idx+'t'}>
             <thead className='text-center small align-middle'>
               <tr>
                 <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
@@ -145,7 +145,7 @@ export function CalculateTTest(props) {
           <span className='form-text p-1' key={idx+'h'}>Interpretation</span>
           <p className='small px-2' key={idx+'i'}>{interpretTTest(itm, confidenceLevel)}</p>
 
-        </>)}
+        </Fragment>)}
 
         </>
       }
