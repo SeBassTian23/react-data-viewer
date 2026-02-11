@@ -284,6 +284,4 @@ const widgets = [
 // Shapiro-Wilk Test
 // Levene's Test
 
-window.widgets = widgets
-
 export default widgets
