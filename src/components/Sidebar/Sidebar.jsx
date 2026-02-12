@@ -24,7 +24,7 @@ export default function Sidebar(props) {
         setUserModal={setUserModal}
         {...props}
       />
-      <aside className={`flex-column flex-shrink-0 vh-100 border-end pt-2 ${!togglesidebar ? 'd-none' : 'd-flex'}`} id="dv-sidebar" >
+      <aside className={`flex-column flex-shrink-0 vh-100 border-end pt-2 d-print-none ${!togglesidebar ? 'd-none' : 'd-flex'}`} id="dv-sidebar" >
         <SidebarTabs show={togglesidebar} setTogglesidebar={setTogglesidebar} setAnalysisModal={setAnalysisModal} modalImport={modalImport} setModalImport={setModalImport} {...props} />
         <SidebarFooter {...props} />
       </aside>

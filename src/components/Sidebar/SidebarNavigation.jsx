@@ -63,7 +63,7 @@ export default function SidebarNavigation(props) {
   });
 
   return (
-    <nav className="d-flex flex-column text-center border-end vh-100 p-0" id='dv-nav'>
+    <nav className="d-flex flex-column text-center border-end vh-100 p-0 d-print-none" id='dv-nav'>
       <a className="navbar-brand p-2 mb-2" href={__APP_URL__} target='_blank'>
         <img src='./icon.svg' alt='App Logo' className="img-fluid w-100" />
       </a>
