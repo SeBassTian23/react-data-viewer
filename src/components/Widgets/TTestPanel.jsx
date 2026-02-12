@@ -76,6 +76,8 @@ export function CalculateTTest(props) {
     // Perform t-test for combinations
     let table = []
     for (let i in combinations) {
+      if(data[combinations[i][0]].length < 2 || data[combinations[i][1]].length < 2)
+        continue;
       let test = tTest(data[combinations[i][0]], data[combinations[i][1]], alternative)
       table.push(
         {
