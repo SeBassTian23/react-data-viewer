@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
@@ -12,6 +12,8 @@ export default function ThresholdItemMenu(props) {
   const dispatch = useDispatch()
   const modal = useModalConfirm()
 
+  const [edit, setEdit] = useState(false)
+
   const handleDelete = useCallback(() => modal.show("confirm", {
     header: "Delete Threshold",
     content: `Removing Thresholds for "${props.name || "Unknown"}" cannot be undone.`,
@@ -24,12 +26,17 @@ export default function ThresholdItemMenu(props) {
   }), [] )
 
   const handleToggle = () => dispatch(thresholdToggle(props.id))
+  
+  const handleEdit = () => props.setShowEditContent(true)
 
   return (
     <>
       <ButtonGroup size="sm" className="threshold-menu-select">
         <Button variant="outline-secondary" onClick={handleDelete} >
           <i className="bi-x-lg" />
+        </Button>
+        <Button variant="outline-secondary" onClick={handleEdit} >
+          <i className="bi-pencil-square" />
         </Button>
         <Button variant="outline-secondary" onClick={handleToggle} >
           {props.isSelected && <i className="bi-toggle-on" />}

@@ -13,6 +13,20 @@ const thresholdSlice = createSlice({
     thresholdDelete(state, action) {
       return state.filter((item) => item.id !== action.payload)
     },
+    thresholdEdit(state, action) {
+      return state.map((item, idx) => {
+        if (item.id === action.payload?.id) {
+          const updatedItem = {
+            ...item,
+            min: action.payload.min || item.min,
+            max: action.payload.max || item.max
+          }
+          console.log(updatedItem)
+          return updatedItem
+        }
+        return item
+      })
+    },
     thresholdToggle(state, action) {
       return state.map((item, idx) => {
         if (item.id === action.payload) {
@@ -34,5 +48,5 @@ const thresholdSlice = createSlice({
   }
 })
 
-export const { thresholdAdd, thresholdDelete, thresholdToggle, thresholdsReset, thresholdAddBackup } = thresholdSlice.actions
+export const { thresholdAdd, thresholdDelete, thresholdEdit, thresholdToggle, thresholdsReset, thresholdAddBackup } = thresholdSlice.actions
 export default thresholdSlice.reducer
