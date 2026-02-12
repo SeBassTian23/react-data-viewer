@@ -99,7 +99,7 @@ function CalculateSummary(props) {
                 </tr>                  
                 <tr>
                   <th>Confidence Interval ({numberFormat((1-confidenceLevel)*100)}%)</th>
-                  <td>{numberFormat(itm.ci[0])} - {numberFormat(itm.ci[1])}</td>
+                  <td>{numberFormat(itm?.ci?.[0] ?? NaN)} - {numberFormat(itm?.ci?.[1] ?? NaN)}</td>
                 </tr>                  
                 <tr>
                   <th>Standard Deviation</th>
