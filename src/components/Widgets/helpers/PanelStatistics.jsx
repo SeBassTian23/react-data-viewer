@@ -4,6 +4,8 @@ import Card from 'react-bootstrap/Card';
 import PanelInputForm from './PanelInputForm'
 import widgets from '../../../constants/widgets';
 
+import { selectedThresholds } from '../../../store/thresholds';
+
 /**
  * Panel Stats General Container
  * @param {*} widgetType - widget name
@@ -21,7 +23,7 @@ export default function PanelStatistics({
   const stateDatasubsets = useSelector(state => state.datasubsets)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const thresholds = useSelector(selectedThresholds)
 
   const [state, setState] = useState(false)
 

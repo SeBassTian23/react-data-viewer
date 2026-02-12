@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
+import { createSelector } from '@reduxjs/toolkit';
 
 import { getFilteredData } from '../../modules/database'
 
@@ -17,11 +18,11 @@ import { useDispatch } from 'react-redux'
 import { datasubsetToggled, datasubsetDblToggled } from '../../features/datasubset.slice'
 import useModalConfirm from '../../hooks/useModalConfirm'
 
+import {selectedThresholds} from '../../store/thresholds';
+
 export default function DataSubsetItem(props) {
 
-  const dataSubsets = useSelector(state => state.datasubsets)
-  const stateThresholds = useSelector(state => state.thresholds)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const thresholds = useSelector(selectedThresholds)
 
   const [count, setCount] = useState(props.count || 0);
 
@@ -30,15 +31,13 @@ export default function DataSubsetItem(props) {
   const [show, setShow] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
-  const dispatch = useDispatch()
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
     let query = getFilteredData('data', { filters: props.filter, thresholds }).data().length
     setCount(query)
-  }, [stateThresholds,dataSubsets])
+  }, [thresholds, props.filter])
 
   return (
     <>

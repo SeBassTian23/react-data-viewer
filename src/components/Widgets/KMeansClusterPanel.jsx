@@ -34,14 +34,15 @@ import { useWorker } from '../../hooks/useWorker';
 import { datasubsetMultipleAdded } from '../../features/datasubset.slice'
 import { dashboardEditPanel } from '../../features/dashboard.slice'
 
+import { selectedThresholds } from '../../store/thresholds';
+
 export default function KMeansClusterPanel(props) {
 
-  const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
   const stateParameters = useSelector(state => state.parameters)
 
   const subsets = stateDatasubsets.filter((itm) => itm.isVisible)
-  const thresholds = stateThresholds.filter((itm) => itm.isSelected)
+  const thresholds = useSelector(selectedThresholds)
 
   const [values, setValues] = useState({})
   const [state, setState] = useState(false)
