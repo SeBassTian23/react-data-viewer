@@ -16,6 +16,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
 
 import PanelWarning from './helpers/PanelWarning'
+import numberFormat from '../../helpers/number-format';
 
 import plotOffcanvasLayout from '../../constants/plot-offcanvas-layout'
 import { plotLayoutDarkmode, plotLayoutLightmode } from '../../constants/plot-layout'
@@ -388,14 +389,14 @@ function CalculateKMeansCluster(props) {
               config={plotConfig}
             />
 
-            <strong className='p-1 d-block'>Parameters</strong>
+            <span className='form-text p-1'>Parameters</span>
             <ul className="list-unstyled small px-2">
               {parameters.map(param => stateParameters.find(itm => itm.name == param)?.alias || param).map((itm, idx) => {
                 return (<li key={idx}>{itm}</li>)
               })}
             </ul>
 
-            <strong className='p-1 d-block'>Thresholds</strong>
+            <span className='form-text p-1'>Thresholds</span>
             <ul className="list-unstyled small px-2">
               {thresholds.map(param => {
                 return {
@@ -409,14 +410,15 @@ function CalculateKMeansCluster(props) {
               {thresholds.length === 0 && <small className='text-muted'>No Thresholds were applied</small>}
             </ul>
 
-            <strong className='p-1 d-block'>Clusters k={results.k}</strong>
-            <ol className='small'>
+            <span className='form-text p-1'>Clusters k={results.k}</span>
+            <ol className='small px-4'>
               {results?.info && results.info.map((cluster, idx) => {
-                return (<li key={idx}><i className='bi bi-diagram-2' /> Size: {cluster.size}, Error: {cluster.error}</li>)
+                return (<li key={idx}>Size: {cluster.size} <small>(error: {numberFormat(cluster.error, 3)})</small></li>)
               })}
             </ol>
 
-            <p className='p-1'>
+            <span className='form-text p-1'>Interpretation</span>
+            <p className='small px-2'>
               A silhouette score of {round(results.silhouette, 3)} suggests a {' '}
               {results.silhouette > 0.5 && <em>strong structure</em>}
               {results.silhouette < 0.25 && <em>likely no real clusters</em>}
@@ -424,7 +426,7 @@ function CalculateKMeansCluster(props) {
             </p>
             <div className='d-flex justify-content-between p-2'>
               <Button variant="outline-secondary" size="sm" onClick={handleClickDiscard}><i className="bi bi-x-circle" /> Discard</Button>
-              <Button variant="outline-secondary" size="sm" onClick={addSections}><i className="bi bi-subtract" /> Add Clusters for k={results.k}</Button>
+              <Button variant="outline-secondary" size="sm" onClick={addSections}><i className="bi bi-subtract" /> Add Clusters (k={results.k})</Button>
             </div>
           </Card.Body>}
       </>}
