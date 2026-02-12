@@ -94,9 +94,9 @@ A usecase for selecting the `long format` would be a data structure in which you
 ### CSV Format
 
 ```CSV
-Date,Temperature,Location
-2023-01-01,23.5,"New York"
-2023-01-02,24.1,"Boston"
+Date,Temperature,Sunrise/Sunset,Location
+2026-02-12,0.1,"[\"6:53\", \"17:27\"]",New York
+2026-02-12,-15,"[\"6:44\", \"17:12\"]",Boston
 ```
 
 ### JSON Format
@@ -105,13 +105,15 @@ Date,Temperature,Location
 {
   "data": [
     {
-      "Date": "2023-01-01",
-      "Temperature": 23.5,
+      "Date": "2026-02-12",
+      "Temperature": 0.1,
+      "Sunrise/Sunset": ["6:53", "17:27"],
       "Location": "New York"
     },
     {
-      "Date": "2023-01-02",
-      "Temperature": 24.1,
+      "Date": "2026-02-12",
+      "Temperature": -1.5,
+      "Sunrise/Sunset": ["6:44", "17:12"],
       "Location": "Boston"
     }
   ]
