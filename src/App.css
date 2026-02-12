@@ -765,3 +765,8 @@ span.form-text.p-1 + p.small.px-2:not(:first-child):not(:last-child) {
     margin: 1.5rem 0rem 0rem 0rem;
   }
 }
+
+/* Plotly modebar icon fix */
+.plotly .modebar-group a {
+  margin-top: 4px;
+}
