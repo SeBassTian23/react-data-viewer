@@ -315,21 +315,19 @@
 
 /** Main Container */
 #dv-main {
-  /* background: linear-gradient(315deg, rgba(0, 0, 0, 0.1) 2%, transparent 60%); */
   background: radial-gradient(
     farthest-corner at 100% 100%,
-    rgba(0, 0, 0, 0.1) 10%,
-    transparent 60%
-  );
+    rgba(0, 0, 0, 0.25) 10%,
+    transparent 80%
+  ), var(--bs-secondary-bg-subtle);
 }
 
 body[data-bs-theme="dark"] #dv-main {
-  /* background: linear-gradient(315deg, rgba(255, 255, 255, 0.1) 2%, transparent 60%); */
   background: radial-gradient(
     farthest-corner at 100% 100%,
-    rgba(255, 255, 255, 0.1) 10%,
-    transparent 60%
-  );
+    rgba(255, 255, 255, 0.25) 10%,
+    transparent 80%
+  ), var(--bs-secondary-bg-subtle);
 }
 
 /** Map Darkmode */

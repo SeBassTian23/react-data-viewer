@@ -108,7 +108,7 @@ function DashboardWidget(props) {
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
-        <Card.Header className="fw-bold d-flex justify-content-between align-items-center" title={props.title || "Untitled"}>
+        <Card.Header className="fw-bold d-flex justify-content-between align-items-center bg-body-secondary" title={props.title || "Untitled"}>
           <i className='bi-grip-vertical' />
           {!editTitle ?
             <div className='w-100 text-truncate'>{props.title || "Untitled"}</div> :
