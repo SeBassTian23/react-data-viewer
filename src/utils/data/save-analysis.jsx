@@ -1,6 +1,6 @@
 import pako from 'pako';
 
-import { exportJSON } from '../../modules/database'
+import { exportJSON, getFilename } from '../../modules/database'
 import cloneDeep from 'lodash/cloneDeep'
 
 
@@ -11,6 +11,10 @@ const saveAnalysisToFile = (store = null) => {
     storeCopy = cloneDeep(store)
     delete storeCopy.bookmarks;
   }
+
+  // Prevent saving empty analysis
+  if(getFilename() == 'loki.db')
+    return
 
   let data = {
     store: storeCopy,

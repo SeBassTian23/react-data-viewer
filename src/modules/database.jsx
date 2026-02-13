@@ -188,6 +188,10 @@ const isDirty = () => {
   return collectionNames.filter(name => db.getCollection(name).dirty).length > 0
 }
 
+const getFilename = (filename) => {
+  return db.filename;
+}
+
 const setFilename = (filename) => {
   db.filename = filename;
 }
@@ -212,3 +216,4 @@ export { isDirty }
 export { setFilename }
 export { resetFilename }
 export { saveDatabase }
+export { getFilename }
