@@ -28,6 +28,8 @@ import Plot from 'react-plotly.js'
 import chroma from 'chroma-js'
 import jStat from 'jstat'
 
+import { cloneDeep } from 'lodash'
+
 import { ColorGradientColorArray } from '../components/Main/ColorGradient';
 
 import buildGeoJSON from '../modules/build-geojson';
@@ -205,7 +207,7 @@ export default function Map(props) {
 
         setPlotdisplay('block')
         setPlotstate(previous => {
-          let layout = plotMapLayout;
+          let layout = cloneDeep(plotMapLayout);
           layout.title.text = value
           layout['font'] = {color: props.darkmode ? plotLayoutDarkmode.font.color : plotLayoutLightmode.font.color}
 
