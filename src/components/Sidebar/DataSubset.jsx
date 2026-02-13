@@ -7,6 +7,8 @@ import DataSubsetItem from './DataSubsetItem'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -15,7 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getDatasetCount } from '../../modules/database'
 
-import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD } from '../../features/datasubset.slice';
+import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD, datasubsetsDeleted } from '../../features/datasubset.slice';
 
 import useHelp from '../../hooks/useHelp';
 import useModalConfirm from '../../hooks/useModalConfirm';
@@ -71,6 +73,10 @@ export default function DataSubset(props) {
     }
   }), [] )
 
+  const handleClickDeleteHidden = useCallback(() => {
+    dispatch(datasubsetsDeleted( state.filter( itm => !itm.isVisible).map(itm => itm.id) || []))
+  }, [] )
+
   return (
     <>
       <Row id="dv-series">
@@ -78,7 +84,7 @@ export default function DataSubset(props) {
           Data Selection
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
-        <Col sm={12}>
+        <Col sm={12} className='px-2'>
           {(state.length > 0) && (
             <ButtonToolbar aria-label="Data Subsets Menu">
               <ButtonGroup size='sm' className="me-2" aria-label="Data Subsets">
@@ -87,6 +93,9 @@ export default function DataSubset(props) {
               </ButtonGroup>
               <ButtonGroup size='sm' className="me-2" aria-label="Data Subset Reset">
                 <Button variant='outline-secondary' onClick={handleClickReset}><i className="bi-x-circle" /> Reset</Button>
+                <DropdownButton size="sm" variant='outline-secondary'>
+                  <Dropdown.Item onClick={handleClickDeleteHidden}><i className="bi bi-eye-slash-fill" /> Remove hidden</Dropdown.Item>
+                </DropdownButton>
               </ButtonGroup>
             </ButtonToolbar>
           )

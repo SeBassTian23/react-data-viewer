@@ -20,25 +20,6 @@ const datasubsetSlice = createSlice({
         return item
       })
     },
-    datasubsetDblToggled(state, action) {
-
-      return state.map((item, idx) => {
-        if (item.id === action.payload) {
-          const updatedItem = {
-            ...item,
-            isVisible: item.isVisible
-          }
-          return updatedItem
-        }
-        else {
-          const updatedItem = {
-            ...item,
-            isVisible: !item.isVisible
-          }
-          return updatedItem
-        }
-      })
-    },
     datasubsetAdded(state, action) {
       const assignedColor = colors[(state.length % colors.length + colors.length) % colors.length]
       state.push({ ...action.payload, color: assignedColor, id: crypto.randomUUID() })
@@ -53,6 +34,9 @@ const datasubsetSlice = createSlice({
     },
     datasubsetDeleted(state, action) {
       return state.filter((item) => item.id !== action.payload)
+    },
+    datasubsetsDeleted(state, action) {
+      return state.filter((item) => !action.payload.includes(item.id))
     },
     datasubsetReset(state, action) {
       return initialState;
@@ -99,5 +83,5 @@ const datasubsetSlice = createSlice({
   }
 })
 
-export const { datasubsetToggled, datasubsetDblToggled, datasubsetAdded, datasubsetMultipleAdded, datasubsetDeleted, datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetEdited, datasubsetDnD } = datasubsetSlice.actions
+export const { datasubsetToggled, datasubsetAdded, datasubsetMultipleAdded, datasubsetDeleted, datasubsetsDeleted, datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetEdited, datasubsetDnD } = datasubsetSlice.actions
 export default datasubsetSlice.reducer

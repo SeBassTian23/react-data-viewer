@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useSelector } from 'react-redux'
 
@@ -12,6 +12,8 @@ import tinycolor from 'tinycolor2'
 import ModalDialogEditSubset from '../Dialogs/ModalDialogEditSubset'
 import DataSubsetItemMenu from './DataSubsetItemMenu'
 
+import { useDispatch } from 'react-redux'
+import { datasubsetToggled } from '../../features/datasubset.slice'
 import {selectedThresholds} from '../../store/thresholds';
 
 export default function DataSubsetItem(props) {
@@ -28,6 +30,8 @@ export default function DataSubsetItem(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let query = getFilteredData('data', { filters: props.filter, thresholds }).data().length
     setCount(query)
@@ -38,6 +42,7 @@ export default function DataSubsetItem(props) {
       <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center"
         onMouseEnter={() => setShowHoverContent(true)}
         onMouseLeave={() => setShowHoverContent(false)}
+        onDoubleClick={() => dispatch(datasubsetToggled(props.id))}
         title={`${props.name}${props.count !== count ? ` [${count}/${props.count}]` : ` [${props.count}]`}`}
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}
       >

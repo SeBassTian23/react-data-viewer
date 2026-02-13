@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import { useDispatch } from 'react-redux'
-import { datasubsetToggled, datasubsetDblToggled } from '../../features/datasubset.slice'
+import { datasubsetToggled } from '../../features/datasubset.slice'
 import useModalConfirm from '../../hooks/useModalConfirm'
 
 export default function DataSubsetItemMenu(props) {
@@ -27,7 +27,7 @@ export default function DataSubsetItemMenu(props) {
   return (
     <>
       <ButtonGroup size="sm" className="data-subset-btn-group">
-        <Button variant="outline-secondary" onClick={() => dispatch(datasubsetToggled(props.id))} onDoubleClick={() => dispatch(datasubsetDblToggled(props.id))}>
+        <Button variant="outline-secondary" onClick={() => dispatch(datasubsetToggled(props.id))} >
           {props.isVisible && <i className="bi-eye-fill" />}
           {!props.isVisible && <i className="bi-eye-slash-fill" />}
         </Button>
