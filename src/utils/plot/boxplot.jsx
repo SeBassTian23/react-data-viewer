@@ -11,7 +11,8 @@ const boxplot = ({ input = [], boxpoints = 'outliers', parameters = [] } = {}) =
       title: {
         text: null
       },
-      visible: false
+      visible: false,
+      type: 'category'
     },
     yaxis: {
       title: {
@@ -25,7 +26,7 @@ const boxplot = ({ input = [], boxpoints = 'outliers', parameters = [] } = {}) =
     data.push({
       "y": input[i].y,
       "legendgroup": input[i].id,
-      "name": input[i].name,
+      "name": typeof(input[i].name) != 'string'? `"${input[i].name}"` : input[i].name,
       "marker": {
         "color": input[i].color,
         "line": {
