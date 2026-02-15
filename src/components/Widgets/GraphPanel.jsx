@@ -67,6 +67,19 @@ export default function GraphPanel(props) {
       return itm
     })
 
+    // Adjust marker sizes
+    statePlot.data.map(itm => {
+      if(['violin', 'box'].includes(itm?.type) && (itm?.points == 'all' || itm?.boxpoints == 'all') && itm?.marker){
+        itm.marker.size = 6 * (props.size.xl < 12? 0.5 : 1)
+      }
+      if(['scattergl', 'splom'].includes(itm?.type) && itm?.marker){
+        if( itm.marker.size > 0.1 || !itm.marker.size )
+          itm.marker.size = 6 * (props.size.xl < 12? 0.75 : 1)
+        if( Array.isArray(itm.marker.size) )
+          itm.marker.size = itm.marker.size.map( el => el * (props.size.xl < 12? 0.5 : 1) )
+      }
+    })  
+
     setState({
       ...statePlot,
       frames: [],
