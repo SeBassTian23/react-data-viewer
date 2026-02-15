@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 
 import Form from 'react-bootstrap/Form'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -19,20 +19,20 @@ export default function FilterItem(props) {
 
   const [toggle, setToggle] = useState(false);
 
-  /* Get unique parameter values - only recalculate when props.name changes */
-  const unique = useMemo(() => {
-    const query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })
-    return getUnique(query.data({ removeMeta: true }), props.name)
-  }, [props.name])
+  // Memoize the click handler
+  const handleToggle = useCallback(() => {
+    props.setValue(props.name, []);
+    setToggle(prev => !prev);
+  }, [props.name, props.setValue])
 
   return (
     <ListGroup.Item as="li" className='list-group-item-action'>
-      <div className="d-flex justify-content-between align-items-center cursor-pointer" onClick={() => { props.setValue(props.name, []); setToggle(!toggle) }}>
+      <div className="d-flex justify-content-between align-items-center cursor-pointer" onClick={handleToggle}>
         <span>
           {toggle ? <i className='bi-caret-down-fill small' /> : <i className='bi-caret-right-fill small' />}
           {' '}<span className={toggle ? 'fw-bold' : ''}>{props.alias? props.alias : props.name}</span>
         </span>
-        <span className='badge text-bg-light'>{unique.length}</span>
+        <span className='badge text-bg-light'>{props?.filterData?.unique? props.filterData.unique.length : '0'}</span>
       </div>
       <Form.Select
         size="sm"
@@ -41,7 +41,7 @@ export default function FilterItem(props) {
         {...props.register(props.name)}
         className={`mt-2 ${ toggle ? 'd-block' : 'd-none' }`}
       >
-        {unique.map((el, idx) => {
+        {props?.filterData?.unique && props.filterData.unique.map((el, idx) => {
           return (<option key={idx} value={el}>{el}</option>)
         })}
       </Form.Select>
@@ -56,64 +56,83 @@ export function FilterItemDateTime(props) {
   const [inputtype, setInputtype] = useState('datetime-local');
   const [datetimerange, setDatetimerange] = useState(false);
   const [inputformat, setInputformat] = useState('YYYY-MM-DDTHH:mm');
-  const [inputmin, setInputmin] = useState();
-  const [inputmax, setInputmax] = useState();
+  const [inputmin, setInputmin] = useState('');
+  const [inputmax, setInputmax] = useState('');
 
-  /* Get unique parameter values */
-  let query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })
-  let unique = getUnique(query.data({ removeMeta: true }), props.name)
+  /* Get unique parameter values - memoized for performance */
+  const { min, max } = useMemo(() => {
 
-  const min = dayjs.min(unique.map(e => dayjs(e)))
-  const max = dayjs.max(unique.map(e => dayjs(e)))
+    if(!props?.filterData){
+      const query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })
+      const uniqueData = getUnique(query.data({ removeMeta: true }), props.name)
+      const minVal = dayjs.min(uniqueData.map(e => dayjs(e)))
+      const maxVal = dayjs.max(uniqueData.map(e => dayjs(e)))
+      return { min: minVal, max: maxVal}
+    }
+    return { min: props.filterData.min || null, max: props.filterData.max || null }
+  }, [props.name])
 
-  useEffect( () => {
-    // Set all to empty to avoid format-input conflict warnings
-    setInputmin('')
-    setInputmax('')
-    if(inputtype === 'datetime-local')
-      setInputformat('YYYY-MM-DDTHH:mm')
+  /* Update format and reset inputs when input type changes */
+  useEffect(() => {
+    let newFormat = 'YYYY-MM-DDTHH:mm';
     if(inputtype === 'date')
-      setInputformat('YYYY-MM-DD')
-    if(inputtype === 'time')
-      setInputformat('HH:mm')
-  },[inputtype]);
+      newFormat = 'YYYY-MM-DD';
+    else if(inputtype === 'time')
+      newFormat = 'HH:mm';
+    
+    setInputformat(newFormat);
+    // Reset inputs to avoid format conflicts
+    setInputmin('');
+    setInputmax('');
+  }, [inputtype]);
 
-  useEffect( () => {
-    setInputmin(dayjs(min).format(inputformat))
-    setInputmax(dayjs(max).format(inputformat))
-  },[inputformat])
+  /* Set initial min/max values based on format */
+  useEffect(() => {
+    setInputmin(dayjs(min).format(inputformat));
+    setInputmax(dayjs(max).format(inputformat));
+  }, [inputformat, min, max]);
 
-  useEffect( () => {
-    if(toggle){
+  /* Update form values when inputs change */
+  useEffect(() => {
+    if(toggle) {
       props.setValue(`${props.name}.0`, inputmin);
       if(datetimerange)
         props.setValue(`${props.name}.1`, inputmax);
     }
-  },[inputmin,inputmax])
+  }, [inputmin, inputmax, toggle, datetimerange, props.name, props.setValue]);
 
-  useEffect( () => {
-    if(!datetimerange)
+  /* Handle range toggle */
+  useEffect(() => {
+    if(!datetimerange) {
       props.unregister(`${props.name}.1`);
-    else{
+    } else {
       props.setValue(`${props.name}.1`, inputmax);
     }
-  },[datetimerange])
+  }, [datetimerange, props.name, inputmax, props.setValue, props.unregister]);
 
-  useEffect( () => {
-    if(!toggle){
+  /* Handle main toggle */
+  useEffect(() => {
+    if(!toggle) {
       props.unregister(`${props.name}.0`);
       props.unregister(`${props.name}.1`);
-    }
-    else{
+    } else {
       props.setValue(`${props.name}.0`, inputmin);
       if(datetimerange)
         props.setValue(`${props.name}.1`, inputmax);
     }
-  },[toggle])
+  }, [toggle, props.name, inputmin, inputmax, datetimerange, props.setValue, props.unregister]);
+
+  const handleToggle = useCallback(() => {
+    setToggle(prev => !prev);
+  }, []);
+
+  const handleRangeChange = useCallback(() => {
+    setDatetimerange(prev => !prev);
+  }, []);
 
   return (
     <ListGroup.Item as="li" className='list-group-item-action'>
-      <div className="d-flex justify-content-between align-items-center" style={{ 'cursor': 'pointer' }} onClick={() => setToggle(!toggle)}>
+      <div className="d-flex justify-content-between align-items-center" role="button" onClick={handleToggle}>
         <span>
           {toggle ? <i className='bi-caret-down-fill' /> : <i className='bi-caret-right-fill' />}
           {' '}{props.name}
@@ -137,7 +156,7 @@ export function FilterItemDateTime(props) {
             label="Range"
             size={'sm'}
             className='ms-3 mt-2 small'
-            onChange={()=>setDatetimerange( e => !e)}
+            onChange={handleRangeChange}
           />
 
         {toggle && <input
