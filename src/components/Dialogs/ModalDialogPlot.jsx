@@ -175,14 +175,14 @@ function PlotParameterSelect(props) {
                   {item.options.map((option, idx) => {
                     if (option === 'parameters-number') {
                       return parameters.map((option, idx) => {
-                        if (option.type === 'number' || option.specialtype === 'date-time' && option.isSelected) {
+                        if (option.type === 'number' || option.specialtype === 'date-time' || option.specialtype === 'number' && option.isSelected) {
                           return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
                         }
                       })
                     }
                     else if (option === 'parameters-string') {
                       return parameters.map((option, idx) => {
-                        if (option.type === 'string' && option.isSelected)
+                        if (option.type === 'string' || option.specialtype === 'string' && option.isSelected)
                           return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
                       })
                     }

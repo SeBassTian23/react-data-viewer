@@ -31,7 +31,7 @@ export default function ModalDialogMapHistogram(props) {
           <Form.Label className='form-label-header'>Color Markers By</Form.Label>
           <Form.Select size='sm' aria-label="Parameter" {...register("colorBy")} defaultValue={stateMap.colorBy} >
             {stateParameters.map((option, idx) => {
-              if (option.isSelected && (option.type === 'number' || option.specialtype === 'date-time') )
+              if (option.isSelected && (option.type === 'number' || option.specialtype === 'date-time' || option.specialtype === 'number') )
                 // if (option.type === 'number' && option.isSelected)
                 return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
             })

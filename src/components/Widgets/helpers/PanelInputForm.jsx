@@ -34,7 +34,7 @@ export default function PanelInputForm(props) {
             <Form.Label className='form-label-header'>{selectTypeName}</Form.Label>
             <Form.Select size='sm' aria-label={selectTypeName} {...register("parameter")} defaultValue={''} >
               {stateParameters.map((option, idx) => {
-                if (option.type === selectType && option.isSelected)
+                if (option.specialtype === selectType || option.type === selectType && option.isSelected)
                   return <option key={idx} value={option.name}>{option.alias ? option.alias : option.name}</option>
                 return null
               })
