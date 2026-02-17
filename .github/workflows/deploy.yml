@@ -41,6 +41,9 @@ jobs:
           npm install
       - name: Build Vite app
         run: npm run build
+      - name: Inject Simple Analytics
+        run: |
+          sed -i 's|</head>|<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"><\/script>\n<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-less-than-or-equal-to" \/><\/noscript>\n</head>|' dist/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
