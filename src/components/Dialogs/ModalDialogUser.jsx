@@ -210,12 +210,26 @@ export default function ModalDialogUser(props) {
             <Form>
               <Form.Group className="mb-3">
                 <Form.Label>Name</Form.Label>
-                <Form.Control ref={refName} type="text" {...register("appUser")} placeholder="My Name" defaultValue='' disabled={!allowCookies} />
+                <Form.Control 
+                  ref={refName}
+                  type="text"
+                  {...register("appUser")}
+                  placeholder="My Name"
+                  defaultValue=''
+                  disabled={!allowCookies}
+                  autoComplete='given-name' />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Email</Form.Label>
-                <Form.Control ref={refEmail} type="email" {...register("appEmail")} placeholder="email@domain.org" defaultValue='' disabled={!allowCookies} />
+                <Form.Control
+                  ref={refEmail}
+                  type="email"
+                  {...register("appEmail")}
+                  placeholder="email@domain.org"
+                  defaultValue=''
+                  disabled={!allowCookies}
+                  autoComplete='email' />
               </Form.Group>
 
               <Form.Group className="mb-3">
