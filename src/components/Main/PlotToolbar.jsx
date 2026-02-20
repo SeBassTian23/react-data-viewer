@@ -48,6 +48,20 @@ export default function PlotToolbar(props) {
     help.open("Help | Plot Data", "help/md/plot.md")
   },[] )
 
+  const handleClickDownloadImage = useCallback( (format="png")=>{
+    Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format })
+  },[] )
+
+  const handleClickDownloadData = useCallback( (format="json")=>{
+    const data = Plotly.Plots.graphJson( document.querySelector('#mainChart') );
+    var blob = new Blob([data], { type: 'text/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'chart-data.json';
+    a.click();
+    a.remove();
+  },[] )
+
   const addToSubsetInside = (ids) => {
 
     if (ids.length > 0) {
@@ -124,10 +138,12 @@ export default function PlotToolbar(props) {
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Save group">
           <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-box-arrow-down" /> Save…</>}>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'png' })}><i className="bi-filetype-png" /> PNG</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'jpeg' })}><i className="bi-filetype-jpg" /> JPEG</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'webp' })}><i className="bi-file-earmark" /> webp</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'svg' })}><i className="bi-filetype-svg" /> SVG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('png')}><i className="bi-file-earmark-image" /> PNG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('jpeg')}><i className="bi-file-earmark-image" /> JPEG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('webp')}><i className="bi-file-earmark-image" /> WEBP</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('svg')}><i className="bi-file-earmark-image" /> SVG</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleClickDownloadData}><i className="bi-filetype-json" /> Plot Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Help Group">
