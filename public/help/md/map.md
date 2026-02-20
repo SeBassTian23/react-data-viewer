@@ -75,4 +75,4 @@ Add the current map view to your dashboard using the <i class="bi-window-plus"><
 
 The map panel will update automatically when data filters or subsets change.
 
-**Note**: Once added to the dashboard, the map cannot be edited directly in the panel. Return to the Map view by clicking on the map in the panel.
+> [!note] Once added to the dashboard, the map cannot be edited directly in the panel. Return to the Map view by clicking on the map in the panel.

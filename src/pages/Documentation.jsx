@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeToc from 'rehype-toc'
 import rehypeSlug from 'rehype-slug'
+import rehypeCallouts from 'rehype-callouts'
 
 export default function Documentation(props) {
 
@@ -178,7 +179,7 @@ export default function Documentation(props) {
               table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
               img: ({ node, ...props }) => <img className='img-fluid' alt="" {...props} />
             }}
-            rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeToc, { headings: ["h1", "h2"] }]]}
+            rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeToc, { headings: ["h1", "h2"] }], [rehypeCallouts, {showIndicator: false}]]}
           />
         </div>
         {showTopBtn && <Button className='scrollup' onClick={handleClickScrollUp}><i className='bi bi-chevron-up' /></Button>}

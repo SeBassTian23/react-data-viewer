@@ -17,4 +17,4 @@ The following keyboard shortcuts are supported within the application.
 | Ctrl + Shift + M |    ⇧ ⌘ M    | Show Map                |
 | Ctrl + Shift + X |    ⇧ ⌘ X    | Show Spreadsheet        |
 
-_Note: Some browser shortcuts might be overwriten by the application_
+> [!warning] Some browser shortcuts might be overwriten by the application

@@ -150,4 +150,4 @@ The clusters for the determined best *k* can be added, generating new subsets na
 ##### Clustering Updates
 In contrast to the statistics widgets, the clustering is not updated after subsets or thresholds are changed. You have to manually run the clustering again.
 
-***Note:*** To try a different clustering, best add a new panel to the dashboard. You can just hide the previous clusters, otherwise they would be taken into account as well. Then run the k-means clustering.
+> [!note] To try a different clustering, best add a new panel to the dashboard. You can just hide the previous clusters, otherwise they would be taken into account as well. Then run the k-means clustering.

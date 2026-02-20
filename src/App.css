@@ -241,15 +241,15 @@
   .toc {
     grid-area: toc;
     position: sticky;
-    top: 2.5rem;
+    top: 0rem;
     right: 0;
     z-index: 2;
-    height: calc(100vh - 4rem);
+    height: 100vh;
     overflow-y: auto;
 
     border-left: 1px solid var(--bs-border-color);
     margin-left: 0.5rem;
-    padding-left: 0.5rem;
+    padding: 2.5rem 0rem 2.5rem 0.5rem;
 
     & ol {
       list-style: none;
