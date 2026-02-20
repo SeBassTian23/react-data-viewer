@@ -188,7 +188,7 @@ const isDirty = () => {
   return collectionNames.filter(name => db.getCollection(name).dirty).length > 0
 }
 
-const getFilename = (filename) => {
+const getFilename = () => {
   return db.filename;
 }
 
