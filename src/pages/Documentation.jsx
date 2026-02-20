@@ -48,7 +48,7 @@ export default function Documentation(props) {
     Promise.all(fetchChapters).then(responses => {
 
       let header = `<div class='col py-2 text-center mb-5 intro'>
-        <img src="./logo192.png" alt="App Logo" style="max-width: 15rem">
+        <img src="./react-data-viewer.svg" alt="App Logo" style="max-width: 15rem">
         <span class='d-block display-6 fw-bold text-body-emphasis'>${__APP_NAME__}</span>
         <span class='d-block fw-bold text-muted'>${__APP_DESCRIPTION__}</span>
         <small class='d-block text-muted'>v${__APP_VERSION__}</small>
