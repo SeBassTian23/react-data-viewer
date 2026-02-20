@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
 import { useSelector } from 'react-redux';
 
@@ -18,7 +18,6 @@ export default function SidebarFooter(props) {
 
   const [count, setCount] = useState(0);
   const [parameters, setParameters] = useState([0,0]);
-  const [memory, setMemory] = useState([0,0]);
 
   useEffect(() => {
     setCount(getDatasetCount())
@@ -28,15 +27,6 @@ export default function SidebarFooter(props) {
     ])
   }, [stateParameters, stateDatasubsets, stateThresholds, stateBookmarks])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const mem = performance.memory
-      setMemory([( mem.usedJSHeapSize / mem.jsHeapSizeLimit * 100 ).toFixed(0) +' %', humanFileSize(mem.usedJSHeapSize, 0) ]);
-    }, 1000);
-
-    return () => clearInterval(interval); // Cleanup function
-  }, []);
-
   return (
     <Row id="dv-sidebar-footer">
       <Col sm={12} className='border-top d-flex justify-content-evenly align-items-center small py-2'>
@@ -44,12 +34,33 @@ export default function SidebarFooter(props) {
         <span title={`Parameters (${parameters.join("|")})`}><i className='bi bi-toggles' /> {parameters[1]}</span>
         <span className={`${stateThresholds.filter(x => x.isSelected).length > 0 ? 'text-danger' : ''}`} title='Thresholds'><i className='bi-bar-chart-steps' /> {stateThresholds.filter(x => x.isSelected).length}</span>
         <span title='Bookmarks'><i className='bi bi-journal-bookmark-fill' /> {stateBookmarks.length}</span>
-        <span className='d-flex align-items-center' title='Resources (Memory)'><i className='bi bi-cpu' /> <span className="d-flex flex-column w-100 text-end footer-memory">
-            <span className='text-nowrap'>{memory[0]}</span>
-            <span className='text-nowrap'>{memory[1]}</span>
-          </span>
-        </span>
+        <MemoryDisplay />
       </Col>
     </Row>
   )
 }
+
+const MemoryDisplay = memo(function MemoryDisplay() {
+  const [memory, setMemory] = useState([0, 0]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const mem = performance.memory;
+      setMemory([
+        (mem.usedJSHeapSize / mem.jsHeapSizeLimit * 100).toFixed(0) + ' %',
+        humanFileSize(mem.usedJSHeapSize, 0)
+      ]);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className='d-flex align-items-center' title='Resources (Memory)'>
+      <i className='bi bi-cpu' />
+      <span className="d-flex flex-column w-100 text-end footer-memory">
+        <span className='text-nowrap'>{memory[0]}</span>
+        <span className='text-nowrap'>{memory[1]}</span>
+      </span>
+    </span>
+  );
+});
