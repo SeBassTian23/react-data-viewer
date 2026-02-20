@@ -6,8 +6,6 @@ import { useMapEvents } from 'react-leaflet/hooks'
 import L from "leaflet";
 
 import ResetViewControl from '../utils/map/ResetViewControl';
-import HeatmapControl from '../utils/map/HeatmapControl'
-import MarkerPinsControl from '../utils/map/MarkerPinsControl'
 import DashboardControl from '../utils/map/DashboardControl'
 import DrawAreaSelection from '../utils/map/DrawAreaSelection'
 import HelpControl from '../utils/map/HelpControl'
@@ -47,7 +45,7 @@ import Row from 'react-bootstrap/Row';
 import { mapShowSeries, mapShowHistogram, mapApplyHistogramRange, mapApplySettings } from '../features/map.slice'
 import { dashboardAddPanel } from '../features/dashboard.slice';
 
-import ToggleFilter from '../utils/map/ToggleFilter';
+import SelectView from '../utils/map/SelectView';
 
 import { plotLayoutDarkmode, plotLayoutLightmode } from '../constants/plot-layout'
 
@@ -303,9 +301,15 @@ export default function Map(props) {
             {editRef.current && <>
               <FeatureGroup>
                 <ResetViewControl />
-                <MarkerPinsControl action={() => dispatch(mapShowSeries())} title="Marker | Series" icon="<i class='bi-geo-alt-fill' style='font-size:16px'></i>" />
-                <HeatmapControl action={() => setHistogramstate(true)} title="Marker | Heatmap" icon="<i class='bi-bar-chart-line-fill' style='font-size:16px'></i>" />
-                <ToggleFilter action={(e) => toggleGrayscale()} />
+                <SelectView action={(e) => {
+                    if(e == 'filter')
+                      toggleGrayscale()
+                    if(e == 'histogram')
+                      setHistogramstate(true)
+                    if(e == 'marker')
+                      dispatch(mapShowSeries())
+                  }
+                } />
               </FeatureGroup>
 
               <DashboardControl action={handleClickDashboard} title="Add Map View to Dashboard" />
