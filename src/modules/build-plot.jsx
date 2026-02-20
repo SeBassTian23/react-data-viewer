@@ -49,7 +49,7 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
 
   // Determine if meta data is needed
   let removeMeta = true
-  if (['scatter', 'scatter-lines', 'splom', 'scatter3d','boxplot','violinplot'].includes(settings.plottype)) {
+  if (['scatter', 'scatter-lines', 'splom', 'scatter3d','boxplot', 'violinplot', 'line-array-y-only'].includes(settings.plottype)) {
     removeMeta = false
   }
   for (let series in subsets) {

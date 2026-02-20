@@ -99,8 +99,12 @@ export default function PlotMain(props) {
         onClick={(figure) => {
           if (figure.points !== undefined && figure.points.length > 0) {
             let idx = figure.points[0].pointIndex || figure.points[0].pointNumber;
-            if (figure.points[0].data.idx && figure.points[0].data.idx !== undefined)
-              showDatum(figure.points[0].data.idx[idx] || null)
+            if (figure.points[0].data.idx && figure.points[0].data.idx !== undefined){
+              if( Array.isArray(figure.points[0].data.idx) )
+                showDatum(figure.points[0].data.idx[idx] || null)
+              else
+                showDatum(figure.points[0].data.idx || null)
+            }
           }
         }
         }
