@@ -32,9 +32,9 @@ export default function SidebarNavigation(props) {
     props.setDarkmode(prev => !prev);
 
     if(localStorage.length > 0)
-      localStorage.setItem('APP_USER_DARKMODE', props.darkmode);
+      localStorage.setItem('APP_USER_DARKMODE', !props.darkmode);
 
-  }, [props.setDarkmode]);
+  }, [props.setDarkmode, props.darkmode]);
   
   const handleClickToggleSidebar = useCallback(() => {
     props.setToggle(prev => !prev);
