@@ -22,7 +22,7 @@ export default function Dashboard(props) {
   }, [dispatch])
 
   return (
-    <>
+    <div id="dv-dashboard">
       <Row className='position-absolute'>
         <Col>
           <span className='fs-3'>{analysis.name}</span> <span className='text-muted'>{new Date(analysis.updated_at).toLocaleString()}</span>
@@ -43,6 +43,6 @@ export default function Dashboard(props) {
           })}
         </ReactSortable>
       }
-    </>
+    </div>
   )
 }

@@ -314,7 +314,7 @@
 }
 
 /** Main Container */
-#dv-main {
+#dv-main:has(#dv-dashboard) {
   background: radial-gradient(
     farthest-corner at 100% 100%,
     rgba(0, 0, 0, 0.25) 10%,
@@ -322,7 +322,7 @@
   ), var(--bs-secondary-bg-subtle);
 }
 
-body[data-bs-theme="dark"] #dv-main {
+body[data-bs-theme="dark"] #dv-main:has(#dv-dashboard) {
   background: radial-gradient(
     farthest-corner at 100% 100%,
     rgba(255, 255, 255, 0.25) 10%,
