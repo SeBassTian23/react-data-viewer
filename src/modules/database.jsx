@@ -25,6 +25,12 @@ export const addCollection = (collection = null) => {
   return null;
 }
 
+export const hasCollection = (collection = null) => {
+  if (collection)
+    return db.getCollection(collection)? true : false;
+  return false;
+}
+
 export const removeAllData = (collection = 'data') => {
   let dataset = db.getCollection(collection)
   dataset.removeDataOnly()
