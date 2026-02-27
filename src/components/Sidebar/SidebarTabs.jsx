@@ -1,20 +1,8 @@
-import { useState, useEffect, useCallback, Fragment } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useStore } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useHotkeys } from 'react-hotkeys-hook'
-
-import DataSubset from './DataSubset'
-import DataTypes from './DataTypes'
-import Filters from './Filters'
-import Parameters from './Parameters'
-import ParameterFilters from './ParameterFilters'
-import Bookmarks from './Bookmarks'
-import Thresholds from './Thresholds'
-import RecentFiles from './RecentFiles'
-
-import ModalDialogAbout from '../Dialogs/ModalDialogAbout'
-import ModalDialogStart from '../Dialogs/ModalDialogStart'
 
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
@@ -24,24 +12,24 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 
 import saveAnalysisToFile from '../../utils/data/save-analysis'
 
-import Aliases from './Aliases';
-
+import ModalDialogAbout from '../Dialogs/ModalDialogAbout'
+import ModalDialogStart from '../Dialogs/ModalDialogStart'
 import ModalDialogImport from '../Dialogs/ModalDialogImport'
 import ModalDialogBusy from '../Dialogs/ModalDialogBusy'
 import ModalDialogAnalysisImport from '../Dialogs/ModalDialogAnalysisImport'
 
+import SidebarTabContent from './SidebarTabContent'
+import SidebarPanelMenuItems from './SidebarPanelMenuItems'
+
 import { ShortcutLabel, ShortcutLabelStr } from '../Main/ShortcutLabel'
 
-import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
-
-import widgets from '../../constants/widgets'
 import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 import useToast from '../../hooks/useToast';
 
 import opfs from '../../modules/opfs'
 
-export default function SidebarTabs(props) {
+export default function SidebarTabs({ modalImport, setModalImport, darkmode, setTogglesidebar, ...props }) {
 
   const store = useStore();
 
@@ -51,30 +39,20 @@ export default function SidebarTabs(props) {
   const modal = useModalConfirm();
   const addBookmark = useAddBookmark();
 
-  // Custom Hooks
-  const addDashboardPanel = useAddDashboardPanel();
-
-  const modalImport = props.modalImport
-  const setModalImport = props.setModalImport;
-
   const [showAbout, setShowAbout] = useState(false)
   const [modalSaveAnalysis, setModalSaveAnalysis] = useState(false);
-  const [dashboardMenuInactive, setDashboardMenuInactive] = useState(false);
 
   const [startModal, setStartModal] = useState(false);
   const [showRecent, setShowRecent] = useState(false);
 
   const [loadAnalysis, setLoadAnalysis] = useState(false);
-  const [state, setState] = useState({
-    selectedTab: 'DataSubsets',
-    title: 'Data'
-  });
+  const [tab, setTab] = useState('DATASUBSETS');
 
-  const saveBookmark = useCallback( () => addBookmark(), []);
+  const saveBookmark = useCallback(() => addBookmark(), [addBookmark]);
 
   useHotkeys('meta+/', (event) => {
     event.preventDefault();
-    props.setTogglesidebar(!props.show);
+    setTogglesidebar(curr => !curr);
   });
 
   useHotkeys('meta+ctrl+n', (event) => {
@@ -94,7 +72,7 @@ export default function SidebarTabs(props) {
 
   useHotkeys('meta+shift+l', (event) => {
     event.preventDefault();
-    changeTab('Bookmarks', 'Bookmarks');
+    setTab('Bookmarks', 'Bookmarks');
   });
 
   useHotkeys('meta+l', (event) => {
@@ -109,42 +87,35 @@ export default function SidebarTabs(props) {
 
   useHotkeys('meta+k', (event) => {
     event.preventDefault();
-    (state.selectedTab === 'DataSubsets') ? changeTab('Filters', 'Filter') : changeTab('DataSubsets', 'Data')
+    setTab( curr =>  curr === 'DATASUBSETS'? 'FILTERS' : 'DATASUBSETS')
   });
 
-  const changeTab = (selectedTab, title) => {
-    setState(() => {
-      return { 'selectedTab': selectedTab, 'title': title }
-    });
-  }
+  useHotkeys('meta+u', (event) => {
+    event.preventDefault();
+    setTab('RECENT');
+  });
 
   const saveAnalysis = () => {
     saveAnalysisToFile(store.getState());
     setModalSaveAnalysis(false)
   }
 
-  useEffect(() => {
-    if (location.pathname === "/")
-      setDashboardMenuInactive(false)
-    else
-      setDashboardMenuInactive(true)
-  }, [location.pathname])
-
   // Initial Loading
-  useEffect(()=>{
+  useEffect(() => {
     setShowRecent(opfs.isSupported());
-    setTimeout(()=>{
-      if(location?.pathname == '/')
+    const timer = setTimeout(() => {
+      if (location?.pathname === '/')
         setStartModal(true);
-    }, 250)
-  },[])
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [])
 
-  useEffect(()=>{
-    if(localStorage.length === 0)
+  useEffect(() => {
+    if (localStorage.length === 0)
       setShowRecent(false);
-    if(opfs.isSupported() && localStorage.length > 0)
+    if (opfs.isSupported() && localStorage.length > 0)
       setShowRecent(true);
-  },[localStorage.length])
+  }, [localStorage.length])
 
   const handleNewAnalysis = useCallback(() => modal.show("confirm", {
     header: "New Analysis",
@@ -154,70 +125,46 @@ export default function SidebarTabs(props) {
     payload: {
       action: "NEW_ANALYSIS"
     }
-  }), [] )
-
-  const renderTabContent = (tab) => {
-    switch (tab) {
-      case 'DataSubsets':
-        return <DataSubset setModalImport={setModalImport} />;
-      case 'DataTypes':
-        return <DataTypes />;
-      case 'Filters':
-        return <Filters />;
-      case 'Parameters':
-        return <Parameters />;
-      case 'Bookmarks':
-        return <Bookmarks />;
-      case 'Thresholds':
-        return <Thresholds />;
-      case 'Aliases':
-        return <Aliases />;
-      case 'ParameterFilters':
-        return <ParameterFilters />;
-      case 'Recent':
-        return <RecentFiles />;
-      default:
-        return <DataSubset setModalImport={setModalImport} />;
-    }
-  }
+  }), [modal])
 
   return (
     <>
       <div id="dv-tab-nav">
         <ButtonToolbar className='d-flex align-items-center'>
           <ButtonGroup size="sm" className='w-100' aria-label="Data Toolbar">
-            {(state.selectedTab !== 'DataSubsets') ? <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('DataSubsets', 'Data')} title="Back to Data Subsets" ><i className="bi bi-chevron-left" /> Back</Button> : <Button type="button" variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => changeTab('Filters', 'Filter')} title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter</Button>}
-            <DropdownButton size="sm" as={ButtonGroup} className='column-dropdown' variant={props.darkmode? "outline-light" : "outline-dark"} align="end" disabled={dashboardMenuInactive} title={<><i className="bi bi-window-plus" /> Panels</>}>
-              {[
-                {header: 'General', category: 'general'},
-                {header: 'Statistics', category: 'statistics'},
-                {header: 'Continuous/Numerical', category: 'statistics_numerical'},
-                {header: 'Categorical/Count', category: 'statistics_category'},
-                {header: 'Clustering', category: 'cluster'}
-              ].map( (wdgt, idx, arr) => <Fragment key={idx}>
-                <Dropdown.Header>{wdgt.header}</Dropdown.Header>
-                {widgets.filter( itm => itm.category == wdgt.category).map( (itm, idx) => <Dropdown.Item key={idx} title={itm.tooltip || 'Add Pannel'} onClick={() => addDashboardPanel(itm.type)}><i className={`bi ${itm.icon || "bi-clipboard-data"}`} /> {itm.name}</Dropdown.Item> )}
-                {idx < arr.length-1 && <Dropdown.Divider />}
-              </Fragment>)}
-            </DropdownButton>
-            <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
+            {(tab !== 'DATASUBSETS') ? <Button type="button" 
+              variant={darkmode ? "outline-light" : "outline-dark"}
+              onClick={() => setTab('DATASUBSETS')}
+              title="Back to Data Subsets" ><i className="bi bi-chevron-left" /> Back
+              </Button>
+              : 
+              <Button
+                type="button"
+                variant={darkmode ? "outline-light" : "outline-dark"}
+                onClick={() => setTab('FILTERS')}
+                title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter
+              </Button>
+            }
+            <SidebarPanelMenuItems {...darkmode} />
+            <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
               <Dropdown.Header>Data</Dropdown.Header>
-              <Dropdown.Item onClick={() => changeTab('Thresholds', 'Thresholds')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('Parameters', 'Parameters')}><i className="bi bi-toggles" /> Parameters</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('DataTypes', 'Data Types')}><i className="bi bi-123" /> Data Types</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('Aliases', 'Aliases')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('ParameterFilters', 'Filters')}><i className="bi bi-funnel" /> Filters</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('PARAMETERS')}><i className="bi bi-toggles" /> Parameters</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('DATATYPES')}><i className="bi bi-123" /> Data Types</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('ALIASES')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('PARAMETERFILTERS')}><i className="bi bi-funnel" /> Filters</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('FLAGS')}><i className="bi bi-flag" /> Flagged Data</Dropdown.Item>
             </DropdownButton>
-            <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
+            <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
               <Dropdown.Item onClick={handleNewAnalysis} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setLoadAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-up" /> Load…</span> <ShortcutLabel shortcutKey="loadAnalysis" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('Recent', 'Recent Files')} className='d-flex justify-content-between align-items-center' disabled={!showRecent}><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span></Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('RECENT')} className='d-flex justify-content-between align-items-center' disabled={!showRecent}><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={saveBookmark} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => changeTab('Bookmarks', 'Bookmarks')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('BOOKMARKS')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setShowAbout(true)}><i className="bi bi-info-square" /> About</Dropdown.Item>
             </DropdownButton>
@@ -225,9 +172,9 @@ export default function SidebarTabs(props) {
         </ButtonToolbar>
       </div>
 
-      {renderTabContent(state.selectedTab, props)}
+      <SidebarTabContent tab={tab} setModalImport={setModalImport} {...props} />
 
-      <ModalDialogAbout show={showAbout} about={{...props.about}} onHide={() => setShowAbout(false)} />
+      <ModalDialogAbout show={showAbout} about={{ ...props.about }} onHide={() => setShowAbout(false)} />
 
       <ModalDialogImport
         show={modalImport}
