@@ -1,4 +1,4 @@
-import { parameters, getFilteredData } from "../../modules/database"
+import { parameters, getFilteredData, hasCollection, addCollection } from "../../modules/database"
 import { getFilterData } from "./parameter";
 import getUnique from '../lokijs/getUnique';
 
@@ -9,6 +9,9 @@ import getUnique from '../lokijs/getUnique';
  * @param {*} store Redux state object
  */
 export default function migrateStore(store) {
+
+  // Check if the database has all collections needed.
+  if( !hasCollection('flags') ) addCollection('flags')
   
   // If not parameters exist, new ones are generated
   if(!Object.hasOwn(store, 'parameters') || 

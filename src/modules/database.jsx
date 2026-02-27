@@ -149,7 +149,7 @@ export const importJSON = (data = []) => {
  * Add collections to database
  */
 export const dbInit = () => {
-  const collections = ['data', 'bookmarks'];
+  const collections = ['data', 'bookmarks', 'flags'];
   collections.forEach(itm => {
     if (!db.getCollection(itm))
       addCollection(itm);
@@ -185,8 +185,12 @@ export const getSingleDatumByField = (search = null, field = null, collection = 
   return null
 }
 
-const getFilteredData = (collection = 'data', { filters = [], thresholds = [], sortby = '', dropna = [] } = {}) => {
-  return getFilteredDataExt(db.getCollection(collection), { filters, thresholds, sortby, dropna })
+const getCollection = (collection = null) => {
+  return db.getCollection(collection)
+}
+
+const getFilteredData = (collection = 'data', { filters = [], thresholds = [], sortby = '', dropna = [], ignore = [] } = {}) => {
+  return getFilteredDataExt(db.getCollection(collection), { filters, thresholds, sortby, dropna, ignore })
 }
 
 const isDirty = () => {
@@ -218,6 +222,7 @@ export { getSeries }
 export { getFilteredData }
 export { getUnique }
 export { getColumnNames }
+export { getCollection }
 export { isDirty }
 export { setFilename }
 export { resetFilename }
