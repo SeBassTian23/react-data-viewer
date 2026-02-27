@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -34,9 +34,14 @@ export default function Spreadsheet(props) {
 
   const gridRef = useRef(null)
 
-  /** =============================
-   *  BUILD COLUMNS & DATA
-   * ============================= */
+  const subsetID = useCallback((model) => {
+    const modValue = stateDatasubsets.find(itm => itm.id === model.value);
+    if (!modValue) return <>{model.value}</>;
+    return <strong style={{ color: modValue.color || 'red' }}>{modValue.name}</strong>;
+  }, [stateDatasubsets])
+
+  const filename = stateAnalysis?.saveAs || 'data';
+
   useEffect(() => {
     const cols = stateParameters.map((col) => {
       let columnType = 'text'
@@ -72,19 +77,7 @@ export default function Spreadsheet(props) {
       return colDef;
     }).filter( col => col.isVisible )
 
-    let data = []
-
-    // Function 
-    const subsetID = (model) => {
-      try{
-        const modValue = stateDatasubsets.find( (itm) => itm.id === model.value);
-        return (<strong style={{color: modValue.color || 'red'}}>{modValue.name}</strong>)
-      }
-      catch(e){
-        console.log(e)
-      }
-      return (<>{model.value}</>)
-    }
+    let data = [];
 
     if (stateDatasubsets.length === 0) {
       data = getFilteredData('data', { thresholds: stateThresholds }).data({
@@ -140,44 +133,36 @@ export default function Spreadsheet(props) {
     return Object.fromEntries(stateDatasubsets.map( (itm) => [itm.id, itm.name]));
   }
 
-  function downloadCSV() {
-    const ltsn = lookupTableSubsetNames()
-    const ws = utils.json_to_sheet(source.map( itm => ({
+  function resolveSubsetNames(data) {
+    const ltsn = lookupTableSubsetNames();
+    return data.map(itm => ({
       ...itm,
       subset: itm.subset ? ltsn[itm.subset] : itm.subset
-    })))
+    }));
+  }
+
+  function downloadCSV() {
+    const ws = utils.json_to_sheet( resolveSubsetNames(source) )
     const csv = utils.sheet_to_csv(ws)
-    triggerDownload(csv, `${stateAnalysis?.saveAs || 'data'}.csv`, 'text/csv')
+    triggerDownload(csv, `${filename}.csv`, 'text/csv')
   }
 
   function downloadTXT() {
-    const ltsn = lookupTableSubsetNames()
-    const ws = utils.json_to_sheet(source.map( itm => ({
-      ...itm,
-      subset: itm.subset ? ltsn[itm.subset] : itm.subset
-    })))
+    const ws = utils.json_to_sheet( resolveSubsetNames(source) )
     const txt = utils.sheet_to_txt ? utils.sheet_to_txt(ws) : utils.sheet_to_csv(ws, { FS: '\t' })
-    triggerDownload(txt, `${stateAnalysis?.saveAs || 'data'}.txt`, 'text/plain')
+    triggerDownload(txt, `${filename}.txt`, 'text/plain')
   }
 
   function downloadJSON() {
-    const ltsn = lookupTableSubsetNames()
-    const jsonStr = JSON.stringify(source.map( itm => ({
-      ...itm,
-      subset: itm.subset ? ltsn[itm.subset] : itm.subset
-    })), null, 2)
-    triggerDownload(jsonStr, `${stateAnalysis?.saveAs || 'data'}.json`, 'application/json')
+    const jsonStr = JSON.stringify( resolveSubsetNames(source), null, 2)
+    triggerDownload(jsonStr, `${filename}.json`, 'application/json')
   }
 
   function downloadXLSX() {
-    const ltsn = lookupTableSubsetNames()
-    const ws = utils.json_to_sheet(source.map( itm => ({
-      ...itm,
-      subset: itm.subset ? ltsn[itm.subset] : itm.subset
-    })))
+    const ws = utils.json_to_sheet( resolveSubsetNames(source) )
     const wb = utils.book_new();
     utils.book_append_sheet(wb, ws, 'Sheet1');
-    const filename = `${stateAnalysis?.saveAs || 'data'}.xlsx`;
+    const filename = `${filename}.xlsx`;
     writeFile(wb, filename);
   }
 
@@ -190,18 +175,12 @@ export default function Spreadsheet(props) {
     document.body.appendChild(a)
     a.click()
     a.remove()
+    URL.revokeObjectURL(url);
   }
 
-  /** =============================
-   *  HELP BUTTON HANDLER
-   * ============================= */
   const handleClickHelp = useCallback(() => {
     help.open('Help | Spreadsheet', 'help/md/spreadsheet.md')
-  }, [])
-
-  /** =============================
-   *  RENDER
-   * ============================= */
+  }, [help])
 
   return (
     <>
@@ -215,43 +194,47 @@ export default function Spreadsheet(props) {
             <ButtonGroup
               size='sm'
               className='me-2'
-              aria-label='Download Data'
+              aria-label='Download Data in different formats'
             >
               <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadCSV}
+                aria-label='Download as CSV formatted file'
               >
                 <i className='bi-filetype-csv' /> CSV
               </Button>
               <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadTXT}
+                aria-label='Download as text file'
               >
                 <i className='bi-filetype-txt' /> Text
               </Button>
               <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadXLSX}
+                aria-label='Download as Excel compatible file'
               >
                 <i className='bi-filetype-xlsx' /> Excel
               </Button>
             </ButtonGroup>
-            <ButtonGroup size='sm' aria-label='Third group'>
-              <Button
+            <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadJSON}
+                size='sm'
+                aria-label='Download as JSON formatted file'
               >
                 <i className='bi-filetype-json' /> JSON
-              </Button>
-            </ButtonGroup>
-            <ButtonGroup className='ms-2' size='sm' aria-label='Help Group'>
-              <Button
-                variant={props.darkmode ? 'outline-light' : 'outline-dark'}
-                onClick={handleClickHelp}
-              >
-                <i className='bi-question-circle' />
-              </Button>
-            </ButtonGroup>
+            </Button>
+            <Button
+              variant={props.darkmode ? 'outline-light' : 'outline-dark'}
+              onClick={handleClickHelp}
+              className='ms-2'
+              size='sm'
+              aria-label='Show Help'
+            >
+              <i className='bi-question-circle' />
+            </Button>
           </ButtonToolbar>
         </Col>
       </Row>
@@ -272,7 +255,7 @@ export default function Spreadsheet(props) {
             exporting={true}
           />
           {!source.length && (
-            <div className="position-absolute  top-50 start-50 translate-middle text-center">
+            <div className="position-absolute top-50 start-50 translate-middle text-center">
               <i className="bi bi-table text-muted fs-1"></i>
               <p className="small">No data available.</p>
             </div>
