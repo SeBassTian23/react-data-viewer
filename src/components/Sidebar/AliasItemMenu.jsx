@@ -1,25 +1,23 @@
-import React from 'react'
-
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import { useDispatch } from 'react-redux';
 import { parametersEdit } from '../../features/parameter.slice';
 
-export default function AliasItemMenu(props) {
+export default function AliasItemMenu({id, alias, onEditClick, ...props}) {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const handleDelete = () => dispatch(parametersEdit({ id, alias: null }));
 
   return (
-    <>
-      <ButtonGroup size="sm" className='bg-white alias-menu-select'>
-        <Button variant="outline-secondary" onClick={props.onEditClick} >
-          <i className="bi-input-cursor-text" />
-        </Button>
-        {props.alias && <Button variant="outline-secondary" onClick={() => dispatch(parametersEdit({ id: props.id, alias: null }))} >
-          <i className="bi-trash-fill" />
-        </Button>}
-      </ButtonGroup>
-    </>
+    <ButtonGroup size="sm" className='bg-white alias-menu-select'>
+      <Button variant="outline-secondary" onClick={onEditClick} >
+        <i className="bi-input-cursor-text" />
+      </Button>
+      {alias && <Button variant="outline-secondary" onClick={handleDelete} >
+        <i className="bi-trash-fill" />
+      </Button>}
+    </ButtonGroup>
   )
 }

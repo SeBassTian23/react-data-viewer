@@ -20,7 +20,7 @@ export default function Aliases() {
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Parameter Aliases", "help/md/aliases.md")
-  },[] )
+  },[help] )
 
   return (
     <>
@@ -41,8 +41,9 @@ export default function Aliases() {
             </div>
             :
             <ListGroup as="ul" variant="flush">
-              {state.map((el, idx) => {
-                if (el.name.toLowerCase().match(filter.toLowerCase()) || filter === '')
+              {state
+                .filter(el => filter === '' || el.name.toLowerCase().includes(filter.toLowerCase()))
+                .map((el, idx) => {
                   return (<AliasItem key={idx} index={idx} {...el} />)
               })}
             </ListGroup>

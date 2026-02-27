@@ -9,17 +9,16 @@ import { parametersEdit } from '../../features/parameter.slice';
 
 import AliasItemMenu from './AliasItemMenu';
 
-export default function AliasItem(props) {
+export default function AliasItem({ id, alias, name, ...props }) {
+
+  const dispatch = useDispatch();
 
   const [inputValue, setInputValue] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
   const [showHoverContent, setShowHoverContent] = useState(false);
 
   const handleSave = () => {
-    if (inputValue === "")
-      dispatch(parametersEdit({ id: props.id, alias: null }));
-    else
-      dispatch(parametersEdit({ id: props.id, alias: inputValue }));
+    dispatch(parametersEdit({ id, alias: inputValue || null }));
     setShowEdit(false);
   }
 
@@ -29,18 +28,16 @@ export default function AliasItem(props) {
     setInputValue(input);
   }
 
-  const dispatch = useDispatch();
-
   return (
     <ListGroup.Item as="li"
       onMouseEnter={() => setShowHoverContent(true)}
       onMouseLeave={() => setShowHoverContent(false)}
       className="d-flex justify-content-between align-items-start flex-column"
-      title={props.alias ? `${props.alias} (${props.name})` : props.name}
+      title={alias ? `${alias} (${name})` : name}
     >
-      {props.alias && <span className='d-inline-block text-truncate fw-bold'>{props.alias}</span>}
-      <span className={`d-inline-block text-truncate${props.alias && ' small'}`}>{props.name}</span>
-      {(showHoverContent && !showEdit) && <AliasItemMenu {...props} onEditClick={() => showEditClick(props.alias || '')} />}
+      {alias && <span className='d-inline-block text-truncate fw-bold'>{alias}</span>}
+      <span className={`d-inline-block text-truncate${alias && ' small'}`}>{name}</span>
+      {(showHoverContent && !showEdit) && <AliasItemMenu {...props} onEditClick={() => showEditClick(alias || '')} />}
       {showEdit && <InputGroup size='sm' className="">
         <Form.Control as="input" size='sm' placeholder="Alias Name" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyUp={(e) => { if(e.key === 'Enter') handleSave() }} />
         <InputGroup.Text as='button' onClick={handleSave}>
