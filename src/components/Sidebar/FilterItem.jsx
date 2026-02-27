@@ -13,7 +13,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(duration)
 dayjs.extend(minMax)
 
-import { getFilteredData, getUnique } from '../../modules/database'
+import useGetFilteredData from '../../hooks/useGetFilteredData'
 
 export default function FilterItem(props) {
 
@@ -58,6 +58,7 @@ export function FilterItemDateTime(props) {
   const [inputformat, setInputformat] = useState('YYYY-MM-DDTHH:mm');
   const [inputmin, setInputmin] = useState('');
   const [inputmax, setInputmax] = useState('');
+  const {getFilteredData, getUnique} = useGetFilteredData();
 
   /* Get unique parameter values - memoized for performance */
   const { min, max } = useMemo(() => {

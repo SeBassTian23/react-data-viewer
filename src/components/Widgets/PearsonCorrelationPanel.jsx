@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import numberFormat from '../../helpers/number-format'
@@ -12,6 +10,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import pearsonCorrelation, {interpretPearsonCorrelation} from '../../utils/statistics/pearsonCorrelation'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function PearsonCorrelationPanel(props) {
   return (
@@ -35,6 +34,7 @@ function PearsonCorrelationCalculation(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     

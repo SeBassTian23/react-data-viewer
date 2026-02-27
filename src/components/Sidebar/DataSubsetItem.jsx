@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 
 import { useSelector } from 'react-redux'
 
-import { getFilteredData } from '../../modules/database'
-
 import ListGroup from 'react-bootstrap/ListGroup'
 import Badge from 'react-bootstrap/Badge'
 
@@ -15,10 +13,12 @@ import DataSubsetItemMenu from './DataSubsetItemMenu'
 import { useDispatch } from 'react-redux'
 import { datasubsetToggled } from '../../features/datasubset.slice'
 import {selectedThresholds} from '../../store/thresholds';
+import useGetFilteredData from '../../hooks/useGetFilteredData'
 
 export default function DataSubsetItem(props) {
 
   const thresholds = useSelector(selectedThresholds)
+  const stateFlags = useSelector(state => state.flags)
 
   const [count, setCount] = useState(props.count || 0);
 
@@ -31,11 +31,13 @@ export default function DataSubsetItem(props) {
   const handleShow = () => setShow(true);
 
   const dispatch = useDispatch();
+  const { getFilteredData } = useGetFilteredData();
 
   useEffect(() => {
-    let query = getFilteredData('data', { filters: props.filter, thresholds }).data().length
+    let query = getFilteredData('data', { filters: props.filter, thresholds })
+    query = query.data().length
     setCount(query)
-  }, [thresholds, props.filter])
+  }, [thresholds, props.filter, stateFlags.checksum])
 
   return (
     <>

@@ -12,7 +12,6 @@ import ListGroup from 'react-bootstrap/ListGroup'
 
 import FilterItem, { FilterItemDateTime } from './FilterItem'
 
-import { getFilteredData } from '../../modules/database'
 import generateFilterCombinations from '../../utils/data/generateFilterCombinations';
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,6 +20,7 @@ import { datasubsetAdded, datasubsetMultipleAdded } from '../../features/datasub
 
 import useToast from "../../hooks/useToast";
 import useHelp from '../../hooks/useHelp';
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function Filters() {
 
@@ -28,6 +28,7 @@ export default function Filters() {
 
   const state = useSelector(state => state.parameters)
   const dispatch = useDispatch();
+  const {getFilteredData } = useGetFilteredData();
 
   const toast = useToast()
   const help = useHelp();

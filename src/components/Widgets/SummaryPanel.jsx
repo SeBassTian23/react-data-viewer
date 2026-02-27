@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import numberFormat from '../../helpers/number-format'
@@ -9,6 +7,7 @@ import Table from 'react-bootstrap/Table';
 
 import PanelStatistics from './helpers/PanelStatistics'
 import statsSummary from '../../utils/statistics/statsSummary'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function SummaryPanel(props) {
   return (
@@ -31,6 +30,7 @@ function CalculateSummary(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries } = useGetFilteredData();
   
   useEffect( () => {
     

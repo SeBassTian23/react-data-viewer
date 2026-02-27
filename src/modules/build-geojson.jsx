@@ -5,7 +5,9 @@ import jStat from 'jstat'
 import { ColorGradientColorArray } from '../components/Main/ColorGradient'
 import dayjs from 'dayjs'
 
-const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], valueType = null, colorBy = null, colorScale = 'Viridis', colorRange = null } = {}) => {
+const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], ignore = [], valueType = null, colorBy = null, colorScale = 'Viridis', colorRange = null } = {}) => {
+
+  console.log(ignore)
 
   let data = []
   let colors = []
@@ -33,7 +35,7 @@ const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], valueTy
   }
 
   if (datasets.length === 0) {
-    data = getFilteredData('data', { thresholds: thresholdsCopy, dropna: cols }).data({ removeMeta: false })
+    data = getFilteredData('data', { thresholds: thresholdsCopy, dropna: cols, ignore }).data({ removeMeta: false })
     colors = Array(data.length).fill('#ff0000')
   }
 
@@ -41,7 +43,7 @@ const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], valueTy
     for (let series in datasets) {
       if (!datasets[series].isVisible)
         continue;
-      let query = getFilteredData('data', { filters: datasets[series].filter, thresholds: thresholdsCopy, dropna: cols })
+      let query = getFilteredData('data', { filters: datasets[series].filter, thresholds: thresholdsCopy, dropna: cols, ignore })
       data = [...data, ...query.data({ removeMeta: false })]
       colors = [...colors, ...Array(query.data().length).fill(datasets[series].color)]
     }

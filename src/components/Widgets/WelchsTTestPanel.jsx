@@ -1,7 +1,5 @@
 import { useState, useEffect, Fragment } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import numberFormat from '../../helpers/number-format'
@@ -13,6 +11,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import welchsTTest, {interpretWelchTTest} from '../../utils/statistics/welchsTTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 
 export default function WelchesTTestPanel(props) {
@@ -37,6 +36,8 @@ function CalculateWelchsTTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     

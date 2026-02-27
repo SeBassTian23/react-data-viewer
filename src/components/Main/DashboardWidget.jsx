@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form'
 
 import useModalConfirm from "../../hooks/useModalConfirm";
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
 
 import { widgetSizes } from '../../constants/widget-sizes'
@@ -20,6 +20,8 @@ import useHelp from "../../hooks/useHelp";
 import ErrorBoundary from '../../utils/ErrorBoundary'
 
 function DashboardWidget(props) {
+
+  const stateFlags = useSelector(state => state.flags)
 
   const dispatch = useDispatch();
 
@@ -93,7 +95,7 @@ function DashboardWidget(props) {
     if (props.type === 'map')
       return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
     return <Component id={props.id} content={props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
-  }, [props.type, props.id, props.content, props.darkmode, props.size.xl]);
+  }, [props.type, props.id, props.content, props.darkmode, props.size.xl, stateFlags.checksum]);
 
   const handleClickPanelSize = useCallback((e) => {
     const size = e.currentTarget.dataset.size;

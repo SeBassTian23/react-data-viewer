@@ -1,9 +1,12 @@
 import dayjs from 'dayjs';
-import { getFilteredData, addDocument, removeDocByField, resetCollection } from '../../modules/database';
+import { addDocument, removeDocByField, resetCollection } from '../../modules/database';
 
 import cloneDeep from 'lodash/cloneDeep'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 const addBookmarkToDB = (store) => {
+
+  const { getFilteredData } = useGetFilteredData();
 
   const bookmarks = getFilteredData('bookmarks').data({ removeMeta: true });
 

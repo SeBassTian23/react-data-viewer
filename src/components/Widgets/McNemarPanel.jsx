@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import jStat from 'jstat'
@@ -14,6 +12,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import mcnemarTest, {interpretMcNemar} from '../../utils/statistics/mcnemarTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData'
 
 export default function McNemarPanel(props) {
   return (
@@ -36,6 +35,7 @@ function McNemarTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     

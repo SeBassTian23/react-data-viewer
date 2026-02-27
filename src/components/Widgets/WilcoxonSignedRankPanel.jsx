@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import numberFormat from '../../helpers/number-format'
@@ -13,6 +11,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import wilcoxonSignedRankTest, {interpretWilcoxonSignedRank} from '../../utils/statistics/wilcoxonSignedRankTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function WilcoxonSignedRankPanel(props) {
   return (
@@ -36,6 +35,8 @@ function CalculateWilcoxonSignedRankTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     

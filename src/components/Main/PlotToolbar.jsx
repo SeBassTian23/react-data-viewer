@@ -1,7 +1,5 @@
 import { useState, useCallback } from 'react'
 
-import { getFilteredData } from '../../modules/database'
-
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
@@ -21,6 +19,8 @@ import { dashboardAddPanel } from '../../features/dashboard.slice'
 import { datasubsetAdded } from '../../features/datasubset.slice'
 
 import useToast from "../../hooks/useToast";
+import useFlagData from "../../hooks/useFlagData";
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function PlotToolbar(props) {
 
@@ -32,7 +32,9 @@ export default function PlotToolbar(props) {
   const stateDatasubsets = useSelector(state => state.datasubsets)
 
   const toast = useToast();
-  const help = useHelp()
+  const help = useHelp();
+  const flagData = useFlagData();
+  const { getFilteredData } = useGetFilteredData();
 
   const addToDashboard = useCallback( () => {
     dispatch(dashboardAddPanel({
@@ -116,6 +118,11 @@ export default function PlotToolbar(props) {
     }
   }
 
+  const flagSelectedMarkers = (ids) => {
+    // flagData.addFlags(ids, null, 'Flagged by Graph');
+    flagData.dialog(ids);
+  }
+
   return (
     <>
       <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex align-items-center'>
@@ -131,6 +138,9 @@ export default function PlotToolbar(props) {
             <Dropdown.Header>Filter Data by Selection</Dropdown.Header>
             <Dropdown.Item onClick={() => addToSubsetInside(props.selectedMarkers)}><i className='bi-intersect' /> Inside</Dropdown.Item>
             <Dropdown.Item onClick={() => addToSubsetOutside(props.selectedMarkers)}><i className='bi-exclude' /> Outside</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Header>Flag by Selection</Dropdown.Header>
+            <Dropdown.Item onClick={() => flagSelectedMarkers(props.selectedMarkers)}><i className='bi-flag-fill' /> Flag Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>}
         <ButtonGroup size='sm' aria-label="Dashboard">

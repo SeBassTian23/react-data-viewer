@@ -2,14 +2,15 @@ import FormSelect from 'react-bootstrap/FormSelect';
 
 import { useDispatch } from 'react-redux';
 import { parametersEdit } from '../../features/parameter.slice';
-import { getFilteredData, getUnique } from '../../modules/database'
 import { getFilterData } from '../../utils/data/parameter'
 
 import { datatypeIcons } from '../../constants/datatype-icons';
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function DatatypeItemMenu(props) {
 
   const dispatch = useDispatch();
+  const { getFilteredData, getUnique } = useGetFilteredData();
 
   const update = ( e ) => {
     const query = getFilteredData('data', { filters: [], dropna: [props.name], sortby: props.name })

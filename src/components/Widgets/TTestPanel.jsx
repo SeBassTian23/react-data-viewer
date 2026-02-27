@@ -1,7 +1,5 @@
 import { useState, useEffect, Fragment } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import Table from 'react-bootstrap/Table';
@@ -13,6 +11,7 @@ import numberFormat from '../../helpers/number-format'
 
 import pairs from '../../helpers/generate-pairs'
 import tTest, {interpretTTest} from '../../utils/statistics/tTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function TTestPanel(props) {
   return (
@@ -36,6 +35,7 @@ export function CalculateTTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     

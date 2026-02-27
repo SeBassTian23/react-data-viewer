@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import { useSelector } from 'react-redux'
@@ -12,6 +10,7 @@ import pairs from '../../helpers/generate-pairs'
 import fisherExactTest, {interpretFisherExactTest} from '../../utils/statistics/fisherExactTest'
 
 import numberFormat from '../../helpers/number-format'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function FishersExactPanel(props) {
   return (
@@ -36,6 +35,7 @@ function CalculateFishersExact(props) {
 
   const [results, setResults] = useState([]);
   const [hasError, setHasError] = useState(null);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     

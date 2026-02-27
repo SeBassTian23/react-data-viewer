@@ -8,11 +8,11 @@ import Row from 'react-bootstrap/Row'
 
 import { RevoGrid, Template } from '@revolist/react-datagrid'
 
-import { getFilteredData } from '../modules/database'
 import { useSelector } from 'react-redux'
 import useHelp from '../hooks/useHelp'
 
 import { utils, writeFile } from 'xlsx'
+import useGetFilteredData from '../hooks/useGetFilteredData'
 
 function normalizeCellValue(value) {
   if (value === null || value === undefined) return ''; // show empty cell
@@ -26,8 +26,10 @@ export default function Spreadsheet(props) {
   const stateParameters = useSelector((state) => state.parameters)
   const stateThresholds = useSelector((state) => state.thresholds)
   const stateAnalysis = useSelector((state) => state.analysis)
+  const stateFlags = useSelector((state) => state.flags)
 
   const help = useHelp()
+  const { getFilteredData } = useGetFilteredData();
 
   const [source, setSource] = useState([])
   const [columns, setColumns] = useState([])
@@ -125,7 +127,7 @@ export default function Spreadsheet(props) {
     setColumns(cols)
     setSource(normalizedData)
 
-  }, [stateParameters, stateDatasubsets, stateThresholds])
+  }, [stateParameters, stateDatasubsets, stateThresholds, stateFlags.checksum])
 
   /** Export Handlers */
 

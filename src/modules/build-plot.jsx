@@ -17,7 +17,7 @@ import plotLayout, { plotLayoutDarkmode, plotLayoutLightmode } from '../constant
 import merge from 'lodash/merge'
 import cloneDeep from 'lodash/cloneDeep'
 
-const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters = [], darkmode = false } = {}) => {
+const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters = [], ignore = [], darkmode = false } = {}) => {
 
   // Data Keys
   const querykeys = ['xaxis', 'yaxis', 'zaxis', 'dimensionsaxis', 'sizeaxis', 'colorscaleaxis', 'categoryaxis']
@@ -61,7 +61,8 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
     let query = getFilteredData('data', {
       filters: subsets[series].filter,
       dropna: queryparams.flat(),
-      thresholds: thresholds
+      thresholds,
+      ignore
     }).data({ removeMeta })
 
     if (!removeMeta)

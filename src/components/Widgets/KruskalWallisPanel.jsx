@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import Table from 'react-bootstrap/Table';
@@ -12,6 +10,7 @@ import PanelWarning from './helpers/PanelWarning'
 import numberFormat from '../../helpers/number-format'
 
 import kruskalWallisTest, {interpretKruskalWallis} from '../../utils/statistics/kruskalWallisTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function KruskalWallisPanel(props) {
   return (
@@ -34,6 +33,7 @@ function KruskalWallisTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState(null);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     

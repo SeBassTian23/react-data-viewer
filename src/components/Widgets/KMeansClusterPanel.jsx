@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { useForm, useWatch } from 'react-hook-form';
 
-import { getFilteredData, getSeries } from '../../modules/database'
-
 import widgets from '../../constants/widgets';
 
 import Col from 'react-bootstrap/Col'
@@ -35,6 +33,7 @@ import { datasubsetMultipleAdded } from '../../features/datasubset.slice'
 import { dashboardEditPanel } from '../../features/dashboard.slice'
 
 import { selectedThresholds } from '../../store/thresholds';
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function KMeansClusterPanel(props) {
 
@@ -153,6 +152,7 @@ function CalculateKMeansCluster(props) {
   const dispatch = useDispatch();
   const addBookmark = useAddBookmark();
   const { execute, terminate } = useWorker();
+  const { getFilteredData, getSeries } = useGetFilteredData();
 
   useEffect(() => {
 
@@ -347,7 +347,8 @@ function CalculateKMeansCluster(props) {
               </thead>
               <tbody className='small text-center' style={{ 'verticalAlign': 'middle' }}>
                 {allTests.map((itm, idx) => {
-                  return (<tr key={idx} className={itm.k == results.k ? 'table-success' : ''} onClick={() => addSections(itm.k)} role="button">
+                  //  onClick={() => addSections(itm.k)} role="button"
+                  return (<tr key={idx} className={itm.k == results.k ? 'table-success' : ''}> 
                     <td>{itm.k}</td>
                     <td>{parseInt(itm.error)}</td>
                     <td>{idx > 0 ? parseInt(itm.error - allTests[idx - 1].error) : ''}</td>

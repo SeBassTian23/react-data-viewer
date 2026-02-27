@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import { useSelector } from 'react-redux'
@@ -13,6 +11,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import sign, {interpretSignTest} from '../../utils/statistics/sign'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function SignPanel(props) {
   return (
@@ -36,6 +35,7 @@ function CalculateSign(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     
