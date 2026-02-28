@@ -147,12 +147,14 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
             }
             <SidebarPanelMenuItems darkmode={darkmode} />
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
-              <Dropdown.Header>Data</Dropdown.Header>
-              <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
+              <Dropdown.Header>Settings</Dropdown.Header>
               <Dropdown.Item onClick={() => setTab('PARAMETERS')}><i className="bi bi-toggles" /> Parameters</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('DATATYPES')}><i className="bi bi-123" /> Data Types</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('ALIASES')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
-              <Dropdown.Item onClick={() => setTab('PARAMETERFILTERS')}><i className="bi bi-funnel" /> Filters</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('PARAMETERFILTERS')}><i className="bi bi-filter" /> Filters</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Header>Rules</Dropdown.Header>
+              <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('FLAGS')}><i className="bi bi-flag" /> Flagged Data</Dropdown.Item>
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
