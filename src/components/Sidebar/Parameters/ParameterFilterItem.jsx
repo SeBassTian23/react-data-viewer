@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { useDispatch } from 'react-redux';
-import { parameterFilterToggled } from '../../features/parameter.slice';
+import { parameterFilterToggled } from '../../../features/parameter.slice';
 
 export default function ParameterFilterItem(props) {
 

@@ -5,7 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { useDispatch } from 'react-redux';
-import { parametersEdit } from '../../features/parameter.slice';
+import { parametersEdit } from '../../../features/parameter.slice';
 
 import AliasItemMenu from './AliasItemMenu';
 

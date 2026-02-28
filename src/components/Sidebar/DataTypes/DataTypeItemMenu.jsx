@@ -1,11 +1,11 @@
 import FormSelect from 'react-bootstrap/FormSelect';
 
 import { useDispatch } from 'react-redux';
-import { parametersEdit } from '../../features/parameter.slice';
-import { getFilterData } from '../../utils/data/parameter'
+import { parametersEdit } from '../../../features/parameter.slice';
+import { getFilterData } from '../../../utils/data/parameter'
 
-import { datatypeIcons } from '../../constants/datatype-icons';
-import useGetFilteredData from '../../hooks/useGetFilteredData';
+import { datatypeIcons } from '../../../constants/datatype-icons';
+import useGetFilteredData from '../../../hooks/useGetFilteredData';
 
 export default function DatatypeItemMenu(props) {
 

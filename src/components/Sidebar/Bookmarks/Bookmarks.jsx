@@ -10,9 +10,9 @@ import Row from 'react-bootstrap/Row'
 
 import BookmarkItem from './BookmarkItem'
 
-import useHelp from '../../hooks/useHelp';
-import useModalConfirm from '../../hooks/useModalConfirm';
-import { useAddBookmark } from '../../hooks/useAddBookmark';
+import useHelp from '../../../hooks/useHelp';
+import useModalConfirm from '../../../hooks/useModalConfirm';
+import { useAddBookmark } from '../../../hooks/useAddBookmark';
 
 export default function Bookmarks(props) {
 

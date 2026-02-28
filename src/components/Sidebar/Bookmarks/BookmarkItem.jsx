@@ -10,9 +10,10 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import BookmarkItemMenu from './BookmarkItemMenu'
 
 import { useDispatch } from 'react-redux';
-import { bookmarkEdit } from '../../features/bookmark.slice';
+import { bookmarkEdit } from '../../../features/bookmark.slice';
 
-import { updateDocByField, saveDatabase } from '../../modules/database'
+// TODO: Move bookmark update into hook
+import { updateDocByField, saveDatabase } from '../../../modules/database'
 
 dayjs.extend(localizedFormat)
 

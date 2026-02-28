@@ -7,13 +7,13 @@ import Badge from 'react-bootstrap/Badge'
 
 import tinycolor from 'tinycolor2'
 
-import ModalDialogEditSubset from '../Dialogs/ModalDialogEditSubset'
+import ModalDialogEditSubset from '../../Dialogs/ModalDialogEditSubset'
 import DataSubsetItemMenu from './DataSubsetItemMenu'
 
 import { useDispatch } from 'react-redux'
-import { datasubsetToggled } from '../../features/datasubset.slice'
-import {selectedThresholds} from '../../store/thresholds';
-import useGetFilteredData from '../../hooks/useGetFilteredData'
+import { datasubsetToggled } from '../../../features/datasubset.slice'
+import {selectedThresholds} from '../../../store/thresholds';
+import useGetFilteredData from '../../../hooks/useGetFilteredData'
 
 export default function DataSubsetItem(props) {
 

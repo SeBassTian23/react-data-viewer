@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
 
-import useModalConfirm from "../../hooks/useModalConfirm";
+import useModalConfirm from "../../../hooks/useModalConfirm";
 
 export default function BookmarkItemMenu(props) {
   

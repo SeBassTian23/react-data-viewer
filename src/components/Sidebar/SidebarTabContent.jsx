@@ -1,13 +1,13 @@
-import DataSubset from './DataSubset'
-import DataTypes from './DataTypes'
-import Filters from './Filters'
-import Parameters from './Parameters'
-import ParameterFilters from './ParameterFilters'
-import Bookmarks from './Bookmarks'
-import Thresholds from './Thresholds'
-import RecentFiles from './RecentFiles'
-import Flags from './Flags'
-import Aliases from './Aliases';
+import DataSubset from './DataSubsets/DataSubset'
+import DataTypes from './DataTypes/DataTypes'
+import Filters from './Filters/Filters'
+import Parameters from './Parameters/Parameters'
+import ParameterFilters from './Parameters/ParameterFilters'
+import Bookmarks from './Bookmarks/Bookmarks'
+import Thresholds from './Thresholds/Thresholds'
+import RecentFiles from './RecentFiles/RecentFiles'
+import Flags from './Flags/Flags'
+import Aliases from './Aliases/Aliases';
 
 export default function RenderTabContent({tab, setModalImport, ...props}) {
   

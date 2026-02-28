@@ -17,10 +17,10 @@ import Row from 'react-bootstrap/Row'
 import ThresholdItem from './ThresholdItem'
 
 import { useSelector, useDispatch } from 'react-redux';
-import { thresholdAdd } from '../../features/threshold.slice';
+import { thresholdAdd } from '../../../features/threshold.slice';
 
-import useHelp from '../../hooks/useHelp';
-import useModalConfirm from '../../hooks/useModalConfirm';
+import useHelp from '../../../hooks/useHelp';
+import useModalConfirm from '../../../hooks/useModalConfirm';
 
 export default function Thresholds(props) {
 

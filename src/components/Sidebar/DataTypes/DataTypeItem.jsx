@@ -3,7 +3,7 @@ import { useState } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import DataTypeItemMenu from './DataTypeItemMenu';
-import { datatypeIcons } from '../../constants/datatype-icons'
+import { datatypeIcons } from '../../../constants/datatype-icons'
 
 
 export default function DataTypeItem(props) {

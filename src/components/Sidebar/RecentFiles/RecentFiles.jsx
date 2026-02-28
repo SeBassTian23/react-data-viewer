@@ -10,11 +10,11 @@ import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 
 import RecentFilesItem from './RecentFilesItem'
-import useHelp from '../../hooks/useHelp';
-import useModalConfirm from '../../hooks/useModalConfirm';
-import opfs from '../../modules/opfs'
+import useHelp from '../../../hooks/useHelp';
+import useModalConfirm from '../../../hooks/useModalConfirm';
+import opfs from '../../../modules/opfs'
 
-import humanFileSize from '../../helpers/humanFileSize'
+import humanFileSize from '../../../helpers/humanFileSize'
 
 export default function RecentFiles() {
 
@@ -52,7 +52,7 @@ export default function RecentFiles() {
     async function load() {
       if(!init && opfs.isSupported()){
         await opfs.fileList(sort).then( e => {
-          console.log(e.map(f => `${f.name} | ${f.size}` ))
+          console.log(e.map(f => `${f.name} | ${humanFileSize(f.size)}` ))
           setFileCount(e.length || 0)
           setRecentFiles( e.filter(f => f.name.endsWith(".db")) )
         })

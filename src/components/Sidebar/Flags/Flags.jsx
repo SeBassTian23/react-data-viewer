@@ -11,13 +11,13 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import FlagItem from './FlagItem'
 
 import { useDispatch, useSelector } from 'react-redux';
-import { flagToggleActive } from '../../features/flag.slice'
+import { flagToggleActive } from '../../../features/flag.slice'
 
-import useHelp from '../../hooks/useHelp';
-import useFlagData from '../../hooks/useFlagData';
+import useHelp from '../../../hooks/useHelp';
+import useFlagData from '../../../hooks/useFlagData';
 
-import DatumOffCanvas from '../Main/DatumOffCanvas'
-import useGetFilteredData from '../../hooks/useGetFilteredData';
+import DatumOffCanvas from '../../Main/DatumOffCanvas'
+import useGetFilteredData from '../../../hooks/useGetFilteredData';
 
 export default function Flags(props) {
 

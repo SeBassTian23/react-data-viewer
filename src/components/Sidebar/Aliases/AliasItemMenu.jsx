@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import { useDispatch } from 'react-redux';
-import { parametersEdit } from '../../features/parameter.slice';
+import { parametersEdit } from '../../../features/parameter.slice';
 
 export default function AliasItemMenu({id, alias, onEditClick, ...props}) {
 

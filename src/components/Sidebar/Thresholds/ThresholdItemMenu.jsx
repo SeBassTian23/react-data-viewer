@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
-import { thresholdToggle } from '../../features/threshold.slice';
-import useModalConfirm from '../../hooks/useModalConfirm';
+import { thresholdToggle } from '../../../features/threshold.slice';
+import useModalConfirm from '../../../hooks/useModalConfirm';
 
 export default function ThresholdItemMenu(props) {
 

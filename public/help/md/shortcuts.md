@@ -11,6 +11,7 @@ The following keyboard shortcuts are supported within the application.
 | Ctrl + Shift + L |    ⇧ ⌘ L    | Show bookmarks          |
 |     Ctrl + I     |     ⌘ I     | Import data             |
 |     Ctrl + K     |     ⌘ K     | Open data filter        |
+|     Ctrl + U     |     ⌘ U     | Show Recent Analysis    |
 |     Ctrl + /     |     ⌘ /     | Show/Hide Sidebar       |
 | Ctrl + Shift + D |    ⇧ ⌘ D    | Show Dashboard          |
 | Ctrl + Shift + P |    ⇧ ⌘ P    | Show Plots              |

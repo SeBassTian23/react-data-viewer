@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
-import RecentFilesItem from '../Sidebar/RecentFilesItem'
+import RecentFilesItem from '../Sidebar/RecentFiles/RecentFilesItem'
 
 import opfs from '../../modules/opfs'
 

@@ -12,15 +12,15 @@ import ListGroup from 'react-bootstrap/ListGroup'
 
 import FilterItem, { FilterItemDateTime } from './FilterItem'
 
-import generateFilterCombinations from '../../utils/data/generateFilterCombinations';
+import generateFilterCombinations from '../../../utils/data/generateFilterCombinations';
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { datasubsetAdded, datasubsetMultipleAdded } from '../../features/datasubset.slice'
+import { datasubsetAdded, datasubsetMultipleAdded } from '../../../features/datasubset.slice'
 
-import useToast from "../../hooks/useToast";
-import useHelp from '../../hooks/useHelp';
-import useGetFilteredData from '../../hooks/useGetFilteredData';
+import useToast from "../../../hooks/useToast";
+import useHelp from '../../../hooks/useHelp';
+import useGetFilteredData from '../../../hooks/useGetFilteredData';
 
 export default function Filters() {
 

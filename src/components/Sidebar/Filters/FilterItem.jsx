@@ -13,7 +13,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(duration)
 dayjs.extend(minMax)
 
-import useGetFilteredData from '../../hooks/useGetFilteredData'
+import useGetFilteredData from '../../../hooks/useGetFilteredData'
 
 export default function FilterItem(props) {
 

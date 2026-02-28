@@ -145,7 +145,7 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
                 title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter
               </Button>
             }
-            <SidebarPanelMenuItems {...darkmode} />
+            <SidebarPanelMenuItems darkmode={darkmode} />
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
               <Dropdown.Header>Data</Dropdown.Header>
               <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
@@ -156,15 +156,15 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
               <Dropdown.Item onClick={() => setTab('FLAGS')}><i className="bi bi-flag" /> Flagged Data</Dropdown.Item>
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
-              <Dropdown.Item onClick={handleNewAnalysis} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => setLoadAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-up" /> Load…</span> <ShortcutLabel shortcutKey="loadAnalysis" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
+              <Dropdown.Item onClick={handleNewAnalysis} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>
+              <Dropdown.Item onClick={() => setLoadAnalysis(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-journal-arrow-up" /> Load…</span> <ShortcutLabel shortcutKey="loadAnalysis" /></Dropdown.Item>
+              <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => setTab('RECENT')} className='d-flex justify-content-between align-items-center' disabled={!showRecent}><span className='me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span></Dropdown.Item>
+              <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('RECENT')} className='d-flex align-items-center' disabled={!showRecent}><span className='flex-grow-1 me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span><ShortcutLabel shortcutKey="showRecent" /></Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={saveBookmark} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
-              <Dropdown.Item onClick={() => setTab('BOOKMARKS')} className='d-flex justify-content-between align-items-center'><span className='me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
+              <Dropdown.Item onClick={saveBookmark} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('BOOKMARKS')} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setShowAbout(true)}><i className="bi bi-info-square" /> About</Dropdown.Item>
             </DropdownButton>

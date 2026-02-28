@@ -15,12 +15,12 @@ import Row from 'react-bootstrap/Row'
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getDatasetCount } from '../../modules/database'
+import { getDatasetCount } from '../../../modules/database'
 
-import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD, datasubsetsDeleted } from '../../features/datasubset.slice';
+import { datasubsetShowAll, datasubsetHideAll, datasubsetDnD, datasubsetsDeleted } from '../../../features/datasubset.slice';
 
-import useHelp from '../../hooks/useHelp';
-import useModalConfirm from '../../hooks/useModalConfirm';
+import useHelp from '../../../hooks/useHelp';
+import useModalConfirm from '../../../hooks/useModalConfirm';
 
 export default function DataSubset(props) {
 

@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import { useDispatch } from 'react-redux'
-import { datasubsetToggled } from '../../features/datasubset.slice'
-import useModalConfirm from '../../hooks/useModalConfirm'
+import { datasubsetToggled } from '../../../features/datasubset.slice'
+import useModalConfirm from '../../../hooks/useModalConfirm'
 
 export default function DataSubsetItemMenu(props) {
 

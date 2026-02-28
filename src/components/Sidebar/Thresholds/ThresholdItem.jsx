@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form'
 
-import { thresholdEdit } from '../../features/threshold.slice';
+import { thresholdEdit } from '../../../features/threshold.slice';
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'

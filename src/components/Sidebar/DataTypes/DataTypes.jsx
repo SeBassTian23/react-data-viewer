@@ -1,32 +1,35 @@
 import { useState, useCallback } from 'react'
-import { useSelector } from 'react-redux';
 
-import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
+
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 
-import AliasItem from './AliasItem'
+import DataTypeItem from './DataTypeItem'
 
-import useHelp from '../../hooks/useHelp';
+import { useSelector } from 'react-redux'
 
-export default function Aliases() {
+import useHelp from '../../../hooks/useHelp';
 
-  const state = useSelector(state => state.parameters)
+export default function DataTypes() {
+
+  const state = useSelector(state => state.parameters);
+
   const [filter, setFilter] = useState('');
 
   const help = useHelp();
 
   const handleClickHelp = useCallback( ()=>{
-    help.open("Help | Parameter Aliases", "help/md/aliases.md")
-  },[help] )
+    help.open("Help | Data Types", "help/md/data-types.md")
+  },[] )
 
   return (
     <>
-      <Row id="dv-parameters">
+      <Row id="dv-datatypes">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
-          Aliases
+          Data Types
           <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
         </Col>
       </Row>
@@ -36,18 +39,14 @@ export default function Aliases() {
         </Col>
         <Col sm={12} className='p-0'>
           {state.length === 0? <div className='text-center text-muted'>
-              <i className='bi bi-at text-muted fs-1' />
-              <p className='small'>Aliases</p>
+              <i className='bi bi-123 text-muted fs-1' />
+              <p className='small'>Datatypes</p>
             </div>
             :
             <ListGroup as="ul" variant="flush">
-              {state
-                .filter(el => filter === '' || el.name.toLowerCase().includes(filter.toLowerCase()))
-                .map((el, idx) => {
-                  return (<AliasItem key={idx} index={idx} {...el} />)
-              })}
+              {state.filter(f => f.name.toLowerCase().match(filter.toLowerCase()) || filter === '').map((el, idx) => <DataTypeItem key={idx} {...el} />)}
             </ListGroup>
-          } 
+          }   
         </Col>
       </Row>
     </>
