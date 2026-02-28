@@ -169,9 +169,8 @@ export default React.memo(DashboardWidget);
 function WidgetSkeleton() {
   return (
     <div className="card-body placeholder-glow d-flex flex-column gap-2">
-      <span className="placeholder col-12" style={{ height: 120 }} />
+      <span className="placeholder col-12 flex-grow-1" />
       <span className="placeholder col-8" />
-      <span className="placeholder col-4" />
     </div>
   )
 }
