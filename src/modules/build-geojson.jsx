@@ -7,8 +7,6 @@ import dayjs from 'dayjs'
 
 const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], ignore = [], valueType = null, colorBy = null, colorScale = 'Viridis', colorRange = null } = {}) => {
 
-  console.log(ignore)
-
   let data = []
   let colors = []
   let colNames = {}
