@@ -25,7 +25,6 @@ export default function DataSubsetItem(props) {
   const [showHoverContent, setShowHoverContent] = useState(false);
 
   const [show, setShow] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -43,7 +42,7 @@ export default function DataSubsetItem(props) {
     <>
       <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center"
         onMouseEnter={() => setShowHoverContent(true)}
-        onMouseLeave={() => setShowHoverContent(false)}
+        onMouseLeave={() => { if (!show) setShowHoverContent(false) }}
         onDoubleClick={() => dispatch(datasubsetToggled(props.id))}
         title={`${props.name}${props.count !== count ? ` [${count}/${props.count}]` : ` [${props.count}]`}`}
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}
@@ -52,13 +51,13 @@ export default function DataSubsetItem(props) {
           <i className="bi-square-fill " style={{ "color": props.color }} /> {props.name || "Unknown"}
         </span>
         {showHoverContent && (
-          <DataSubsetItemMenu {...props} showModalEdit={handleShow} setModalShow={setModalShow} />
+          <DataSubsetItemMenu {...props} showModalEdit={handleShow} />
         )}
         {!showHoverContent && (
           <Badge bg={props.count !== count ? "danger" : "secondary"} style={!props.isVisible ? { 'opacity': 0.25 } : {}}>{props.count !== count? count : props.count}</Badge>
         )}
       </ListGroup.Item>
-      <ModalDialogEditSubset show={show} onHide={handleClose} {...props} />
+      {show && <ModalDialogEditSubset show={show} onHide={handleClose} {...props} />}
     </>
   )
 }
