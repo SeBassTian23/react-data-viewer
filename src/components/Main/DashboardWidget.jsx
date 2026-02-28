@@ -30,6 +30,7 @@ function DashboardWidget(props) {
 
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
   const [editTitle, setEditTitle] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const titleRef = useRef()
 
@@ -91,11 +92,20 @@ function DashboardWidget(props) {
       </div>
     );
 
+    if (!isReady)
+      return <WidgetSkeleton />
+
     const Component = config.component;
     if (props.type === 'map')
       return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
     return <Component id={props.id} content={props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
-  }, [props.type, props.id, props.content, props.darkmode, props.size.xl, stateFlags.checksum]);
+  }, [props.type, props.id, props.content, props.darkmode, props.size.xl, stateFlags.checksum, isReady]);
+
+  // Defer rendering using setTimeout to let the skeleton paint first
+  useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClickPanelSize = useCallback((e) => {
     const size = e.currentTarget.dataset.size;
@@ -155,3 +165,13 @@ function DashboardWidget(props) {
 }
 
 export default React.memo(DashboardWidget);
+
+function WidgetSkeleton() {
+  return (
+    <div className="card-body placeholder-glow d-flex flex-column gap-2">
+      <span className="placeholder col-12" style={{ height: 120 }} />
+      <span className="placeholder col-8" />
+      <span className="placeholder col-4" />
+    </div>
+  )
+}
