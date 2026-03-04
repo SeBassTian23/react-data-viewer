@@ -607,11 +607,6 @@ kbd {
 }
 
 /** Modal Analysis */
-
-.analysis-team-members {
-  columns: 2;
-}
-
 .analysis-user-avatar {
   margin-right: 0.5rem;
   width: 2.5rem;
