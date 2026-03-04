@@ -75,7 +75,7 @@ export default function GraphPanel(props) {
       config: {
         displayModeBar: false,
         willReadFrequently: true,
-        staticPlot: content.plottype !== 'scatter3d'
+        staticPlot: !['scatter3d', 'mesh3d', 'surface'].includes(content.plottype)
       }
     })
   }, [stateParameters, stateDatasubsets, stateThresholds, darkmode, id, size.xl, content, sizeScale, halfScale, stateFlags.checksum])

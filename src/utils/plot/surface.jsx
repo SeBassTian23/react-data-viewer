@@ -1,9 +1,8 @@
 import { ColorGradientColorArray } from '../../components/Main/ColorGradient'
 import jStat from 'jstat'
 
-const surface = ({ input = [], mode = 'markers', colorgradient = 'Viridis', parameters = [] } = {}) => {
+const surface = ({ input = [], gradient = 'Viridis', contours = 'Hide', camera = null, parameters = []  } = {}) => {
 
-  let data = []
   let layout = {
     scene: {
       xaxis: {
@@ -21,73 +20,103 @@ const surface = ({ input = [], mode = 'markers', colorgradient = 'Viridis', para
           text: 'z-Axis'
         }
       },
-      dragmode: "turntable"
+      dragmode: "turntable",
+      camera: {
+        "up": {
+            "x": 0,
+            "y": -0.3,
+            "z": 1
+        },
+        "center": {
+            "x": 0.02403915366009736,
+            "y": 0.05229099136403341,
+            "z": -0.14839975251373883
+        },
+        "eye": {
+            "x": 0.5400601603427597,
+            "y": 1.8085400211512366,
+            "z": 0.5540320868623193
+        },
+        "projection": {
+            "type": "perspective"
+        }
+      }
     }
   }
+
+  if(camera)
+    layout.scene.camera = camera
 
   let scaleisVisible = true
 
-  for (let i in input) {
-    layout.scene.xaxis.title.text = parameters.find(e => e.name === input[i].xaxis)?.alias || input[i].xaxis
-    layout.scene.yaxis.title.text = parameters.find(e => e.name === input[i].yaxis)?.alias || input[i].yaxis
+  for (let i in input) {  
+    // layout.scene.xaxis.title.text = parameters.find(e => e.name === input[i].xaxis)?.alias || input[i].xaxis
+    // layout.scene.yaxis.title.text = parameters.find(e => e.name === input[i].yaxis)?.alias || input[i].yaxis
+    layout.scene.xaxis.title.text = null;
+    layout.scene.yaxis.title.text = null;
     layout.scene.zaxis.title.text = parameters.find(e => e.name === input[i].zaxis)?.alias || input[i].zaxis
 
-    var marker = {
-      "color": input[i].color,
-      "line": {
-        "color": input[i].color,
-        "width": 1
-      }
-    }
+    // layout.scene.xaxis.visible = true
+    // layout.scene.yaxis.visible = true
+    // layout.scene.zaxis.visible = true
+    // layout.scene.xaxis.visible = input[i].xaxis === 'None'? false : true
+    // layout.scene.yaxis.visible = input[i].yaxis === 'None'? false : true
 
-    if (input[i].colorscaleaxis !== 'None') {
-      marker.color = input[i].colorscale
-      marker.colorscale = ColorGradientColorArray(colorgradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || colorgradient
-      marker.showscale = scaleisVisible
-      // Prevent the scale from being drawn multiple times
-      if (scaleisVisible)
-        scaleisVisible = false
-      marker.colorbar = {
-        "thickness": 20,
-        "title": {
-          "text": parameters.find(e => e.name === input[i].colorscaleaxis)?.alias || input[i].colorscaleaxis,
-          "side": "right"
-        }
-      }
-      marker.cmax = jStat.max(input.map((item) => item.colorscale).flat())
-      marker.cmin = jStat.min(input.map((item) => item.colorscale).flat())
-      marker.cauto = false
-    }
-
-
-    // calculate Meshgrid
-    const xValues = Array(input[i].y.length).fill(input[i].x)
-    const yValues = Array(input[i].x.length).fill(input[i].y)
-
-    const zValues = [];
-
-    data.push({
-      "x": input[i].x,
-      "y": input[i].y,
-      "z": zValues,
-      // "idx": input[i]['$loki'],
-      "legendgroup": input[i].id,
-      "name": input[i].name,
-      // marker,
-      "type": "surface",
-      // "mode": mode,
-      // "connectgaps": true,
-      "visible": true,
-      "contours": {
-        "z": {
-          "show": true,
-          "usecolormap": true,
-          "highlightcolor": "#42f462",
-          "project": { z: true }
-        }
-      }
-    })
   }
+    
+  let data = {
+    z: input.flatMap(item => item.z),
+    type: 'surface',
+    // surfacecolor: ColorGradientColorArray(gradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || gradient,
+    // ids: input.flatMap(item => item['$loki']),
+    colorscale: ColorGradientColorArray(gradient).map((item, idx, arr) => [(idx / (arr.length - 1)), item]) || gradient,
+    colorbar: {
+      thickness: 20,
+      // title: {
+      //   text: colorbartitle,
+      //   side: 'right'
+      // }
+    },
+    contours: {
+      x: {
+        show: false,
+        highlight: contours === 'Show'? true : false,
+        usecolormap: false,
+        highlightcolor:"#42f462",
+        project:{ 
+          x: false,
+          y: false,
+          z: false
+        }
+      },
+      y: {
+        show: false,
+        highlight: contours === 'Show'? true : false,
+        usecolormap: false,
+        highlightcolor:"#42f462",
+        project:{ 
+          x: false,
+          y: false,
+          z: false
+        }
+      },
+      z: {
+        show: false, //contours === 'Show'? true : false,
+        highlight: contours === 'Show'? true : false,
+        usecolormap: false,
+        highlightcolor:"#42f462",
+        project:{ 
+          x: false,
+          y: false,
+          z: false
+        }
+      }
+    },
+    showscale: scaleisVisible,
+  }
+
+  // Create Array
+  data = [data]
 
   return { data, layout }
 }

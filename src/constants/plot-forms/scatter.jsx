@@ -130,37 +130,86 @@ const scatter = [
       }
     ]
   },
-  // {
-  //   'type': 'surface',
-  //   'name': '3D Surface',
-  //   'icon': <PlotlyIcons.PlotSurfaceIcon className='ploty-icon' />,
-  //   'options': [
-  //     {
-  //       'label': 'x-Axis',
-  //       'input': 'select',
-  //       'name': 'xaxis',
-  //       'options': 'number'
-  //     },
-  //     {
-  //       'label': 'y-Axis',
-  //       'input': 'select',
-  //       'name': 'yaxis',
-  //       'options': 'number'
-  //     },
-  //     {
-  //       'label': 'z-Axis',
-  //       'input': 'select',
-  //       'name': 'zaxis',
-  //       'options': 'number'
-  //     },
-  //     {
-  //       'label': 'Color Scale',
-  //       'input': 'select',
-  //       'name': 'gradient',
-  //       'options': 'parameters-colorscale'
-  //     }
-  //   ]
-  // },
+  {
+    'type': 'surface',
+    'name': '3D Surface',
+    'icon': <PlotlyIcons.PlotSurfaceIcon className='ploty-icon' />,
+    'options': [
+      // {
+      //   'label': 'x-Axis',
+      //   'input': 'select',
+      //   'name': 'xaxis',
+      //   'options': ['None', 'parameters-number']
+      // },
+      // {
+      //   'label': 'y-Axis',
+      //   'input': 'select',
+      //   'name': 'yaxis',
+      //   'options': ['None', 'parameters-number']
+      // },
+      {
+        'label': 'z-Axis',
+        'input': 'select',
+        'name': 'zaxis',
+        'options': 'array'
+      },
+      {
+        'label': 'Color Scale',
+        'input': 'select',
+        'name': 'gradient',
+        'options': 'parameters-colorscale'
+      },
+      {
+        'label': 'Projected Contours',
+        'input': 'select',
+        'name': 'contours',
+        'options': ['Hide','Show']
+      }
+    ]
+  },
+  {
+    'type': 'mesh3d',
+    'name': '3D Mesh',
+    'icon': <PlotlyIcons.PlotMesh3dIcon className='ploty-icon' />,
+    'options': [
+      {
+        'label': 'x-Axis',
+        'input': 'select',
+        'name': 'xaxis',
+        'options': 'number'
+      },
+      {
+        'label': 'y-Axis',
+        'input': 'select',
+        'name': 'yaxis',
+        'options': 'number'
+      },
+      {
+        'label': 'z-Axis',
+        'input': 'select',
+        'name': 'zaxis',
+        'options': 'number'
+      },
+      {
+        'label': 'Intensity',
+        'input': 'select',
+        'name': 'colorscaleaxis',
+        'options': ['None', 'parameters-number']
+      },
+      {
+        'label': 'Color Scale',
+        'input': 'select',
+        'name': 'gradient',
+        'options': 'parameters-colorscale'
+      },
+      {
+        'label': 'Projected Contours',
+        'input': 'select',
+        'name': 'contours',
+        'options': ['Hide','Show']
+      }
+    ]
+  },
 ]
 
 export default scatter;
