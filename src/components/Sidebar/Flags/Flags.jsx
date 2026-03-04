@@ -39,7 +39,7 @@ export default function Flags(props) {
   const handleClickReset = useCallback(() => flag.resetFlags(), [] )
 
   useEffect(() => {
-    setFlagged( getFilteredData('flags').data() )
+    setFlagged( getFilteredData('flags', { ignore: [-1] }).data() )
   }, [flags.checksum])
 
   const [datumid, setDatumid] = useState(null)
