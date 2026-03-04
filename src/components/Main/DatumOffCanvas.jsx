@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form';
 
@@ -23,7 +23,7 @@ import { plotLayoutDarkmode, plotLayoutLightmode } from '../../constants/plot-la
 import useFlagData from '../../hooks/useFlagData';
 import useGetFilteredData from '../../hooks/useGetFilteredData';
 
-export default function DatumOffCanvas(props) {
+export default function DatumOffCanvas({show, datumid, onHide, title, darkmode}) {
 
   const [data, setData] = useState(null);
   const [flag, setFlag] = useState(null);
@@ -38,19 +38,19 @@ export default function DatumOffCanvas(props) {
   const { getFilteredData } = useGetFilteredData();
 
   useEffect(() => {
-    if (props.show) {
+    if (show) {
       setLoading(true);
       setFlag(null);
       setFlagReasons([]);
       setValue('comment', '', {shouldTouch: true})
       setValue('parameter', parameters[0]?.id, {shouldTouch: true})
 
-      let query = getSingleDatumByID(props.datumid);
-      let queryFlag = getSingleDatumByField( props.datumid, 'datumId', 'flags', false);
+      let query = getSingleDatumByID(datumid);
+      let queryFlag = getSingleDatumByField( datumid, 'datumId', 'flags', false);
       let queryFlagReasons = getFilteredData('flags').data();
 
       if (queryFlag){
-        const param = parameters.find( itm => itm.id == queryFlag.parameter )
+        const param = parameters.find( itm => itm.id === queryFlag.parameter )
         setFlag({...queryFlag, parameter: param});
       }
 
@@ -59,25 +59,25 @@ export default function DatumOffCanvas(props) {
 
       if (query) {
         let paramList = {}
-        parameters.map( itm => itm.name ).forEach( itm => {
-          paramList[itm] = null;
-        })
+        parameters.forEach(itm => { 
+          paramList[itm.name] = null;
+        });
         setLoading(false);
         setData({...paramList, ...query});
       }
     }
-  }, [props.datumid, props.show])
+  }, [datumid, show])
 
   const handleAddFlagClick = () => {
 
     // useDispatch
 
-    flagData.addFlags(props.datumid, getValues().parameter, getValues().comment)
+    flagData.addFlags(datumid, getValues().parameter, getValues().comment)
 
-    let queryFlag = getSingleDatumByField( props.datumid, 'datumId', 'flags', false);
+    let queryFlag = getSingleDatumByField( datumid, 'datumId', 'flags', false);
 
     if (queryFlag){
-      const param = parameters.find( itm => itm.id == queryFlag.parameter )
+      const param = parameters.find( itm => itm.id === queryFlag.parameter )
       setFlag({...queryFlag, parameter: param});
     }
   }
@@ -88,14 +88,14 @@ export default function DatumOffCanvas(props) {
   }
 
   const handleHideDialog = () => {
-    props.onHide(false);
+    onHide(false);
     setFlag(null);
   }
 
   return (
-    <Offcanvas show={props.show} onHide={handleHideDialog} {...props} >
+    <Offcanvas show={show} onHide={handleHideDialog} >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>{props.title || 'Data Entry'}</Offcanvas.Title>
+        <Offcanvas.Title>{title || 'Data Entry'}</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         {loading && <>
@@ -113,12 +113,10 @@ export default function DatumOffCanvas(props) {
         }
         {!loading &&
           <>
-            {flag && <>
-              <Alert key={'warning'} variant={'warning'} onClose={handleRemoveFlagClick} dismissible>
-                <i className='bi bi-flag-fill' /> {flag.parameter.alias || flag.parameter.name}
-                {flag.comment != "" && <Form.Text className='d-block'>{flag.comment}</Form.Text> }
-              </Alert>
-            </>}
+            {flag && <Alert key={'warning'} variant={'warning'} onClose={handleRemoveFlagClick} dismissible>
+              <i className='bi bi-flag-fill' /> <Alert.Link href={'#' + flag.parameter.id}>{flag.parameter.alias || flag.parameter.name}</Alert.Link>
+              {flag.comment && <Form.Text className='d-block'>{flag.comment}</Form.Text> }
+            </Alert>}
             <Table striped size="sm">
               <thead>
                 <tr>
@@ -129,9 +127,15 @@ export default function DatumOffCanvas(props) {
               <tbody className='text-break'>
                 {Object.entries(data)
                   .filter(row => parameters.find(e => e.name === row[0])?.isSelected)
-                  .map((row, idx) => <tr key={idx}>
-                    <DisplayTableRow param={row[0]} paramInfo={parameters.find(e => e.name === row[0])} value={row[1]} idx={idx} darkmode={props.darkmode} />
-                  </tr>)
+                  .map((row, idx) =>
+                    <DisplayTableRow 
+                      key={idx} 
+                      param={row[0]}
+                      paramInfo={parameters.find(e => e.name === row[0])}
+                      value={row[1]}
+                      idx={idx} 
+                      darkmode={darkmode} 
+                    />)
                 }
               </tbody>
             </Table>
@@ -216,28 +220,28 @@ function DisplayTableRow({ param, value, idx = 0, paramInfo, darkmode }) {
   }
   if (paramInfo.specialtype === 'color') {
     return (
-      <>
-        <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
-        <td className='text-end'><i className='bi-palette-fill' style={{ 'color': String(value) }} /> {String(value)}</td>
-      </>
+      <tr id={paramInfo.id}>
+        <td><em>{label}</em></td>
+        <td className='text-end'><i className='bi bi-palette-fill' style={{ 'color': String(value) }} /> {String(value)}</td>
+      </tr>
     )
   }
   if (paramInfo.type === 'object') {
     return (
-      <>
+      <tr id={paramInfo.id}>
         <td colSpan={2}>
-          <em>{paramInfo.alias ? paramInfo.alias : param}</em>
+          <em>{label}</em>
           <pre className='text-pre-wrap my-2'>{JSON.stringify(value, null, 2)}</pre>
         </td>
-      </>
+      </tr>
     )
   }
   return (
-    <>
-      <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
+    <tr id={paramInfo.id}>
+      <td><em>{label}</em></td>
       <td className='text-end'>
-        { String(value).match(/https?:\/\//)? <a href={String(value)} target='blank'>{String(value)}</a> : String(value) }
+        { /https?:\/\//.test(String(value))? <a href={String(value)} target='_blank' rel='noreferrer'>{String(value)}</a> : String(value) }
       </td>
-    </>
+    </tr>
   )
 }
