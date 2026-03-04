@@ -13,7 +13,7 @@ import { analysisAddFile, analysisAppendFile, analysisUpdate } from '../features
 
 export const useFileImport = () => {
 
-  const analysis = useSelector(state => state.analysis)
+  const analysis = useSelector(state => state.analysis);
 
   const [isBusy, setIsBusy] = useState(false);
   const [fileInvalid, setFileInvalid] = useState(false);
@@ -59,9 +59,8 @@ export const useFileImport = () => {
             dispatch(analysisAppendFile(fileInfo));
           } else {
             dispatch(analysisAddFile(fileInfo));
-            // const initialname = analysis.name !== '' ? analysis.name : file.name.split(".").slice(0, -1).join(".");
             const initialname = crypto.randomUUID();
-            dispatch(analysisUpdate({ name: initialname, saveAs: initialname }));
+            dispatch(analysisUpdate({ name: analysis.name || initialname, saveAs: initialname }));
             setFilename(initialname+'.db');
           }
 
