@@ -52,14 +52,14 @@ export default function BookmarkItem(props) {
     >
       <span className="d-flex align-items-left">
         <span className='text-nowrap'>
-          <i className="bi-bookmark-check" /> {props.name}
+          <i className="bi bi-bookmark-check" /> {props.name}
         </span>
       </span>
       {props?.creator && <>{props.creator?.avatar? <div className='rounded ratio ratio-1x1 d-inline-block bookmark-avatar' style={{background: `url(${props.creator.avatar}) 0% 0% / cover`}}/> : <i className='bi bi-person-square' />} <span className='text-muted'>{props.creator?.name}</span></> }
       <ul className='list-inline text-muted bookmark-ul-icons'>
-        <li className='list-inline-item'><i className='bi-columns-gap' /> {props.dashboard}</li>
-        <li className='list-inline-item'><i className='bi-filter' /> {props.datasubsets}</li>
-        <li className='list-inline-item'><i className='bi-bar-chart-steps' /> {props.thresholds}</li>
+        <li className='list-inline-item'><i className='bi bi-columns-gap' /> {props.dashboard}</li>
+        <li className='list-inline-item'><i className='bi bi-filter' /> {props.datasubsets}</li>
+        <li className='list-inline-item'><i className='bi bi-bar-chart-steps' /> {props.thresholds}</li>
         <li className='list-inline-item'>
           <i className='bi bi-calendar-event' /> <span className='text-muted'>{dayjs(props.created_at).format('l LT')}</span>
         </li>
@@ -68,10 +68,10 @@ export default function BookmarkItem(props) {
       {showEdit && <InputGroup size='sm' className="">
         <Form.Control as="input" size='sm' placeholder="Bookmark Name"  value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyUp={(e) => { if(e.key === 'Enter') handleSave() }} />
         <InputGroup.Text as='button' onClick={handleSave}>
-          <i className='bi-check' />
+          <i className='bi bi-check' />
         </InputGroup.Text>
         <InputGroup.Text as='button' onClick={() => { setShowEdit(false); setShowHoverContent(false); }}>
-          <i className='bi-x' />
+          <i className='bi bi-x' />
         </InputGroup.Text>
       </InputGroup>
       }

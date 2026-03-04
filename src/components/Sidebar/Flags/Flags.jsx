@@ -70,13 +70,13 @@ export default function Flags(props) {
       <Row id='dv-flags'>
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Flagged Data
-          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </Col>
         <Col sm={12}>
           <ButtonToolbar aria-label="Flags Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Flags">
               <Button variant='outline-secondary' onClick={handleClickToggleActivity} disabled={!flagged.length > 0}><i className={flags.isActive? 'bi bi-toggle-on' : 'bi bi-toggle-off'} /> Active</Button>
-              <Button variant='outline-secondary' onClick={handleClickReset} disabled={!flagged.length > 0}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClickReset} disabled={!flagged.length > 0}><i className='bi bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>

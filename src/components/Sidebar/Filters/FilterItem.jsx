@@ -29,7 +29,7 @@ export default function FilterItem(props) {
     <ListGroup.Item as="li" className='list-group-item-action'>
       <div className="d-flex justify-content-between align-items-center cursor-pointer" onClick={handleToggle}>
         <span>
-          {toggle ? <i className='bi-caret-down-fill small' /> : <i className='bi-caret-right-fill small' />}
+          {toggle ? <i className='bi bi-caret-down-fill small' /> : <i className='bi bi-caret-right-fill small' />}
           {' '}<span className={toggle ? 'fw-bold' : ''}>{props.alias? props.alias : props.name}</span>
         </span>
         <span className='badge text-bg-light'>{props?.filterData?.unique? props.filterData.unique.length : '0'}</span>
@@ -135,7 +135,7 @@ export function FilterItemDateTime(props) {
     <ListGroup.Item as="li" className='list-group-item-action'>
       <div className="d-flex justify-content-between align-items-center" role="button" onClick={handleToggle}>
         <span>
-          {toggle ? <i className='bi-caret-down-fill' /> : <i className='bi-caret-right-fill' />}
+          {toggle ? <i className='bi bi-caret-down-fill' /> : <i className='bi bi-caret-right-fill' />}
           {' '}{props.name}
         </span>
         <span className='badge text-bg-light'><i className='bi bi-calendar-range' /></span>

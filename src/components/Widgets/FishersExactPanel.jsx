@@ -148,13 +148,13 @@ function CalculateFishersExact(props) {
                       <td></td>
                     </tr>
                     <tr>
-                      <td className='text-start'><i className='bi-square-fill' style={{ 'color': table.rowLabels[0].color }} /> {table.rowLabels[0].name}</td>
+                      <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': table.rowLabels[0].color }} /> {table.rowLabels[0].name}</td>
                       <td>{table.a}</td>
                       <td>{table.b}</td>
                       <td>{table.rowSums[0]}</td>
                     </tr>
                     <tr>
-                      <td className='text-start'><i className='bi-square-fill' style={{ 'color': table.rowLabels[1].color }} /> {table.rowLabels[1].name}</td>
+                      <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': table.rowLabels[1].color }} /> {table.rowLabels[1].name}</td>
                       <td>{table.c}</td>
                       <td>{table.d}</td>
                       <td>{table.rowSums[1]}</td>

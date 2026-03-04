@@ -36,13 +36,13 @@ export default function BookmarkItemMenu(props) {
     <>
       <ButtonGroup size="sm" className='bg-white bookmark-menu-btn-group' >
         <Button variant="outline-secondary" onClick={handleClickApply} >
-          <i className="bi-journal-arrow-up" />
+          <i className="bi bi-journal-arrow-up" />
         </Button>
         <Button variant="outline-secondary" onClick={props.onEditClick} >
-          <i className="bi-input-cursor-text" />
+          <i className="bi bi-input-cursor-text" />
         </Button>
         <Button variant="outline-secondary" onClick={handleClickDelete} >
-          <i className="bi-bookmark-x" />
+          <i className="bi bi-bookmark-x" />
         </Button>
       </ButtonGroup>
     </>

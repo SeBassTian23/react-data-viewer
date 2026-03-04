@@ -100,8 +100,8 @@ function CalculateWilcoxonSignedRankTest(props) {
               <Table size='sm' key={idx}>
                 <thead className='text-center small'>
                   <tr>
-                    <th><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
-                    <th><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
+                    <th><i className='bi bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
+                    <th><i className='bi bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
                   </tr>
                 </thead>
                 <tbody className='small text-center align-middle'>

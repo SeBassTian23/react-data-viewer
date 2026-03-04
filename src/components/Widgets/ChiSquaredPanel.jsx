@@ -152,7 +152,7 @@ function CalculateChiSquare(props) {
 
                       if(cidx == 0)
                         return <td key={cidx} className='text-start'>
-                          <i className='bi-square-fill' style={{ 'color': cell?.color }} /> {cell?.name}
+                          <i className='bi bi-square-fill' style={{ 'color': cell?.color }} /> {cell?.name}
                         </td>
 
                       return <td key={cidx} 

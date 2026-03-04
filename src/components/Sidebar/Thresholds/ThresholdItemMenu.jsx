@@ -33,14 +33,14 @@ export default function ThresholdItemMenu(props) {
     <>
       <ButtonGroup size="sm" className="threshold-menu-select">
         <Button variant="outline-secondary" onClick={handleDelete} >
-          <i className="bi-x-lg" />
+          <i className="bi bi-x-lg" />
         </Button>
         <Button variant="outline-secondary" onClick={handleEdit} >
-          <i className="bi-pencil-square" />
+          <i className="bi bi-pencil-square" />
         </Button>
         <Button variant="outline-secondary" onClick={handleToggle} >
-          {props.isSelected && <i className="bi-toggle-on" />}
-          {!props.isSelected && <i className="bi-toggle-off" />}
+          {props.isSelected && <i className="bi bi-toggle-on" />}
+          {!props.isSelected && <i className="bi bi-toggle-off" />}
         </Button>
       </ButtonGroup>
     </>

@@ -44,13 +44,13 @@ export default function Bookmarks(props) {
       <Row id="dv-bookmarks">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Bookmarks
-          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </Col>
         <Col sm={12} className='mb-2'>
           <ButtonToolbar aria-label="Bookmark Menu">
             <ButtonGroup size='sm' className="me-2">
-              <Button variant='outline-secondary' onClick={handleClickSave}><i className='bi-bookmark-plus' /> Save Bookmark</Button>
-              <Button variant='outline-secondary' onClick={handleClickReset} disabled={!state.length > 0}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleClickSave}><i className='bi bi-bookmark-plus' /> Save Bookmark</Button>
+              <Button variant='outline-secondary' onClick={handleClickReset} disabled={!state.length > 0}><i className='bi bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>

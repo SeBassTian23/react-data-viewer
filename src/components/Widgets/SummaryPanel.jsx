@@ -72,7 +72,7 @@ function CalculateSummary(props) {
           <thead className='small'>
             <tr>
               <th colSpan={2}>
-                <i className="bi-square-fill" style={{ "color": itm.color }}></i>{' '}
+                <i className="bi bi-square-fill" style={{ "color": itm.color }}></i>{' '}
                 {itm.name}
               </th>
             </tr>

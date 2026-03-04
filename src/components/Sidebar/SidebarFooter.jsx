@@ -32,7 +32,7 @@ export default function SidebarFooter(props) {
       <Col sm={12} className='border-top d-flex justify-content-evenly align-items-center small py-2'>
         <span title='Total Number of Rows (Data-Sets)'><i className={count > 0 ? 'bi-database-fill-check' : 'bi-database-fill'} /> {count}</span>
         <span title={`Parameters (${parameters.join("|")})`}><i className='bi bi-toggles' /> {parameters[1]}</span>
-        <span className={`${stateThresholds.filter(x => x.isSelected).length > 0 ? 'text-danger' : ''}`} title='Thresholds'><i className='bi-bar-chart-steps' /> {stateThresholds.filter(x => x.isSelected).length}</span>
+        <span className={`${stateThresholds.filter(x => x.isSelected).length > 0 ? 'text-danger' : ''}`} title='Thresholds'><i className='bi bi-bar-chart-steps' /> {stateThresholds.filter(x => x.isSelected).length}</span>
         <span title='Bookmarks'><i className='bi bi-journal-bookmark-fill' /> {stateBookmarks.length}</span>
         <MemoryDisplay />
       </Col>

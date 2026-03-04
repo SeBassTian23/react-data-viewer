@@ -203,21 +203,21 @@ export default function Spreadsheet(props) {
                 onClick={downloadCSV}
                 aria-label='Download as CSV formatted file'
               >
-                <i className='bi-filetype-csv' /> CSV
+                <i className='bi bi-filetype-csv' /> CSV
               </Button>
               <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadTXT}
                 aria-label='Download as text file'
               >
-                <i className='bi-filetype-txt' /> Text
+                <i className='bi bi-filetype-txt' /> Text
               </Button>
               <Button
                 variant={props.darkmode ? 'outline-light' : 'outline-dark'}
                 onClick={downloadXLSX}
                 aria-label='Download as Excel compatible file'
               >
-                <i className='bi-filetype-xlsx' /> Excel
+                <i className='bi bi-filetype-xlsx' /> Excel
               </Button>
             </ButtonGroup>
             <Button
@@ -226,7 +226,7 @@ export default function Spreadsheet(props) {
                 size='sm'
                 aria-label='Download as JSON formatted file'
               >
-                <i className='bi-filetype-json' /> JSON
+                <i className='bi bi-filetype-json' /> JSON
             </Button>
             <Button
               variant={props.darkmode ? 'outline-light' : 'outline-dark'}
@@ -235,7 +235,7 @@ export default function Spreadsheet(props) {
               size='sm'
               aria-label='Show Help'
             >
-              <i className='bi-question-circle' />
+              <i className='bi bi-question-circle' />
             </Button>
           </ButtonToolbar>
         </Col>

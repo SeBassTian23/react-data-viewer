@@ -24,7 +24,7 @@ export default function RecentFilesItemMenu(props) {
     <>
       <ButtonGroup size="sm" className='bg-white bookmark-menu-btn-group' >
         <Button variant="outline-secondary" onClick={(e) => {e.stopPropagation(); handleClickDelete()}} >
-          <i className="bi-journal-x" />
+          <i className="bi bi-journal-x" />
         </Button>
       </ButtonGroup>
     </>

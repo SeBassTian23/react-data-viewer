@@ -95,7 +95,7 @@ export default function KMeansClusterPanel(props) {
           <Col className='d-flex align-items-bottom mt-auto flex-column p-1'>
             <Button variant="outline-primary" size="sm"
               disabled={!hasMinSelections}
-              onClick={handleClickCalculate}><i className='bi-caret-right' /></Button>
+              onClick={handleClickCalculate}><i className='bi bi-caret-right' /></Button>
           </Col>
         </Row>
         <Row className='m-0 p-0'>

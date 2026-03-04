@@ -76,7 +76,7 @@ export default function RecentFiles() {
       <Row id="dv-recent-files">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Recent Analyses
-          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </Col>
         <Col sm={12} className='d-flex justify-content-between align-items-center'>
           <ButtonToolbar aria-label="Recent Files Menu">

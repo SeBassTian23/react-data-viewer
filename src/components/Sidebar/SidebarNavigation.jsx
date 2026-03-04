@@ -70,31 +70,31 @@ export default function SidebarNavigation(props) {
       <ul className="d-flex nav navbar-nav flex-column flex-grow-1 w-100">
         <li className="nav-item">
           <NavLink className="nav-link px-0" to="/" title={ShortcutLabelStr('showDashboard')}>
-            <i className="bi-columns-gap" />
+            <i className="bi bi-columns-gap" />
             <span className="d-block">Dashboard</span>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink className="nav-link px-0" to="/plot" title={ShortcutLabelStr('showPlot')}>
-            <i className="bi-graph-up" />
+            <i className="bi bi-graph-up" />
             <span className="d-block">Plot</span>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink className="nav-link px-0" to="/map" title={ShortcutLabelStr('showMap')}>
-            <i className="bi-globe-americas" />
+            <i className="bi bi-globe-americas" />
             <span className="d-block">Map</span>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink className="nav-link px-0" to="/spreadsheet" title={ShortcutLabelStr('showSpreadsheet')}>
-            <i className="bi-table" />
+            <i className="bi bi-table" />
             <span className="d-block">Spreadsheet</span>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink className="nav-link px-0" to="/documentation" title="Documentation">
-            <i className="bi-book" />
+            <i className="bi bi-book" />
             <span className="d-block">Docs</span>
           </NavLink>
         </li>

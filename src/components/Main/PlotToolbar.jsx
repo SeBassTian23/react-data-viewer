@@ -128,36 +128,36 @@ export default function PlotToolbar(props) {
       <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex align-items-center'>
         <ButtonGroup size='sm' className="me-2" aria-label="Plot Data">
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'scatter', show: true })}><PlotlyIcons.PlotScatterAxesIcon className='ploty-icon' /> Scatter</Button>
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'line', show: true })}><i className='bi-graph-up' /> Line</Button>
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'bar', show: true })}><i className='bi-bar-chart-line' /> Bar</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'line', show: true })}><i className='bi bi-graph-up' /> Line</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'bar', show: true })}><i className='bi bi-bar-chart-line' /> Bar</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'distribution', show: true })}><PlotlyIcons.PlotBoxIcon className='ploty-icon-dist'  /> Distribution</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'matrix', show: true })}><PlotlyIcons.PlotSplomIcon className='ploty-icon-matrix' /> Matrix</Button>
         </ButtonGroup>
         {props.isSelected && <ButtonGroup className='me-2' size='sm' aria-label="Selection">
-          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-bounding-box" /> Selection</>}>
+          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-bounding-box" /> Selection</>}>
             <Dropdown.Header>Filter Data by Selection</Dropdown.Header>
-            <Dropdown.Item onClick={() => addToSubsetInside(props.selectedMarkers)}><i className='bi-intersect' /> Inside</Dropdown.Item>
-            <Dropdown.Item onClick={() => addToSubsetOutside(props.selectedMarkers)}><i className='bi-exclude' /> Outside</Dropdown.Item>
+            <Dropdown.Item onClick={() => addToSubsetInside(props.selectedMarkers)}><i className='bi bi-intersect' /> Inside</Dropdown.Item>
+            <Dropdown.Item onClick={() => addToSubsetOutside(props.selectedMarkers)}><i className='bi bi-exclude' /> Outside</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Header>Flag by Selection</Dropdown.Header>
-            <Dropdown.Item onClick={() => flagSelectedMarkers(props.selectedMarkers)}><i className='bi-flag-fill' /> Flag Data</Dropdown.Item>
+            <Dropdown.Item onClick={() => flagSelectedMarkers(props.selectedMarkers)}><i className='bi bi-flag-fill' /> Flag Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>}
         <ButtonGroup size='sm' aria-label="Dashboard">
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={addToDashboard}><i className="bi-window-plus" /> Panel</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={addToDashboard}><i className="bi bi-window-plus" /> Panel</Button>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Save group">
-          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-box-arrow-down" /> Save…</>}>
-            <Dropdown.Item onClick={() => handleClickDownloadImage('png')}><i className="bi-file-earmark-image" /> PNG</Dropdown.Item>
-            <Dropdown.Item onClick={() => handleClickDownloadImage('jpeg')}><i className="bi-file-earmark-image" /> JPEG</Dropdown.Item>
-            <Dropdown.Item onClick={() => handleClickDownloadImage('webp')}><i className="bi-file-earmark-image" /> WEBP</Dropdown.Item>
-            <Dropdown.Item onClick={() => handleClickDownloadImage('svg')}><i className="bi-file-earmark-image" /> SVG</Dropdown.Item>
+          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-box-arrow-down" /> Save…</>}>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('png')}><i className="bi bi-file-earmark-image" /> PNG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('jpeg')}><i className="bi bi-file-earmark-image" /> JPEG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('webp')}><i className="bi bi-file-earmark-image" /> WEBP</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('svg')}><i className="bi bi-file-earmark-image" /> SVG</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleClickDownloadData}><i className="bi-filetype-json" /> Plot Data</Dropdown.Item>
+            <Dropdown.Item onClick={handleClickDownloadData}><i className="bi bi-filetype-json" /> Plot Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Help Group">
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </ButtonGroup>
       </ButtonToolbar>
       <ModalDialogPlot

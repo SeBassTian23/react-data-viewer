@@ -129,16 +129,16 @@ return (
     <Row id='dv-filters'>
       <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
         Filter Data into Subsets
-        <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+        <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
       </Col>
       <Col sm={12}>
         <ButtonToolbar aria-label="Filters Menu">
           <ButtonGroup size='sm' className="me-2" aria-label="Apply Filter">
-            <Button variant='outline-secondary' onClick={handleClickSingle}><i className='bi-union' /> Single</Button>
-            <Button variant='outline-secondary' onClick={handleClickSeparate} ><i className='bi-subtract' /> Separate</Button>
+            <Button variant='outline-secondary' onClick={handleClickSingle}><i className='bi bi-union' /> Single</Button>
+            <Button variant='outline-secondary' onClick={handleClickSeparate} ><i className='bi bi-subtract' /> Separate</Button>
           </ButtonGroup>
           <ButtonGroup size='sm' className="me-2" aria-label="Selection">
-            <Button variant='outline-secondary' onClick={resetSelection}><i className="bi-x-circle" /> Reset</Button>
+            <Button variant='outline-secondary' onClick={resetSelection}><i className="bi bi-x-circle" /> Reset</Button>
           </ButtonGroup>
         </ButtonToolbar>
       </Col>
@@ -147,7 +147,7 @@ return (
     <Row className={`h-100 overflow-auto${(state.length === 0) ? ' align-items-center' : ''}`}>
       <Col sm={12} className='p-0'>
         {state.length === 0 ? <div className='text-center'>
-          <i className='bi-filter text-muted fs-1' />
+          <i className='bi bi-filter text-muted fs-1' />
           <span className='d-block text-muted fs-5'>Filters</span>
           <p className='small'>No Filters available</p>
         </div>

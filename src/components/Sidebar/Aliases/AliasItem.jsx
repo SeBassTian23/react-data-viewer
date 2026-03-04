@@ -41,10 +41,10 @@ export default function AliasItem({ id, alias, name, ...props }) {
       {showEdit && <InputGroup size='sm' className="">
         <Form.Control as="input" size='sm' placeholder="Alias Name" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyUp={(e) => { if(e.key === 'Enter') handleSave() }} />
         <InputGroup.Text as='button' onClick={handleSave}>
-          <i className='bi-check' />
+          <i className='bi bi-check' />
         </InputGroup.Text>
         <InputGroup.Text as='button' onClick={() => { setShowEdit(false); setShowHoverContent(false); }}>
-          <i className='bi-x' />
+          <i className='bi bi-x' />
         </InputGroup.Text>
       </InputGroup>
       }

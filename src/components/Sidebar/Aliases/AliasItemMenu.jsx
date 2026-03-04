@@ -13,10 +13,10 @@ export default function AliasItemMenu({id, alias, onEditClick, ...props}) {
   return (
     <ButtonGroup size="sm" className='bg-white alias-menu-select'>
       <Button variant="outline-secondary" onClick={onEditClick} >
-        <i className="bi-input-cursor-text" />
+        <i className="bi bi-input-cursor-text" />
       </Button>
       {alias && <Button variant="outline-secondary" onClick={handleDelete} >
-        <i className="bi-trash-fill" />
+        <i className="bi bi-trash-fill" />
       </Button>}
     </ButtonGroup>
   )

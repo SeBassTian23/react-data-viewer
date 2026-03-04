@@ -48,7 +48,7 @@ export default function DataSubsetItem(props) {
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}
       >
         <span className="d-inline-block text-truncate" style={!props.isVisible ? { 'opacity': 0.25 } : {}}>
-          <i className="bi-square-fill " style={{ "color": props.color }} /> {props.name || "Unknown"}
+          <i className="bi bi-square-fill " style={{ "color": props.color }} /> {props.name || "Unknown"}
         </span>
         {showHoverContent && (
           <DataSubsetItemMenu {...props} showModalEdit={handleShow} />

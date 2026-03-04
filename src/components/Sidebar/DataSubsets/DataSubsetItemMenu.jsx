@@ -28,14 +28,14 @@ export default function DataSubsetItemMenu(props) {
     <>
       <ButtonGroup size="sm" className="data-subset-btn-group">
         <Button variant="outline-secondary" onClick={() => dispatch(datasubsetToggled(props.id))} >
-          {props.isVisible && <i className="bi-eye-fill" />}
-          {!props.isVisible && <i className="bi-eye-slash-fill" />}
+          {props.isVisible && <i className="bi bi-eye-fill" />}
+          {!props.isVisible && <i className="bi bi-eye-slash-fill" />}
         </Button>
         <Button variant="outline-secondary" onClick={() => props.showModalEdit()} >
-          <i className="bi-gear-fill" />
+          <i className="bi bi-gear-fill" />
         </Button>
         <Button variant="outline-secondary" onClick={handleDelete} >
-          <i className="bi-x-lg" />
+          <i className="bi bi-x-lg" />
         </Button>
       </ButtonGroup>
     </>

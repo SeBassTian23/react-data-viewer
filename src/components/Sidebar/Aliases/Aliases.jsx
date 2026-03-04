@@ -27,7 +27,7 @@ export default function Aliases() {
       <Row id="dv-parameters">
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Aliases
-          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </Col>
       </Row>
       <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'stretch': 'start'}`}>

@@ -116,7 +116,7 @@ function CalculateANOVA(props) {
           </thead>
           <tbody>
             {results.groupStatistics.map( (row, idx) => <tr key={idx}>
-              <td className='text-start'><i className='bi-square-fill' style={{ 'color': subsets.find(itm => itm?.id == row.label)?.color || '#000' }} />&nbsp;{subsets.find(itm => itm?.id == row.label)?.name}</td>
+              <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': subsets.find(itm => itm?.id == row.label)?.color || '#000' }} />&nbsp;{subsets.find(itm => itm?.id == row.label)?.name}</td>
               <td>{row.n}</td>
               <td>{numberFormat(row.mean)}</td>
               <td>{numberFormat(row.standardDeviation)}</td>

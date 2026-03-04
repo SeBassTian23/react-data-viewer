@@ -130,8 +130,8 @@ function McNemarTest(props) {
               <Table size='sm' className='mt-1' key={idx}>
                  <thead className='text-center small'>
                   <tr>
-                    <th><i className='bi-square-fill' style={{ 'color': table.subsets[0].color }} />&nbsp;{table.subsets[0].name}</th>
-                    <th><i className='bi-square-fill' style={{ 'color': table.subsets[1].color }} />&nbsp;{table.subsets[1].name}</th>
+                    <th><i className='bi bi-square-fill' style={{ 'color': table.subsets[0].color }} />&nbsp;{table.subsets[0].name}</th>
+                    <th><i className='bi bi-square-fill' style={{ 'color': table.subsets[1].color }} />&nbsp;{table.subsets[1].name}</th>
                   </tr>
                 </thead>
                 <tbody className='text-center small'>
@@ -168,7 +168,7 @@ function McNemarTest(props) {
                   {table.view.map((row, idx) => {
                     return (
                       <tr key={idx}>
-                        <td className='text-start'>{row[0].name !== '' && <i className='bi-square-fill' style={{ 'color': row[0].color }} />}&nbsp;{row[0].name}</td>
+                        <td className='text-start'>{row[0].name !== '' && <i className='bi bi-square-fill' style={{ 'color': row[0].color }} />}&nbsp;{row[0].name}</td>
                         <td>{row[1]}</td>
                         <td>{row[2]}</td>
                         <td>{row[3]}</td>

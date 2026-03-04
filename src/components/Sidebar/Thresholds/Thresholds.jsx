@@ -52,13 +52,13 @@ export default function Thresholds(props) {
       <Row id='dv-thresholds'>
         <Col sm={12} className="my-2 border-bottom d-flex justify-content-between align-items-center fw-bold">
           Thresholds
-          <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </Col>
         <Col sm={12}>
           <ButtonToolbar aria-label="Threshold Menu">
             <ButtonGroup size='sm' className="me-2" aria-label="Add Threshold">
-              <Button variant='outline-secondary' onClick={handleNew}><i className='bi-plus-circle-fill' /> New</Button>
-              <Button variant='outline-secondary' onClick={handleReset} disabled={!state.length > 0}><i className='bi-x-circle' /> Reset</Button>
+              <Button variant='outline-secondary' onClick={handleNew}><i className='bi bi-plus-circle-fill' /> New</Button>
+              <Button variant='outline-secondary' onClick={handleReset} disabled={!state.length > 0}><i className='bi bi-x-circle' /> Reset</Button>
             </ButtonGroup>
           </ButtonToolbar>
         </Col>

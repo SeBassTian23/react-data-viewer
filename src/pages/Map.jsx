@@ -389,7 +389,7 @@ export default function Map(props) {
           />
         </Card>
       </Row>
-      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={`${props.darkmode}`} />
+      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={props.darkmode} />
       <ModalDialogMapHistogram onHide={hideHistogramModal} show={histogramstate} action={() => mapShowHistogram()} />
       <ModalDialogMapAreaSelect onHide={hideAreaSelectModal} show={areaselectstate} editRef={editRef} areaselectedstate={areaselectedstate} mapRef={mapRef} />
     </>
