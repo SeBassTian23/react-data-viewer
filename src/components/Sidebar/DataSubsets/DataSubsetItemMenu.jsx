@@ -14,7 +14,7 @@ export default function DataSubsetItemMenu(props) {
   const modal = useModalConfirm();
 
   const handleDelete = useCallback(() => modal.show("confirm", {
-    header: "New Analysis",
+    header: "Delete Subset",
     content: `Removing Subset "${props.name}" cannot be undone.`,
     yes: "Delete",
     no: "Cancel",
