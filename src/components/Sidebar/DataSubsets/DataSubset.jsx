@@ -117,7 +117,7 @@ export default function DataSubset(props) {
               <span className='small'>All available data is currently selected. Use the Filter <i className='bi bi-filter-square' />&nbsp;button to select subsets of data.</span>
             </div>
           ) :
-            <ReactSortable tag='ul' handle='.bi-square-fill' className='list-group list-group-flush mt-2 scrollarea w-100' list={ sortableList } setList={ setList } direction={'vertical'} animation={200} delayOnTouchStart={true} delay={2}>
+            <ReactSortable tag='ul' handle='.bi-square-fill' className='list-group list-group-flush scrollarea w-100' list={ sortableList } setList={ setList } direction={'vertical'} animation={200} delayOnTouchStart={true} delay={2}>
               {state.map((el, idx) => <DataSubsetItem key={el.id} {...el} />)}
             </ReactSortable>
             // <ListGroup as="ul" variant="flush" className='mt-2 scrollarea w-100'>
