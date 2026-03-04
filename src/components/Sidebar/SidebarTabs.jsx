@@ -19,7 +19,6 @@ import ModalDialogBusy from '../Dialogs/ModalDialogBusy'
 import ModalDialogAnalysisImport from '../Dialogs/ModalDialogAnalysisImport'
 
 import SidebarTabContent from './SidebarTabContent'
-import SidebarPanelMenuItems from './SidebarPanelMenuItems'
 
 import { ShortcutLabel, ShortcutLabelStr } from '../Main/ShortcutLabel'
 
@@ -145,17 +144,17 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
                 title={ShortcutLabelStr('toggleFilter')}><i className="bi bi-filter" /> Filter
               </Button>
             }
-            <SidebarPanelMenuItems darkmode={darkmode} />
+            <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-exclamation" /> Rules</>}>
+              <Dropdown.Header>Rules</Dropdown.Header>
+              <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTab('FLAGS')}><i className="bi bi-flag" /> Flagged Data</Dropdown.Item>
+            </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-database-fill-gear" /> Data</>}>
               <Dropdown.Header>Settings</Dropdown.Header>
               <Dropdown.Item onClick={() => setTab('PARAMETERS')}><i className="bi bi-toggles" /> Parameters</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('DATATYPES')}><i className="bi bi-123" /> Data Types</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('ALIASES')}><i className="bi bi-at" /> Aliases</Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('PARAMETERFILTERS')}><i className="bi bi-filter" /> Filters</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Header>Rules</Dropdown.Header>
-              <Dropdown.Item onClick={() => setTab('THRESHOLDS')}><i className="bi bi-bar-chart-steps" /> Thresholds</Dropdown.Item>
-              <Dropdown.Item onClick={() => setTab('FLAGS')}><i className="bi bi-flag" /> Flagged Data</Dropdown.Item>
             </DropdownButton>
             <DropdownButton size="sm" as={ButtonGroup} variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<i className="bi bi-three-dots-vertical" />}>
               <Dropdown.Item onClick={handleNewAnalysis} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-journal-richtext" /> New Analysis…</span> <ShortcutLabel shortcutKey="newAnalysis" /></Dropdown.Item>

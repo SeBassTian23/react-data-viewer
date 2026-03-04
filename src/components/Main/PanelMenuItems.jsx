@@ -7,7 +7,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import widgets from '../../constants/widgets'
 import { useAddDashboardPanel } from '../../hooks/useAddDashboardPanel';
 
-export default function SidebarPanelMenuItems({darkmode}) {
+export default function PanelMenuItems({darkmode}) {
 
   const addDashboardPanel = useAddDashboardPanel();
 
