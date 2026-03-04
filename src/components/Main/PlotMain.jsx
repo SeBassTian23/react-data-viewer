@@ -114,7 +114,7 @@ export default function PlotMain(props) {
         onDeselect={handleDeselect}
         onSelected={handleSelected}
       />
-      <DatumOffCanvas show={datumstate} datumid={datumid} onHide={setDatumstate} darkmode={`${darkmode}`} />
+      <DatumOffCanvas show={datumstate} datumid={datumid} onHide={setDatumstate} darkmode={darkmode} />
     </>
   )
 }

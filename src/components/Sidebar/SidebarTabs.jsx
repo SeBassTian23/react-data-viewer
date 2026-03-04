@@ -174,7 +174,7 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
         </ButtonToolbar>
       </div>
 
-      <SidebarTabContent tab={tab} setModalImport={setModalImport} {...props} />
+      <SidebarTabContent tab={tab} setModalImport={setModalImport} darkmode={darkmode} />
 
       <ModalDialogAbout show={showAbout} about={{ ...props.about }} onHide={() => setShowAbout(false)} />
 

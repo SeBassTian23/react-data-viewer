@@ -44,7 +44,6 @@ export default function Flags(props) {
 
   const [datumid, setDatumid] = useState(null)
   const [datumstate, setDatumstate] = useState(false)
-  const [isActive, setIsActive] = useState(true)
 
   const showDatum = (id) => {
     setDatumid(id)
@@ -92,7 +91,6 @@ export default function Flags(props) {
           {flagged.length > 0 && [...new Set(flagged.map(itm => itm.parameter))].map((pmID, idx) => {
               const param = parameters.find(itm => itm.id == pmID);
               const isCollapsed = collapsed.has(pmID);
-              
               return (<Fragment key={idx}>
               <div className='px-2 small mt-2 fw-bold border-bottom' role='button' onClick={() => handleClickToggleCollapse(pmID)}>
                 <i className={`bi bi-chevron-${isCollapsed ? 'right' : 'down'}`} /> {param.alias || param.name}
@@ -110,7 +108,7 @@ export default function Flags(props) {
           } 
         </Col>
       </Row>
-      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={`${props.darkmode}`} />
+      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={props.darkmode} />
     </>
   )
 }

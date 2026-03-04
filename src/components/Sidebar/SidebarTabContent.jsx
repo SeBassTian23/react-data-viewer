@@ -9,7 +9,7 @@ import RecentFiles from './RecentFiles/RecentFiles'
 import Flags from './Flags/Flags'
 import Aliases from './Aliases/Aliases';
 
-export default function RenderTabContent({tab, setModalImport, ...props}) {
+export default function SidebarTabContent({tab, setModalImport, darkmode}) {
   
   const TAB_COMPONENTS = {
     DATASUBSETS: <DataSubset setModalImport={setModalImport} />,
@@ -21,7 +21,7 @@ export default function RenderTabContent({tab, setModalImport, ...props}) {
     ALIASES: <Aliases />,
     PARAMETERFILTERS: <ParameterFilters />,
     RECENT: <RecentFiles />,
-    FLAGS: <Flags {...props} />
+    FLAGS: <Flags darkmode={darkmode} />
   }
 
   return ( TAB_COMPONENTS[tab] ?? <DataSubset setModalImport={setModalImport} /> )
