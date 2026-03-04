@@ -30,16 +30,24 @@ const analysisSlice = createSlice({
       let isUpdated = {};
       keys.forEach( key => {
         if(state[key] !== undefined && state[key] !== action.payload[key])
-          isUpdated = {updated_at: new Date().toISOString(), app_version: __APP_VERSION__};
+          isUpdated = {
+            updated_at: new Date().toISOString(),
+            app_version: __APP_VERSION__
+          };
       })
       return {...state, ...action.payload, ...isUpdated}
     },
     analysisReset(state, action) {
-      return {...initialState, ...{creator: {
-        name: localStorage.getItem('APP_USER_NAME'),
-        email: localStorage.getItem('APP_USER_EMAIL'),
-        avatar: localStorage.getItem('APP_USER_AVATAR')
-      }}}
+      return {
+        ...initialState,
+        creator: {
+          name: localStorage.getItem('APP_USER_NAME'),
+          email: localStorage.getItem('APP_USER_EMAIL'),
+          avatar: localStorage.getItem('APP_USER_AVATAR')
+        },
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }
     },
     analysisAddBackup(state, action) {
       return action.payload
