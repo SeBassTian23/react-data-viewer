@@ -157,83 +157,61 @@ export default function DatumOffCanvas(props) {
   );
 }
 
-function DisplayTableRow(props) {
+function DisplayTableRow({ param, value, idx = 0, paramInfo, darkmode }) {
 
-  const param = props.param
-  const value = props.value
-  const idx = props.idx || 0
-  const paramInfo = props.paramInfo
+  const plotLayout = useMemo(() =>
+    merge(cloneDeep(plotOffcanvasLayout), darkmode ? plotLayoutDarkmode : plotLayoutLightmode),
+  [darkmode]);
 
-  const [plotLayout, setPlotLayout] = useState(cloneDeep(plotOffcanvasLayout));
-  const [colorline, setColorline] = useState('#1d3557');
+  const colorline = darkmode ? '#0dcaf0' : '#1d3557';
 
-
-  useEffect(() => {
-
-    setPlotLayout(props.darkmode === 'true' ? merge(cloneDeep(plotOffcanvasLayout), plotLayoutDarkmode) : merge(cloneDeep(plotOffcanvasLayout), plotLayoutLightmode));
-    setColorline(props.darkmode === 'true' ? '#0dcaf0' : '#1d3557')
-
-  }, [props.darkmode]);
+  const label = paramInfo.alias ? paramInfo.alias : param
 
   if (!value){
     return (
-      <>
-        <td><em>{paramInfo.alias ? paramInfo.alias : param}</em></td>
+      <tr id={paramInfo.id}>
+        <td><em>{label}</em></td>
         <td className='text-end' title="No data available"><i className='bi bi-exclamation-triangle text-muted' /></td>
-      </>
+      </tr>
     )    
   }
-
   if (paramInfo.type === 'array') {
-    
-    let hasArray = false;
-    value.forEach(el => {
-      if (Array.isArray(el)) {
-        hasArray = true;
-        return
-      }
-    });
 
-    let data = [];
-    if (hasArray) {
-      value.forEach(el => data.push({
-        y: el,
-        type: 'scatter',
-        mode: 'lines',
-        "line": {
-          "color": { colorline },
-          "width": 1.5
-        }
-      })
-      )
-    }
-    else{
-      data.push({
-        y: value,
-        type: 'scatter',
-        mode: 'lines',
-        "line": {
-          "color": { colorline },
-          "width": 1.5
-        }
-      })
-    }
+    const isNested = value.some(el => Array.isArray(el));
+    const isNumbers = !value.flat().some(el => typeof(el) === 'number' || el === null || el === undefined)
+
+    if(isNumbers)
+      return (      <tr id={paramInfo.id}>
+        <td colSpan={2}>
+          <em>{label}</em>
+          <pre className='text-pre-wrap my-2'>{JSON.stringify(value, null, 2)}</pre>
+        </td>
+      </tr>)
+
+    const data = (isNested ? value : [value]).map(y => ({
+      y,
+      type: 'scatter',
+      mode: 'lines',
+      line: { width: 1.5 }
+    }));
 
     return (
-      <td colSpan={2}>
-        <em className='d-block'>{paramInfo.alias ? paramInfo.alias : param}</em>
-        <Plot
-          useResizeHandler={true}
-          divId={'OffcanvasPlot' + idx}
-          style={{ width: "100%", height: "100%", display: "block" }}
-          className="p-0 overflow-hidden h-100"
-          data={data}
-          layout={plotLayout}
-          config={{
-            displayModeBar: false
-          }}
-        />
-      </td>
+      <tr id={paramInfo.id}>
+        <td colSpan={2}>
+          <em className='d-block'>{label}</em>
+          <Plot
+            useResizeHandler={true}
+            divId={'OffcanvasPlot' + idx}
+            style={{ width: "100%", height: "100%", display: "block" }}
+            className="p-0 overflow-hidden h-100"
+            data={data}
+            layout={plotLayout}
+            config={{
+              displayModeBar: false
+            }}
+          />
+        </td>
+      </tr>
     )
   }
   if (paramInfo.specialtype === 'color') {
