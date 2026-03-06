@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form'
 import useModalConfirm from "../../hooks/useModalConfirm";
 
 import { useDispatch, useSelector } from 'react-redux'
-import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
+import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel, dashboardEditPanelNotes } from '../../features/dashboard.slice'
 
 import { widgetSizes } from '../../constants/widget-sizes'
 import widgets from "../../constants/widgets"
@@ -117,6 +117,27 @@ function DashboardWidget(props) {
     help.open("Help | Dashboard Widgets", "help/md/dashboard.md"+ anchor )
   }, [])
 
+  const [toggleNote, SetToggleNote] = useState(false);
+
+  const handleNote = () => {
+    SetToggleNote(prev => !prev);
+  }
+
+  const notesRef = useRef();
+
+  const finishNotes = () => {
+    dispatch(dashboardEditPanelNotes({ id: props.id, notes: notesRef.current.value }));
+    handleNote();
+  }
+
+  useEffect(() => {
+    if (notesRef?.current) {
+      notesRef.current.focus();
+    }
+  }, [notesRef, toggleNote]);
+
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
@@ -157,9 +178,31 @@ function DashboardWidget(props) {
             </Dropdown.Menu>
           </Dropdown>
         </Card.Header>
-        <ErrorBoundary>
-          {content}
-        </ErrorBoundary>
+        <div
+          className="position-relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <ErrorBoundary>
+            { !toggleNote && content}
+          </ErrorBoundary>
+                
+          {props.notes && isHovered && !toggleNote && (
+            <Card.Body className="position-absolute bottom-0 start-0 end-0 rounded-bottom bg-dark border-top border border-top-0 shadow-lg mx-2 p-3"
+              style={{
+                transform: 'translateY(100%)',
+                transition: 'transform 1.3s ease-out',
+                zIndex: 10,
+              }}
+            >
+              {props.notes}
+            </Card.Body>
+          )}
+
+          {toggleNote && <Card.Body className='p-1'>
+            <textarea ref={notesRef} onBlur={finishNotes} className='form-control form-control-sm'>{props.notes}</textarea>
+          </Card.Body>}
+        </div>
       </Card>
     </Col>
   )
