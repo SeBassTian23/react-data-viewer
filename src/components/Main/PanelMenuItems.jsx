@@ -1,4 +1,4 @@
-import {useState, useEffect, Fragment} from 'react'
+import {Fragment} from 'react'
 
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -11,16 +11,7 @@ export default function PanelMenuItems({darkmode}) {
 
   const addDashboardPanel = useAddDashboardPanel();
 
-  const [dashboardMenuInactive, setDashboardMenuInactive] = useState(false);
-
-  useEffect(() => {
-    if (location.pathname === "/")
-      setDashboardMenuInactive(false)
-    else
-      setDashboardMenuInactive(true)
-  }, [location.pathname])
-
-  return (<DropdownButton size="sm" as={ButtonGroup} className='column-dropdown' variant={darkmode ? "outline-light" : "outline-dark"} align="end" disabled={dashboardMenuInactive} title={<><i className="bi bi-window-plus" /> Panels</>}>
+  return (<DropdownButton size="sm" as={ButtonGroup} className='column-dropdown' variant={darkmode ? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-window-plus" /> Panels</>}>
     {[
       { header: 'General', category: 'general' },
       { header: 'Statistics', category: 'statistics' },
