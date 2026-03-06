@@ -6,7 +6,7 @@ Select **Data** from the sidabar menu and choose **Parameter Aliases**. Hover wi
 
 The **New Name** will now be available across the app and the analysis done will be updated accordingly.
 
-Duplicates are possible but it is not recommended, as you probably have an issue distingushing them. During the whole analysis the original parameter names are kept in the background and can be reverted to at any point.
+> [!note] Duplicates are possible but it is not recommended, as you probably have an issue distingushing them. During the whole analysis the original parameter names are kept in the background and can be reverted to at any point.
 
 ## Parameter Aliases
 
@@ -21,14 +21,14 @@ Parameter Aliases allow you to create human-readable labels for parameters witho
 
 - Open the sidebar menu and select `Data` → `Parameter Aliases`
 - Hover over the parameter you want to rename
-- Click the edit button <i class="bi-input-cursor-text"></i>
+- Click the edit button <i class="bi bi-input-cursor-text"></i>
 - Enter your preferred name in the New Name field
-- Click the Check button <i class="bi-check2"></i> to save
+- Click the Check button <i class="bi bi-check2"></i> to save
 
 ### Modifying Aliases
 
 - To change an alias: Follow the same steps as creating one
-- To remove an alias: Click the delete button <i class="bi-trash-fill"></i> next to the alias name
+- To remove an alias: Click the delete button <i class="bi bi-trash-fill"></i> next to the alias name
 
 ## Usage and Effects
 

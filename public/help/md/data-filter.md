@@ -1,17 +1,17 @@
 # Filter
 
-Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd><i class="bi bi-windows"></i> + K</kbd> <kbd>⌘ K</kbd>. Parameter, if not already available as a Filter, can be selected as such.
+Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd><i class="bi bi-windows"></i> + K</kbd> <kbd>⌘ K</kbd>. Parameter, if not already available as a Filter, can be selected as such.
 
 ## Selections
 
 + Each category can be selected by a clicking on the category name and one or multiple values can be selected for the category.
 + Multiple categories can be selected to filter the data.
 
-In case **<i class="bi-union"></i> Single** is selected, data entries that match any of the selections is selected, generating one data subset.
+In case **<i class="bi bi-union"></i> Single** is selected, data entries that match any of the selections is selected, generating one data subset.
 
-In case **<i class="bi-subtract"></i> Separate** is selected, data entries are selected generating all combinations based on the selections, resulting in multiple data subsets.
+In case **<i class="bi bi-subtract"></i> Separate** is selected, data entries are selected generating all combinations based on the selections, resulting in multiple data subsets.
 
-**<i class="bi-x-circle"></i> Reset** is resetting the selection, it is not resetting the already selected data subsets. 
+**<i class="bi bi-x-circle"></i> Reset** is resetting the selection, it is not resetting the already selected data subsets. 
 
 ## Categories
 

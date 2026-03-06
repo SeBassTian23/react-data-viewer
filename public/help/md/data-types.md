@@ -4,16 +4,16 @@ When importing data, the application automatically assigns types to columns base
 
 | Type      |                Icon                | Description                                                                         | Example                                                                 |
 | :-------- | :--------------------------------: | :---------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| string    |      <i class="bi-type"></i>       | Text values, enclosed in quotes                                                     | `"Hello World"`                                                         |
-| number    |       <i class="bi-123"></i>       | Numeric values, including integers and decimals                                     | `42`, `3.14159`                                                         |
-| boolean   |      <i class="bi-check"></i>      | Logical values                                                                      | `true`, `false`                                                         |
-| array     |     <i class="bi-list-ol"></i>     | Ordered list of values in JSON format                                               | `[1,2,3,4]`                                                             |
-| object    |     <i class="bi-braces"></i>      | Key-value pairs in JSON format                                                      | `{"a": 1.3}`                                                            |
-| latitude  |      <i class="bi-globe"></i>      | Column named "latitude" or "lat" (case-insensitive)<br>Values between -90 and 90    | `42.72287720`                                                           |
-| longitude |      <i class="bi-globe2"></i>     | Column named "longitude" or "lng" (case-insensitive)<br>Values between -180 and 180 | `-84.47427415`                                                          |
-| date-time | <i class="bi-calendar2-check"></i> | ISO 8601 format<br>Common date formats                                              | `2023-01-10`<br>`2023-01-01T10:30:00636Z`                               |
-| color     |     <i class="bi-palette"></i>     | Hex (with/without alpha)<br>RGB/RGBA<br>HSL/HSLA                                    | `#e1e2e3`<br>`#e1e2e3c1`<br>`rgb(225,226,227)`<br>`hsl(210,3.4%,88.6%)` |
-| unknown   | <i class="bi-question-square"></i> | Values that don't match other types                                                 |                                                                         |
+| string    |      <i class="bi bi-type"></i>       | Text values, enclosed in quotes                                                     | `"Hello World"`                                                         |
+| number    |       <i class="bi bi-123"></i>       | Numeric values, including integers and decimals                                     | `42`, `3.14159`                                                         |
+| boolean   |      <i class="bi bi-check"></i>      | Logical values                                                                      | `true`, `false`                                                         |
+| array     |     <i class="bi bi-list-ol"></i>     | Ordered list of values in JSON format                                               | `[1,2,3,4]`                                                             |
+| object    |     <i class="bi bi-braces"></i>      | Key-value pairs in JSON format                                                      | `{"a": 1.3}`                                                            |
+| latitude  |      <i class="bi bi-globe"></i>      | Column named "latitude" or "lat" (case-insensitive)<br>Values between -90 and 90    | `42.72287720`                                                           |
+| longitude |      <i class="bi bi-globe2"></i>     | Column named "longitude" or "lng" (case-insensitive)<br>Values between -180 and 180 | `-84.47427415`                                                          |
+| date-time | <i class="bi bi-calendar2-check"></i> | ISO 8601 format<br>Common date formats                                              | `2023-01-10`<br>`2023-01-01T10:30:00636Z`                               |
+| color     |     <i class="bi bi-palette"></i>     | Hex (with/without alpha)<br>RGB/RGBA<br>HSL/HSLA                                    | `#e1e2e3`<br>`#e1e2e3c1`<br>`rgb(225,226,227)`<br>`hsl(210,3.4%,88.6%)` |
+| unknown   | <i class="bi bi-question-square"></i> | Values that don't match other types                                                 |                                                                         |
 
 ## Data Type Detection Rules
 
