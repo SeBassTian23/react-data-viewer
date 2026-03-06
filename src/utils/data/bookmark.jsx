@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getFilteredData, addDocument, removeDocByField, resetCollection } from '../../modules/database';
+import { addDocument, removeDocByField, resetCollection, getFilteredData } from '../../modules/database';
 
 import cloneDeep from 'lodash/cloneDeep'
 

@@ -11,9 +11,12 @@ import { markerOptionsPanel } from '../../constants/map-markers'
 import { mapApplySettings } from '../../features/map.slice'
 import { ColorGradientColorArray } from '../Main/ColorGradient';
 import linearColorScale from '../../utils/plot/colorscale-css'
+import {activeFlags} from '../../store/flags'
 
 // Separate layer component so we can use useMap()
 function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
+
+  const ignore = useSelector(activeFlags);
   const geoJsonRef = useRef();
   const map = useMap();
 
@@ -23,7 +26,7 @@ function GeoJSONLayer({ props, datasets, thresholds, parameters }) {
     geoJsonRef.current.clearLayers();
 
     let { id, bounds, ...stateMap } = props;
-    let geoJSON = buildGeoJSON({ datasets, thresholds, parameters, ...stateMap });
+    let geoJSON = buildGeoJSON({ datasets, thresholds, parameters, ignore, ...stateMap });
     geoJsonRef.current.addData(geoJSON.features);
 
     // fit bounds if valid

@@ -9,7 +9,8 @@ import histogram2dcontour from '../utils/plot/histogram2dcontour'
 import splom from '../utils/plot/splom'
 import scatter from '../utils/plot/scatter'
 import scatter3d from '../utils/plot/scatter-3d'
-// import surface from '../utils/plot/surface'
+import mesh3d from '../utils/plot/mesh-3d'
+import surface from '../utils/plot/surface'
 import line from '../utils/plot/line'
 import dayjs from 'dayjs'
 import plotLayout, { plotLayoutDarkmode, plotLayoutLightmode } from '../constants/plot-layout'
@@ -17,7 +18,7 @@ import plotLayout, { plotLayoutDarkmode, plotLayoutLightmode } from '../constant
 import merge from 'lodash/merge'
 import cloneDeep from 'lodash/cloneDeep'
 
-const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters = [], darkmode = false } = {}) => {
+const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters = [], ignore = [], darkmode = false } = {}) => {
 
   // Data Keys
   const querykeys = ['xaxis', 'yaxis', 'zaxis', 'dimensionsaxis', 'sizeaxis', 'colorscaleaxis', 'categoryaxis']
@@ -49,7 +50,7 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
 
   // Determine if meta data is needed
   let removeMeta = true
-  if (['scatter', 'scatter-lines', 'splom', 'scatter3d','boxplot','violinplot'].includes(settings.plottype)) {
+  if (['scatter', 'scatter-lines', 'splom', 'scatter3d','mesh3d', 'surface', 'boxplot', 'violinplot', 'line-array-y-only'].includes(settings.plottype)) {
     removeMeta = false
   }
   for (let series in subsets) {
@@ -61,7 +62,8 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
     let query = getFilteredData('data', {
       filters: subsets[series].filter,
       dropna: queryparams.flat(),
-      thresholds: thresholds
+      thresholds,
+      ignore
     }).data({ removeMeta })
 
     if (!removeMeta)
@@ -142,9 +144,12 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
     case 'contour':
       output = scatter({ input: data, mode: 'contour', ...settings, parameters })
       break;
-    // case 'surface':
-    //   output = surface({ input: data, mode: 'markers', ...settings, parameters })
-    //   break;
+    case 'surface':
+      output = surface({ input: data, mode: 'surface', ...settings, parameters })
+      break;
+    case 'mesh3d':
+      output = mesh3d({ input: data, mode: 'mesh', ...settings, parameters })
+      break;
     case 'scatter3d':
       output = scatter3d({ input: data, mode: 'markers', ...settings, parameters })
       break;
@@ -209,7 +214,7 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
       output.layout[`yaxis${i}`] = darkmode? plotLayoutDarkmode.yaxis : plotLayoutLightmode.yaxis;
     }
   }
-  if(settings.plottype === 'scatter3d'){
+  if(['scatter3d', 'mesh3d', 'surface'].includes(settings.plottype)){
     output.layout.scene.xaxis = merge(output.layout.scene.xaxis, darkmode? plotLayoutDarkmode.xaxis : plotLayoutLightmode.xaxis);
     output.layout.scene.yaxis = merge(output.layout.scene.yaxis, darkmode? plotLayoutDarkmode.yaxis : plotLayoutLightmode.yaxis);
     output.layout.scene.zaxis = merge(output.layout.scene.zaxis, darkmode? plotLayoutDarkmode.yaxis : plotLayoutLightmode.yaxis);

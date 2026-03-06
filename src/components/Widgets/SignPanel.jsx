@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import { useSelector } from 'react-redux'
@@ -13,6 +11,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import sign, {interpretSignTest} from '../../utils/statistics/sign'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function SignPanel(props) {
   return (
@@ -36,6 +35,7 @@ function CalculateSign(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     
@@ -99,8 +99,8 @@ function CalculateSign(props) {
             <Table size='sm' key={idx}>
               <thead className='text-center small'>
                 <tr>
-                  <th><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
-                  <th><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
+                  <th><i className='bi bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
+                  <th><i className='bi bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
                 </tr>
               </thead>
               <tbody className='small text-center align-middle'>

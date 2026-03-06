@@ -11,6 +11,7 @@ import analysisReducer from './features/analysis.slice'
 import toastReducer from './features/toast.slice'
 import offcanvasReducer from './features/offcanvas.slice'
 import modalReducer from './features/modal.slice'
+import flagReducer from './features/flag.slice'
 
 import triggerOPFSSync from './utils/opfs/triggerOPFSSync'
 
@@ -36,6 +37,7 @@ const store = configureStore({
     toast: toastReducer,
     offcanvas: offcanvasReducer,
     modal: modalReducer,
+    flags: flagReducer,
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware().concat(opfsMiddleware)

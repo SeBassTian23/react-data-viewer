@@ -214,6 +214,10 @@ function PlotParameterSelect(props) {
           )
         })
       }
+      {!plotselect && <div className='d-flex flex-wrap text-center align-content-center text-muted h-100'>
+        <i className='bi bi-ui-checks fs-3 w-100' />
+        <small className='w-100'>Select Plottype</small>
+      </div>}
     </>
   )
 }

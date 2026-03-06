@@ -1,89 +1,102 @@
-import { useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch  } from 'react-redux'
-
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import debounce from 'lodash/debounce'
-
 import Plot from 'react-plotly.js'
-
 import DatumOffCanvas from './DatumOffCanvas'
-
 import buildPlot from '../../modules/build-plot'
 import plotLayout from '../../constants/plot-layout'
+import { plotUpdate } from '../../features/plot.slice'
+import {activeFlags} from '../../store/flags'
 
-import { plotUpdate } from '../../features/plot.slice';
+const initialGraphSettings = {
+  data: [],
+  layout: cloneDeep(plotLayout),
+  frames: [],
+  config: { displayModeBar: true }
+}
 
 export default function PlotMain(props) {
+  const { darkmode, onSelection, setSelectedMarkers } = props
 
-  const graphSettings = {
-    data: [],
-    layout: cloneDeep(plotLayout),
-    frames: [],
-    config: {
-      displayModeBar: true
-    }
-  }
-
-  const [state, setState] = useState(graphSettings);
+  const [state, setState] = useState(initialGraphSettings)
+  const [datumstate, setDatumstate] = useState(false)
+  const [datumid, setDatumid] = useState(null)
+  const [bgUpdate, setBgUpdate] = useState(false)
 
   const statePlot = useSelector(state => state.plot)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateDatasubsets = useSelector(state => state.datasubsets)
   const stateParameters = useSelector(state => state.parameters)
+  const stateFlags = useSelector(state => state.flags)
 
-  const [datumstate, setDatumstate] = useState(false)
-  const [datumid, setDatumid] = useState(null)
-  const [darkmode, setDarkmode] = useState(false)
-  const [bgUpdate, setBgUpdate] = useState(false)
+  const ignore = useSelector(activeFlags);
 
   const dispatch = useDispatch()
 
-  const showDatum = (id) => {
+  const showDatum = useCallback((id) => {
     setDatumstate(true)
     setDatumid(id)
-  }
+  }, [])
 
-  const saveCamera = (figure) => {
-    if(figure?.layout?.scene?.camera){
+  const saveCamera = useCallback((figure) => {
+    if (figure?.layout?.scene?.camera) {
       setBgUpdate(true)
-      dispatch(plotUpdate({...statePlot, camera: figure?.layout?.scene?.camera}))
+      dispatch(plotUpdate({ ...statePlot, camera: figure.layout.scene.camera }))
     }
-  }
+  }, [statePlot, dispatch])
 
   const debouncedSaveRef = useRef(debounce(saveCamera, 250))
 
   useEffect(() => {
-  debouncedSaveRef.current = debounce(saveCamera, 250)
-  return () => debouncedSaveRef.current.cancel()
-}, [saveCamera])
+    debouncedSaveRef.current = debounce(saveCamera, 250)
+    return () => debouncedSaveRef.current.cancel()
+  }, [saveCamera])
 
   useEffect(() => {
-
-    if(bgUpdate){
-      setBgUpdate(false)
-      return
-    }
-
-    setDarkmode(props.darkmode);
-
-    let newState = buildPlot({
-      datasets: stateDatasubsets,   // Data Subsets
-      thresholds: stateThresholds,  // Data Thresholds
-      settings: { ...statePlot },   // Selections from Modal
-      parameters: stateParameters,  // Available Parameters (Column labels)
-      darkmode: props.darkmode      // Darkmode active or not
-    })
+    if (bgUpdate) { setBgUpdate(false); return }
 
     setState({
-      ...newState,
+      ...buildPlot({
+        datasets: stateDatasubsets,
+        thresholds: stateThresholds,
+        settings: { ...statePlot },
+        parameters: stateParameters,
+        ignore,
+        darkmode
+      }),
       frames: [],
-      config: {
-        displayModeBar: true,
-        willReadFrequently: true
-      }
-    });
+      config: { displayModeBar: true, willReadFrequently: true }
+    })
+  }, [stateDatasubsets, stateThresholds, statePlot, stateParameters, stateFlags.checksum, darkmode])
 
-  }, [stateDatasubsets, stateThresholds, statePlot, stateParameters, props.darkmode]);
+  const handleClick = useCallback((figure) => {
+    if (figure.points?.length > 0) {
+      const idx = figure.points[0].pointIndex ?? figure.points[0].pointNumber
+      const { data } = figure.points[0]
+      if (data.idx !== undefined)
+        showDatum(Array.isArray(data.idx) ? data.idx[idx] : data.idx)
+    }
+  }, [showDatum])
+
+  const handleUpdate = useCallback((figure) => {
+    if (figure?.layout?.scene) debouncedSaveRef.current(figure)
+  }, [])
+
+  const handleDeselect = useCallback(() => {
+    onSelection(false)
+    setSelectedMarkers([])
+  }, [onSelection, setSelectedMarkers])
+
+  const handleSelected = useCallback((eventData) => {
+    if (eventData?.points?.length > 0) {
+      const ids = eventData.points
+        .filter(p => p.pointIndex !== undefined)
+        .map(p => p.data.idx[p.pointIndex])
+      onSelection(true)
+      setSelectedMarkers(ids)
+    }
+  }, [onSelection, setSelectedMarkers])
 
   return (
     <>
@@ -96,41 +109,12 @@ export default function PlotMain(props) {
         layout={state.layout}
         frames={state.frames}
         config={state.config}
-        onClick={(figure) => {
-          if (figure.points !== undefined && figure.points.length > 0) {
-            let idx = figure.points[0].pointIndex || figure.points[0].pointNumber;
-            if (figure.points[0].data.idx && figure.points[0].data.idx !== undefined)
-              showDatum(figure.points[0].data.idx[idx] || null)
-          }
-        }
-        }
-        onUpdate={(figure) => {
-          if(figure?.layout?.scene){
-            // console.log('onUpdate:', figure);
-            debouncedSaveRef.current(figure)
-          }
-        }}
-        onDeselect={(eventData) => {
-          props.onSelection(false);
-          props.setSelectedMarkers([])
-        }
-        }
-        onSelected={(eventData) => {
-          let ids = [];
-          if (eventData && eventData.points !== undefined && eventData.points.length > 0) {
-            eventData.points.forEach(point => {
-              if (point.pointIndex !== undefined) {
-                let idx = point.pointIndex
-                ids.push(point.data.idx[idx])
-              }
-            })
-            props.onSelection(true);
-            props.setSelectedMarkers(ids);
-          }
-        }
-        }
+        onClick={handleClick}
+        onUpdate={handleUpdate}
+        onDeselect={handleDeselect}
+        onSelected={handleSelected}
       />
-      <DatumOffCanvas show={datumstate} datumid={datumid} onHide={setDatumstate} darkmode={`${props.darkmode}`} />
+      <DatumOffCanvas show={datumstate} datumid={datumid} onHide={setDatumstate} darkmode={darkmode} />
     </>
   )
 }

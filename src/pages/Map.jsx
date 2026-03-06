@@ -6,13 +6,13 @@ import { useMapEvents } from 'react-leaflet/hooks'
 import L from "leaflet";
 
 import ResetViewControl from '../utils/map/ResetViewControl';
-import HeatmapControl from '../utils/map/HeatmapControl'
-import MarkerPinsControl from '../utils/map/MarkerPinsControl'
 import DashboardControl from '../utils/map/DashboardControl'
 import DrawAreaSelection from '../utils/map/DrawAreaSelection'
 import HelpControl from '../utils/map/HelpControl'
 
 import merge from 'lodash/merge'
+
+import pointIsInPolygon from '../utils/map/pointIsInPolygon'
 
 import { EditControl } from "react-leaflet-draw-next"
 
@@ -47,7 +47,7 @@ import Row from 'react-bootstrap/Row';
 import { mapShowSeries, mapShowHistogram, mapApplyHistogramRange, mapApplySettings } from '../features/map.slice'
 import { dashboardAddPanel } from '../features/dashboard.slice';
 
-import ToggleFilter from '../utils/map/ToggleFilter';
+import SelectView from '../utils/map/SelectView';
 
 import { plotLayoutDarkmode, plotLayoutLightmode } from '../constants/plot-layout'
 
@@ -58,6 +58,8 @@ import ModalDialogMapAreaSelect from '../components/Dialogs/ModalDialogMapAreaSe
 
 import useToast from "../hooks/useToast"; 
 import useHelp from '../hooks/useHelp';
+import useFlagData from '../hooks/useFlagData';
+import {activeFlags} from '../store/flags';
 
 // Apply fixes
 L.GeometryUtil = fixRectangle();
@@ -87,6 +89,8 @@ export default function Map(props) {
   const stateParameters = useSelector(state => state.parameters)
   const stateThresholds = useSelector(state => state.thresholds)
   const stateMap = useSelector(state => state.map)
+  const stateFlags = useSelector(state => state.flags)
+  const ignore = useSelector(activeFlags)
 
   const store = useStore();
 
@@ -94,6 +98,7 @@ export default function Map(props) {
 
   const toast = useToast();
   const help = useHelp();
+  const flagData = useFlagData();
 
   const geoJsonRef = useRef()
   const mapRef = useRef()
@@ -148,7 +153,6 @@ export default function Map(props) {
 
   useEffect(() => {
 
-    
     if (geoJsonRef.current) {
       
       // Clear all old data
@@ -159,7 +163,7 @@ export default function Map(props) {
       valueType = valueType ? valueType.specialtype ? valueType.specialtype : valueType.type : null
 
       // Add GeoJSON data
-      let geoJSON = buildGeoJSON({ datasets: stateDatasubsets, thresholds: stateThresholds, parameters: stateParameters, valueType, ...stateMap })
+      let geoJSON = buildGeoJSON({ datasets: stateDatasubsets, thresholds: stateThresholds, ignore, parameters: stateParameters, valueType, ...stateMap })
       geoJsonRef.current.addData(geoJSON.features)
 
       // Apply saved map bounds
@@ -258,7 +262,8 @@ export default function Map(props) {
     stateMap.layer,
     geoJsonRef.current,
     props.darkmode,
-    resize
+    resize,
+    stateFlags.checksum,
   ]);
 
   return (
@@ -295,7 +300,41 @@ export default function Map(props) {
                   }}
                   featureGroup={editRef.current}
                 />
-                <DrawAreaSelection action={(e) => { setAreaselectstate(true); setAreaselectedstate(e); }} areaselectedstate={areaselectedstate} />
+                <DrawAreaSelection action={(payload) => { 
+                  
+                  if(payload.action == 'select'){
+                    setAreaselectstate(true);
+                    setAreaselectedstate(payload.markers);
+                  }
+
+                  if(payload.action == 'flag'){
+                    const layers = editRef.current._layers;
+                    let selectedIDs = [];
+
+                    for (let i in layers) {
+                      for (let j in payload.markers) {
+
+                        // Circle
+                        if (layers[i]._latlng !== undefined) {
+                          let contain = mapRef.current.distance(payload.markers[j], layers[i].getLatLng()) < layers[i].getRadius()
+                          if (contain)
+                            selectedIDs.push(payload.markers[j]['$loki'])
+                        }
+
+                        // Polygon / Rectangle
+                        else {
+                          let contain = pointIsInPolygon(payload.markers[j], layers[i]._latlngs[0])
+                          if (contain)
+                            selectedIDs.push(payload.markers[j]['$loki'])
+                        }
+                      }
+                    }
+                    if(selectedIDs.length > 0)
+                      flagData.dialog(selectedIDs)   
+                  }               
+                  }}
+                  areaselectedstate={areaselectedstate}
+                  />
                 </>
               }
             </FeatureGroup>
@@ -303,9 +342,15 @@ export default function Map(props) {
             {editRef.current && <>
               <FeatureGroup>
                 <ResetViewControl />
-                <MarkerPinsControl action={() => dispatch(mapShowSeries())} title="Marker | Series" icon="<i class='bi-geo-alt-fill' style='font-size:16px'></i>" />
-                <HeatmapControl action={() => setHistogramstate(true)} title="Marker | Heatmap" icon="<i class='bi-bar-chart-line-fill' style='font-size:16px'></i>" />
-                <ToggleFilter action={(e) => toggleGrayscale()} />
+                <SelectView action={(e) => {
+                    if(e == 'filter')
+                      toggleGrayscale()
+                    if(e == 'histogram')
+                      setHistogramstate(true)
+                    if(e == 'marker')
+                      dispatch(mapShowSeries())
+                  }
+                } />
               </FeatureGroup>
 
               <DashboardControl action={handleClickDashboard} title="Add Map View to Dashboard" />
@@ -344,7 +389,7 @@ export default function Map(props) {
           />
         </Card>
       </Row>
-      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={`${props.darkmode}`} />
+      <DatumOffCanvas onHide={hideDatum} show={datumstate} datumid={datumid} darkmode={props.darkmode} />
       <ModalDialogMapHistogram onHide={hideHistogramModal} show={histogramstate} action={() => mapShowHistogram()} />
       <ModalDialogMapAreaSelect onHide={hideAreaSelectModal} show={areaselectstate} editRef={editRef} areaselectedstate={areaselectedstate} mapRef={mapRef} />
     </>

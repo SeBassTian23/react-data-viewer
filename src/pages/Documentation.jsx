@@ -9,6 +9,14 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeToc from 'rehype-toc'
 import rehypeSlug from 'rehype-slug'
+import rehypeCallouts from 'rehype-callouts'
+
+import chapters from '../constants/documentation'
+
+function isElementFullyVisible(element) {
+  const rect = element.getBoundingClientRect();
+  return rect.top >= 0 && rect.bottom <= window.innerHeight;
+}
 
 export default function Documentation(props) {
 
@@ -18,23 +26,6 @@ export default function Documentation(props) {
   const [activeId, setActiveId] = useState('');
 
   useEffect(() => {
-
-    const chapters = [
-      { url: "help/md/analysis.md" },
-      { url: "help/md/data-import.md" },
-      { url: "help/md/dashboard.md" },
-      { url: "help/md/plot.md" },
-      { url: "help/md/map.md" },
-      { url: "help/md/data-filter.md" },
-      { url: "help/md/data-subsets.md" },
-      { url: "help/md/bookmarks.md" },
-      { url: "help/md/aliases.md" },
-      { url: "help/md/data-types.md" },
-      { url: "help/md/parameters.md" },
-      { url: "help/md/spreadsheet.md" },
-      { url: "help/md/thresholds.md" },
-      { url: "help/md/shortcuts.md" }
-    ]
 
     const fetchChapters = chapters.map(e => {
       return fetch(e.url || '#').then(response => {
@@ -46,8 +37,10 @@ export default function Documentation(props) {
 
     Promise.all(fetchChapters).then(responses => {
 
-      let header = `<div class='col py-2 text-center mb-5 intro'>
-        <img src="./logo192.png" alt="App Logo" style="max-width: 15rem">
+      // Build-time constants: __APP_NAME__, __APP_DESCRIPTION__, __APP_VERSION__
+      // are injected by the bundler (e.g. Vite define or webpack DefinePlugin)
+      const header = `<div class='col py-2 text-center mb-5 intro'>
+        <img src="./react-data-viewer.svg" alt="App Logo" style="max-width: 15rem">
         <span class='d-block display-6 fw-bold text-body-emphasis'>${__APP_NAME__}</span>
         <span class='d-block fw-bold text-muted'>${__APP_DESCRIPTION__}</span>
         <small class='d-block text-muted'>v${__APP_VERSION__}</small>
@@ -63,29 +56,38 @@ export default function Documentation(props) {
 
   }, [])
 
-  // Scroll Spy for Return to Top Button
+  // Merged scroll handler: return-to-top visibility + TOC scroll spy
   useEffect(() => {
     const container = document.querySelector('#dv-docs');
 
     if (!container) return;
 
     const handleScroll = () => {
+      // --- Return to top button ---
       const content = document.querySelector('#dv-docs-content');
-      if (content && container.scrollTop > (content.offsetHeight * .1) || container.scrollTop > 300) {
+      if ((content && container.scrollTop > content.offsetHeight * 0.1) || container.scrollTop > 300) {
         setShowTopBtn(true);
       } else {
         setShowTopBtn(false);
       }
+
+      // --- TOC scroll spy ---
+      const headings = Array.from(document.querySelectorAll('h1, h2'));
+      const active = headings.reduce((last, heading) => {
+        return heading.getBoundingClientRect().top <= 10 ? heading : last;
+      }, null);
+
+      if (active) setActiveId(active.id);
+
     };
 
     container.addEventListener('scroll', handleScroll);
-    // Call once on mount to set initial active heading
-    handleScroll();
+    handleScroll(); // set initial state on mount
 
     return () => container.removeEventListener('scroll', handleScroll);
   }, [loading]);
 
-  // Rearange elements once loading has been completed
+  // Rearrange TOC and intro elements once loading has completed
   useEffect(() => {
     const toc = document.querySelector('#dv-main .toc');
     const intro = document.querySelector('#dv-docs .intro');
@@ -93,71 +95,29 @@ export default function Documentation(props) {
     const main = document.querySelector('#dv-docs');
 
     if (!loading && toc && intro && main && content) {
-      main.insertBefore(intro, content)
-      main.insertBefore(toc, content)
+      main.insertBefore(intro, content);
+      main.insertBefore(toc, content);
     }
   }, [loading])
 
-  // Scroll Spy for TOC
+  // Update TOC link highlight based on active heading
   useEffect(() => {
-    const container = document.querySelector('#dv-docs');
+    const tocLinks = document.querySelectorAll('.toc a');
 
-    if (!container) return;
+    tocLinks.forEach((link) => {
+      const href = link.getAttribute('href') || '';
+      const anchorId = href.slice(1);
 
-    const handleScroll = () => {
-      const headings = Array.from(document.querySelectorAll('h1, h2'));
-      let current = '';
-
-      headings.some((heading) => {
-        const rect = heading.getBoundingClientRect();
-        // Adjust 100 based on your header height or preference
-        if (rect.top <= 10) {
-          current = heading.id;
-          setActiveId(current);
-          return
+      if (activeId === anchorId) {
+        link.classList.add('active');
+        if (!isElementFullyVisible(link)) {
+          link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        return
-      });
-    };
-
-    container.addEventListener('scroll', handleScroll);
-    // Call once on mount to set initial active heading
-    handleScroll();
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [loading]); // Re-attach when loading changes
-
-  // Update TOC based on visible content element
-  useEffect(() => {
-    const updateTocLinks = () => {
-      const tocLinks = document.querySelectorAll('.toc a');
-      tocLinks.forEach((link) => {
-        const href = link.getAttribute('href') || '';
-        const anchorId = href.slice(1);
-
-        if (activeId === anchorId) {
-          link.classList.add('active');
-          if (!isElementFullyVisible(link))
-            link.scrollIntoView({
-              behavior: 'smooth',
-              block: 'nearest'  // 'start', 'center', 'end', 'nearest'
-            });
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    };
-
-    function isElementFullyVisible(element) {
-      const rect = element.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.bottom <= window.innerHeight
-      );
-    }
-
-    updateTocLinks();
-  }, [activeId]); // Update whenever activeId changes
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }, [activeId]);
 
   const handleClickScrollUp = useCallback(() => {
     document.querySelector('#dv-docs').scrollTo({
@@ -166,27 +126,39 @@ export default function Documentation(props) {
     });
   }, []);
 
-  return (<>
+  return (
     <Row className='vh-100 align-items-center'>
-      {!loading && <Col className='overflow-auto' id="dv-docs">
-        <div id="dv-docs-content">
-          <ReactMarkdown
-            children={data}
-            remarkPlugins={[remarkGfm]}
-            components={{
-              blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
-              table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
-              img: ({ node, ...props }) => <img className='img-fluid' alt="" {...props} />
-            }}
-            rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeToc, { headings: ["h1", "h2"] }]]}
-          />
-        </div>
-        {showTopBtn && <Button className='scrollup' onClick={handleClickScrollUp}><i className='bi bi-chevron-up' /></Button>}
-      </Col>}
-      {loading && <Col className='text-center'>
-        Loading Documentation…
-      </Col>}
+      {!loading && (
+        <Col className='overflow-auto' id="dv-docs">
+          <div id="dv-docs-content">
+            <ReactMarkdown
+              children={data}
+              remarkPlugins={[remarkGfm]}
+              components={{
+                blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
+                table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
+                img: ({ node, ...props }) => <img className='img-fluid' alt={props.alt || ""} {...props} />
+              }}
+              rehypePlugins={[
+                rehypeRaw,
+                rehypeSlug,
+                [rehypeToc, { headings: ["h1", "h2"] }],
+                [rehypeCallouts, { showIndicator: false }]
+              ]}
+            />
+          </div>
+          {showTopBtn && (
+            <Button className='scrollup' onClick={handleClickScrollUp} aria-label='Scroll to top'>
+              <i className='bi bi-chevron-up' />
+            </Button>
+          )}
+        </Col>
+      )}
+      {loading && (
+        <Col className='text-center'>
+          Loading Documentation…
+        </Col>
+      )}
     </Row>
-  </>)
-
+  );
 }

@@ -9,20 +9,30 @@ import { dashboardDeletePanel } from '../../features/dashboard.slice'
 import { thresholdsReset, thresholdDelete } from '../../features/threshold.slice'
 import { datasubsetReset, datasubsetDeleted } from '../../features/datasubset.slice'
 import { bookmarksReset, bookmarkDelete } from '../../features/bookmark.slice'
+import { flagReset } from '../../features/flag.slice'
 
 import { useAppReset } from '../../hooks/useAppReset'
 import { useApplyBookmark } from "../../hooks/useApplyBookmark";
+import useFlagData from "../../hooks/useFlagData";
 
-import { saveDatabase, setFilename } from '../../modules/database'
+import { saveDatabase, setFilename, resetCollection } from '../../modules/database'
 
 import opfs from '../../modules/opfs'
 
+import Form from 'react-bootstrap/Form'
+import { useForm } from 'react-hook-form';
+
 export default function ModalManager() {
+
+  const parameters = useSelector((state) => state.parameters);
   const modal = useSelector((state) => state.modal);
+  
   const dispatch = useDispatch();
+  const {register, setValue, getValues} = useForm();
 
   const resetApp = useAppReset();
   const applyBookmark = useApplyBookmark();
+  const flagData = useFlagData();
 
   if (!modal.open) return null;
 
@@ -87,7 +97,11 @@ export default function ModalManager() {
                     opfs.fileRemove(f).then( () => opfs.fileRemove(f.slice(0,-3) + '.json', true) )
                   }
                   break;
-
+                case "DELETE_FLAGS":
+                  resetCollection('flags');
+                  saveDatabase();
+                  dispatch(flagReset());
+                  break;
                 default:
                   console.log('No action found')
               }
@@ -101,6 +115,42 @@ export default function ModalManager() {
         <ModalDialogBusy
           {...modal.props}
           show={modal.open}
+        />
+      );
+    case "flag":
+      return (
+        <ModalDialogConfirm
+          {...modal.props}
+          header= "Flag Selected Data"
+          children= {<>
+            <Form.Control as="input" className="mt-3" placeholder="Reason for flagging" {...register("comment")} size='sm' list="floatingTextinput" />
+            <datalist id="floatingTextinput">
+              {[].map((itm, idx) => (
+                <option key={idx} value={itm} />
+              ))}
+            </datalist>
+            <Form.Select size="sm" className="mt-3" {...register("parameter")}>
+              { parameters.map( (itm, idx) => <option value={itm.id} key={idx}>{itm.alias || itm.name}</option> )}
+            </Form.Select>
+          </>}
+          show={() => {
+            modal.open;
+            setValue('parameter', parameters[0]?.id, {shouldTouch: true})
+            setValue('comment', '', {shouldTouch: true})
+            }
+          }
+          onHide={(confirmed) => {
+            if (confirmed) {
+              const ids = modal.props?.payload?.ids
+              if(ids !== undefined && Array.isArray(ids)){
+                const comment = getValues().comment
+                const parameter = getValues().parameter
+
+                flagData.addFlags(ids, parameter, comment)
+              }
+            }
+            dispatch(hideModal());
+          }}
         />
       );
     // add other modal types here...

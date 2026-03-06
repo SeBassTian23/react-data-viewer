@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import numberFormat from '../../helpers/number-format'
@@ -12,6 +10,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import pearsonCorrelation, {interpretPearsonCorrelation} from '../../utils/statistics/pearsonCorrelation'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function PearsonCorrelationPanel(props) {
   return (
@@ -35,6 +34,7 @@ function PearsonCorrelationCalculation(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     
@@ -99,8 +99,8 @@ function PearsonCorrelationCalculation(props) {
           <Table size='sm' key={idx}>
             <thead className='text-center small'>
               <tr>
-                <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
-                <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
+                <th className='w-50'><i className='bi bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
+                <th className='w-50'><i className='bi bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
               </tr>
             </thead>
             <tbody className='small' style={{ 'verticalAlign': 'middle' }}>

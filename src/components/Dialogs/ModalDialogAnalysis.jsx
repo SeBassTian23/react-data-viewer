@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -9,6 +10,11 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { uniqWith, isEqual, differenceWith } from 'lodash'
+
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat)
 
 import { fileExtension } from '../../helpers/file-extension';
 import { analysisUpdate } from '../../features/analysis.slice';
@@ -59,56 +65,53 @@ export default function ModalDialogAnalysis(props) {
       onHide={handleClose}
       backdrop="static"
       keyboard={true}
-      size={'md'}
+      size={'lg'}
     >
       <Modal.Body>
-        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button></span>
+        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button></span>
         <span className="d-block fs-4"><i className="bi bi-journal-richtext fs-2 text-muted" /> Analysis</span>
-        <Form className='mt-2'>
-          <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control ref={refName} type="text" placeholder="Analysis Name" defaultValue={store.name} />
-          </Form.Group>
+        <Row>
+          <Col sm={12} lg={8}>
+            <Form className='mt-2'>
+              <Form.Group className="mb-3" controlId="analysisName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control ref={refName} type="text" placeholder="Analysis Name" defaultValue={store.name} />
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control ref={refNotes} as="textarea" rows={3} placeholder='Analysis Notes…' defaultValue={store.notes} />
-          </Form.Group>
+              <Form.Group className="mb-3" controlId="analysisNotes">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control ref={refNotes} as="textarea" rows={3} placeholder='Analysis Notes…' defaultValue={store.notes} />
+              </Form.Group>
+            </Form>
 
-          {(store?.creator && store?.creator?.name) && <Form.Group className="mb-3">
-            <UserProfile {...store.creator} isCreator={true} />
-          </Form.Group>}
-
-          {(team.length > 0) && <Form.Group className="mb-3">
-            <div className="form-label m-0">Team</div>
-            <ul className='list-unstyled analysis-team-members'>
+            <div className="mb-3">
+              <span className="d-block form-label mb-2">Imported Data</span>
+              <ListGroup as="ul" style={{lineHeight: 'normal'}}>
+                <AnalysisFileInfo files={store.files} hasdata={hasdata} handleClose={handleClose} setModalImport={props.setModalImport} />
+              </ListGroup>
+            </div>
+          </Col>
+          <Col sm={12} lg={4} className='border-start pt-2'>
+            <span className='d-block form-label'>Started</span>
+            <span className='text-muted'>{dayjs(store.created_at).format('l LT')}</span>
+            <hr />
+            <span className='d-block form-label'>Last Saved</span>
+            <span className='text-muted'>{dayjs(store.updated_at).format('l LT')}</span>
+            <hr />
+            <span className="d-block form-label">Analysis Team</span>
+            <ul className='list-unstyled'>
+              {(store?.creator && store?.creator?.name) && <li>
+                <UserProfile {...store.creator} isCreator={true} />
+              </li>}
               { team.map( (user, idx) => {
                 return <li key={idx}>
                     <UserProfile {...user} />
                   </li>
                 })
               }
-            </ul>
-          </Form.Group>}
-
-          <Form.Group className="mb-3">
-            <div className="form-label m-0">File(s)</div>
-            <ListGroup as="ul" variant="flush" className='list-unstyled'>
-              <AnalysisFileInfo files={store.files} hasdata={hasdata} handleClose={handleClose} setModalImport={props.setModalImport} />
-            </ListGroup>
-          </Form.Group>
-          <Row>
-            <Col sm={6}>
-              <span className='d-block'>Started: </span>
-              <Form.Text>{new Date(store.created_at).toLocaleString()}</Form.Text>
-            </Col>
-            <Col sm={6}>
-              <span className='d-block'>Last Saved: </span>
-              <Form.Text>{new Date(store.updated_at).toLocaleString()}</Form.Text>
-            </Col>
-          </Row>
-
-        </Form>
+            </ul>       
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>
         <Button variant="link" className='fs-6 text-decoration-none col-12 m-0 rounded-0 border-end' onClick={handleClose}>
@@ -120,16 +123,13 @@ export default function ModalDialogAnalysis(props) {
   )
 }
 
-function AnalysisFileInfo(props) {
-  let files = props.files
-  let hasdata = props.hasdata
-
+function AnalysisFileInfo({ files, hasdata, handleClose, setModalImport }) {
   if (files.length == 0 && hasdata)
     return <li key={"0"} className='small text-muted'><i className={`bi bi-file-earmark-x text-warning`} /> No files associated</li>
 
   if (files.length == 0 && !hasdata)
     return <><ListGroup.Item as="li" key={"0"}>
-      <button className="btn btn-primary btn-sm" onClick={(e) => { e.preventDefault(); props.handleClose(); props.setModalImport(true) }} title='Import Data'><i className='bi-box-arrow-in-down' /> Import Data…</button>
+      <button className="btn btn-primary btn-sm" onClick={(e) => { e.preventDefault(); handleClose(); setModalImport(true) }} title='Import Data'><i className='bi bi-box-arrow-in-down' /> Import Data…</button>
       <span className='ms-2 small text-muted'>To Get Started Import Data from a File.</span>
     </ListGroup.Item>
     </>
@@ -150,14 +150,15 @@ function AnalysisFileInfo(props) {
   })
 }
 
-function UserProfile(props) {
+function UserProfile({name, email, avatar = null, isCreator = null}) {
+
   return <div className='d-flex align-items-center p-1'>
     <div className="flex-shrink-0 text-center rounded bg-light analysis-user-avatar">
-      {props.avatar ? <div className='rounded ratio ratio-1x1 d-inline-block' style={{background: `url(${props.avatar}) 0% 0% / cover`}}/> : <i className="bi bi bi-person-circle fs-2 text-muted" />}
+      {avatar ? <div className='rounded ratio ratio-1x1 d-inline-block' style={{background: `url(${avatar}) 0% 0% / cover`}}/> : <i className="bi bi bi-person-circle fs-2 text-muted" />}
     </div>
     <div className='flex-grow-1'>
-      <div className="analysis-user-name">{props.name}{ props?.isCreator && <small className='ms-1'>(Creator)</small>}</div>
-      <div className='text-muted analysis-user-email'>{props.email}</div>
+      <div className="analysis-user-name">{name}{ isCreator && <Badge pill bg="secondary" className='ms-1'>Creator</Badge>}</div>
+      <div className='text-muted analysis-user-email'>{email}</div>
     </div>
   </div>
 }

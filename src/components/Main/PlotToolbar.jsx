@@ -1,7 +1,5 @@
 import { useState, useCallback } from 'react'
 
-import { getFilteredData } from '../../modules/database'
-
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
@@ -21,6 +19,8 @@ import { dashboardAddPanel } from '../../features/dashboard.slice'
 import { datasubsetAdded } from '../../features/datasubset.slice'
 
 import useToast from "../../hooks/useToast";
+import useFlagData from "../../hooks/useFlagData";
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function PlotToolbar(props) {
 
@@ -32,7 +32,9 @@ export default function PlotToolbar(props) {
   const stateDatasubsets = useSelector(state => state.datasubsets)
 
   const toast = useToast();
-  const help = useHelp()
+  const help = useHelp();
+  const flagData = useFlagData();
+  const { getFilteredData } = useGetFilteredData();
 
   const addToDashboard = useCallback( () => {
     dispatch(dashboardAddPanel({
@@ -46,6 +48,20 @@ export default function PlotToolbar(props) {
 
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | Plot Data", "help/md/plot.md")
+  },[] )
+
+  const handleClickDownloadImage = useCallback( (format="png")=>{
+    Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format })
+  },[] )
+
+  const handleClickDownloadData = useCallback( (format="json")=>{
+    const data = Plotly.Plots.graphJson( document.querySelector('#mainChart') );
+    var blob = new Blob([data], { type: 'text/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'chart-data.json';
+    a.click();
+    a.remove();
   },[] )
 
   const addToSubsetInside = (ids) => {
@@ -102,36 +118,46 @@ export default function PlotToolbar(props) {
     }
   }
 
+  const flagSelectedMarkers = (ids) => {
+    // flagData.addFlags(ids, null, 'Flagged by Graph');
+    flagData.dialog(ids);
+  }
+
   return (
     <>
       <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex align-items-center'>
         <ButtonGroup size='sm' className="me-2" aria-label="Plot Data">
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'scatter', show: true })}><PlotlyIcons.PlotScatterAxesIcon className='ploty-icon' /> Scatter</Button>
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'line', show: true })}><i className='bi-graph-up' /> Line</Button>
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'bar', show: true })}><i className='bi-bar-chart-line' /> Bar</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'line', show: true })}><i className='bi bi-graph-up' /> Line</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'bar', show: true })}><i className='bi bi-bar-chart-line' /> Bar</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'distribution', show: true })}><PlotlyIcons.PlotBoxIcon className='ploty-icon-dist'  /> Distribution</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'matrix', show: true })}><PlotlyIcons.PlotSplomIcon className='ploty-icon-matrix' /> Matrix</Button>
         </ButtonGroup>
         {props.isSelected && <ButtonGroup className='me-2' size='sm' aria-label="Selection">
-          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-bounding-box" /> Selection</>}>
+          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-bounding-box" /> Selection</>}>
             <Dropdown.Header>Filter Data by Selection</Dropdown.Header>
-            <Dropdown.Item onClick={() => addToSubsetInside(props.selectedMarkers)}><i className='bi-intersect' /> Inside</Dropdown.Item>
-            <Dropdown.Item onClick={() => addToSubsetOutside(props.selectedMarkers)}><i className='bi-exclude' /> Outside</Dropdown.Item>
+            <Dropdown.Item onClick={() => addToSubsetInside(props.selectedMarkers)}><i className='bi bi-intersect' /> Inside</Dropdown.Item>
+            <Dropdown.Item onClick={() => addToSubsetOutside(props.selectedMarkers)}><i className='bi bi-exclude' /> Outside</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Header>Flag by Selection</Dropdown.Header>
+            <Dropdown.Item onClick={() => flagSelectedMarkers(props.selectedMarkers)}><i className='bi bi-flag-fill' /> Flag Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>}
         <ButtonGroup size='sm' aria-label="Dashboard">
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={addToDashboard}><i className="bi-window-plus" /> Panel</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={addToDashboard}><i className="bi bi-window-plus" /> Panel</Button>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Save group">
-          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi-box-arrow-down" /> Save…</>}>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'png' })}><i className="bi-filetype-png" /> PNG</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'jpeg' })}><i className="bi-filetype-jpg" /> JPEG</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'webp' })}><i className="bi-file-earmark" /> webp</Dropdown.Item>
-            <Dropdown.Item onClick={() => Plotly.downloadImage('mainChart', { filename: 'my-analysis-plot', width: 1400, height: 800, format: 'svg' })}><i className="bi-filetype-svg" /> SVG</Dropdown.Item>
+          <DropdownButton size="sm" as={ButtonGroup} variant={props.darkmode? "outline-light" : "outline-dark"} align="end" title={<><i className="bi bi-box-arrow-down" /> Save…</>}>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('png')}><i className="bi bi-file-earmark-image" /> PNG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('jpeg')}><i className="bi bi-file-earmark-image" /> JPEG</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('webp')}><i className="bi bi-file-earmark-image" /> WEBP</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleClickDownloadImage('svg')}><i className="bi bi-file-earmark-image" /> SVG</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleClickDownloadData}><i className="bi bi-filetype-json" /> Plot Data</Dropdown.Item>
           </DropdownButton>
         </ButtonGroup>
         <ButtonGroup className='ms-2' size='sm' aria-label="Help Group">
-          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
         </ButtonGroup>
       </ButtonToolbar>
       <ModalDialogPlot

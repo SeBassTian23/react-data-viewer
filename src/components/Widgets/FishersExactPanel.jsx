@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import Table from 'react-bootstrap/Table';
 
 import { useSelector } from 'react-redux'
@@ -12,6 +10,7 @@ import pairs from '../../helpers/generate-pairs'
 import fisherExactTest, {interpretFisherExactTest} from '../../utils/statistics/fisherExactTest'
 
 import numberFormat from '../../helpers/number-format'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function FishersExactPanel(props) {
   return (
@@ -36,6 +35,7 @@ function CalculateFishersExact(props) {
 
   const [results, setResults] = useState([]);
   const [hasError, setHasError] = useState(null);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     
@@ -148,13 +148,13 @@ function CalculateFishersExact(props) {
                       <td></td>
                     </tr>
                     <tr>
-                      <td className='text-start'><i className='bi-square-fill' style={{ 'color': table.rowLabels[0].color }} /> {table.rowLabels[0].name}</td>
+                      <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': table.rowLabels[0].color }} /> {table.rowLabels[0].name}</td>
                       <td>{table.a}</td>
                       <td>{table.b}</td>
                       <td>{table.rowSums[0]}</td>
                     </tr>
                     <tr>
-                      <td className='text-start'><i className='bi-square-fill' style={{ 'color': table.rowLabels[1].color }} /> {table.rowLabels[1].name}</td>
+                      <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': table.rowLabels[1].color }} /> {table.rowLabels[1].name}</td>
                       <td>{table.c}</td>
                       <td>{table.d}</td>
                       <td>{table.rowSums[1]}</td>

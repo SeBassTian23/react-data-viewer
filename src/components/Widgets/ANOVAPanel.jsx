@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
-import { getFilteredData, getSeries } from '../../modules/database'
 
 import Table from 'react-bootstrap/Table';
 
@@ -10,6 +9,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import oneWayANOVA, {interpretOneWayANOVA} from '../../utils/statistics/oneWayANOVA'
 import numberFormat from '../../helpers/number-format'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 
 export default function ANOVAPanel(props) {
@@ -33,6 +33,7 @@ function CalculateANOVA(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState(null);
+  const {getFilteredData, getSeries} = useGetFilteredData();
 
   useEffect( () => {
 
@@ -115,7 +116,7 @@ function CalculateANOVA(props) {
           </thead>
           <tbody>
             {results.groupStatistics.map( (row, idx) => <tr key={idx}>
-              <td className='text-start'><i className='bi-square-fill' style={{ 'color': subsets.find(itm => itm?.id == row.label)?.color || '#000' }} />&nbsp;{subsets.find(itm => itm?.id == row.label)?.name}</td>
+              <td className='text-start'><i className='bi bi-square-fill' style={{ 'color': subsets.find(itm => itm?.id == row.label)?.color || '#000' }} />&nbsp;{subsets.find(itm => itm?.id == row.label)?.name}</td>
               <td>{row.n}</td>
               <td>{numberFormat(row.mean)}</td>
               <td>{numberFormat(row.standardDeviation)}</td>

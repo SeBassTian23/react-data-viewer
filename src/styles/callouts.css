@@ -1,0 +1,96 @@
+[data-callout='note'] {
+  --rc-color-light: var(--bs-info);
+  --rc-title: 'Note';
+}
+
+[data-callout='tip'] {
+  --rc-color-light: var(--bs-success);
+  --rc-title: 'Tip';
+}
+
+[data-callout='important'] {
+  --rc-color-light: var(--bs-primary);
+  --rc-title: 'Important';
+}
+
+[data-callout='warning'] {
+  --rc-color-light: var(--bs-warning);
+  --rc-title: 'Warning';
+}
+
+[data-callout='caution'] {
+  --rc-color-light: var(--bs-danger);
+  --rc-title: 'Caution';
+}
+
+.callout {
+  --rc-color-default: var(--bs-secondary-color);
+
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-left: 0.25em solid var(--rc-color-light, var(--rc-color-default));
+  margin-bottom: 1rem;
+}
+
+.callout-title {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  color: var(--rc-color-light, var(--rc-color-default));
+  font-weight: 500;
+  line-height: 1;
+}
+
+.callout-title::before {
+  content: var(--rc-title);
+  font-size: small;
+  font-variant: small-caps;
+  display: block;
+  width: 100%;
+}
+
+.callout-title::-webkit-details-marker {
+  display: none;
+}
+
+.callout-title-icon svg {
+  overflow: visible !important;
+  display: inline-block;
+
+  vertical-align: text-bottom;
+
+  fill: currentColor;
+}
+
+.callout-content > :first-child {
+  margin-top: 1rem;
+}
+
+.callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+.callout[data-collapsible='true'] .callout-title {
+  cursor: pointer;
+}
+
+.callout[data-collapsible='true'] .callout-fold-icon {
+  display: flex;
+  align-items: center;
+  padding-inline-end: 8px;
+}
+
+.callout[data-collapsible='true'] > .callout-title .callout-fold-icon svg {
+  transform: rotate(-90deg);
+  transition: transform 100ms ease-in-out;
+}
+
+.callout[data-collapsible='true'][open] > .callout-title .callout-fold-icon svg {
+  transform: none;
+}
+
+.callout-fold-icon {
+  margin-left: -2px;
+}

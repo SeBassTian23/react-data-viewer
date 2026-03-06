@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form'
 
 import useModalConfirm from "../../hooks/useModalConfirm";
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { dashboardResetPanel, dashboardSetPanelSize, dashboardEditTitlePanel } from '../../features/dashboard.slice'
 
 import { widgetSizes } from '../../constants/widget-sizes'
@@ -21,6 +21,8 @@ import ErrorBoundary from '../../utils/ErrorBoundary'
 
 function DashboardWidget(props) {
 
+  const stateFlags = useSelector(state => state.flags)
+
   const dispatch = useDispatch();
 
   const help = useHelp();
@@ -28,6 +30,7 @@ function DashboardWidget(props) {
 
   const [changesize, setChangesize] = useState(props.size || widgetSizes.default);
   const [editTitle, setEditTitle] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const titleRef = useRef()
 
@@ -89,11 +92,20 @@ function DashboardWidget(props) {
       </div>
     );
 
+    if (!isReady)
+      return <WidgetSkeleton />
+
     const Component = config.component;
     if (props.type === 'map')
       return <Component key={props.id} id={props.id} {...props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
     return <Component id={props.id} content={props.content} title={config.title} darkmode={props.darkmode} size={changesize} />;
-  }, [props.type, props.id, props.content, props.darkmode, props.size.xl]);
+  }, [props.type, props.id, props.content, props.darkmode, props.size.xl, stateFlags.checksum, isReady]);
+
+  // Defer rendering using setTimeout to let the skeleton paint first
+  useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClickPanelSize = useCallback((e) => {
     const size = e.currentTarget.dataset.size;
@@ -109,7 +121,7 @@ function DashboardWidget(props) {
     <Col xs sm={changesize.sm} md={changesize.md} lg={changesize.lg} xl={changesize.xl} className="px-1 pb-2">
       <Card className='shadow-sm' id={props.id}>
         <Card.Header className="fw-bold d-flex justify-content-between align-items-center bg-body-secondary" title={props.title || "Untitled"}>
-          <i className='bi-grip-vertical' />
+          <i className='bi bi-grip-vertical' />
           {!editTitle ?
             <div className='w-100 text-truncate'>{props.title || "Untitled"}</div> :
             <Form.Control
@@ -123,24 +135,25 @@ function DashboardWidget(props) {
           }
           <Dropdown>
             <Dropdown.Toggle size="sm" variant="outline-secondary" id="dropdown-basic">
-              <i className="bi-three-dots-vertical" />
+              <i className="bi bi-three-dots-vertical" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {widgets.find(itm => itm.type == props.type)?.showEdit &&
-                <Dropdown.Item onClick={handleReset}><i className="bi-pencil-square" /> Edit</Dropdown.Item>
+                <Dropdown.Item onClick={handleReset}><i className="bi bi-pencil-square" /> Edit</Dropdown.Item>
               }
-              <Dropdown.Item onClick={handleEditTitle}><i className="bi-input-cursor-text" /> Edit Title</Dropdown.Item>
-              <Dropdown.Item onClick={handleDelete}><i className="bi-window-x" /> Delete</Dropdown.Item>
+              <Dropdown.Item onClick={handleEditTitle}><i className="bi bi-input-cursor-text" /> Edit Title</Dropdown.Item>
+              <Dropdown.Item onClick={handleNote}><i className="bi bi-sticky" /> Add Note</Dropdown.Item>
+              <Dropdown.Item onClick={handleDelete}><i className="bi bi-window-x" /> Delete</Dropdown.Item>
               <Dropdown.Divider />
               {(['map', 'image', 'plot'].indexOf(props.type) === -1) && <>
-                <Dropdown.Item onClick={handleCopy}><i className="bi-clipboard" /> Copy</Dropdown.Item>
+                <Dropdown.Item onClick={handleCopy}><i className="bi bi-clipboard" /> Copy</Dropdown.Item>
                 <Dropdown.Divider /> </>}
               <Dropdown.Header>Size</Dropdown.Header>
-              <Dropdown.Item data-size="md" onClick={handleClickPanelSize}><i className="bi-file" /> Default</Dropdown.Item>
-              <Dropdown.Item data-size="lg" onClick={handleClickPanelSize}><i className="bi-textarea-resize" /> Large</Dropdown.Item>
-              <Dropdown.Item data-size="xl" onClick={handleClickPanelSize}><i className="bi-aspect-ratio" /> Full Width</Dropdown.Item>
+              <Dropdown.Item data-size="md" onClick={handleClickPanelSize}><i className="bi bi-file" /> Default</Dropdown.Item>
+              <Dropdown.Item data-size="lg" onClick={handleClickPanelSize}><i className="bi bi-textarea-resize" /> Large</Dropdown.Item>
+              <Dropdown.Item data-size="xl" onClick={handleClickPanelSize}><i className="bi bi-aspect-ratio" /> Full Width</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={handleClickHelp}><i className='bi-question-circle' /> Help</Dropdown.Item>
+              <Dropdown.Item onClick={handleClickHelp}><i className='bi bi-question-circle' /> Help</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Card.Header>
@@ -153,3 +166,12 @@ function DashboardWidget(props) {
 }
 
 export default React.memo(DashboardWidget);
+
+function WidgetSkeleton() {
+  return (
+    <div className="card-body placeholder-glow d-flex flex-column gap-2">
+      <span className="placeholder col-12 flex-grow-1" />
+      <span className="placeholder col-8" />
+    </div>
+  )
+}

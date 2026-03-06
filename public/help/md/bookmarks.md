@@ -28,7 +28,10 @@ Each bookmark captures:
 - Dashboard layout and panel settings
 - Color schemes and visual preferences
 
-**Note:** All bookmarks are automatically saved when you save your analysis file
+> [!note]- title
+> All bookmarks are automatically saved when you save your analysis file
+
+> [!note] All bookmarks are automatically saved when you save your analysis file
 
 ### Best Practices
 

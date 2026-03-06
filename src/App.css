@@ -57,7 +57,16 @@
 }
 
 /** Dashboard */
-#dv-main {
+#dv-dashboard {
+
+  & div[ref]::-webkit-scrollbar {
+    display: none;
+  }
+
+  .row:first-child {
+    background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+  }
+
   .card {
     .card-header {
       padding: 0.25rem;
@@ -241,15 +250,15 @@
   .toc {
     grid-area: toc;
     position: sticky;
-    top: 2.5rem;
+    top: 0rem;
     right: 0;
     z-index: 2;
-    height: calc(100vh - 4rem);
+    height: 100vh;
     overflow-y: auto;
 
     border-left: 1px solid var(--bs-border-color);
     margin-left: 0.5rem;
-    padding-left: 0.5rem;
+    padding: 2.5rem 0rem 2.5rem 0.5rem;
 
     & ol {
       list-style: none;
@@ -314,7 +323,7 @@
 }
 
 /** Main Container */
-#dv-main {
+#dv-main:has(#dv-dashboard) {
   background: radial-gradient(
     farthest-corner at 100% 100%,
     rgba(0, 0, 0, 0.25) 10%,
@@ -322,7 +331,7 @@
   ), var(--bs-secondary-bg-subtle);
 }
 
-body[data-bs-theme="dark"] #dv-main {
+body[data-bs-theme="dark"] #dv-main:has(#dv-dashboard) {
   background: radial-gradient(
     farthest-corner at 100% 100%,
     rgba(255, 255, 255, 0.25) 10%,
@@ -333,6 +342,9 @@ body[data-bs-theme="dark"] #dv-main {
 /** Map Darkmode */
 body[data-bs-theme="dark"] {
   #dv-sidebar {
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+  #dv-dashboard .row:first-child {
     background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
 }
@@ -607,11 +619,6 @@ kbd {
 }
 
 /** Modal Analysis */
-
-.analysis-team-members {
-  columns: 2;
-}
-
 .analysis-user-avatar {
   margin-right: 0.5rem;
   width: 2.5rem;
@@ -767,4 +774,9 @@ span.form-text.p-1 + p.small.px-2:not(:first-child):not(:last-child) {
 /* Plotly modebar icon fix */
 .plotly .modebar-group a {
   margin-top: 4px;
+
+/* Badge Pills */
+.rounded-pill {
+  backdrop-filter: opacity(0.8);
+  font-weight: 400 !important;
 }

@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-import { useStore, useDispatch } from 'react-redux';
-
 import { useForm } from 'react-hook-form';
 
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
@@ -23,7 +21,6 @@ import useToast from '../../hooks/useToast'
 
 export default function ModalDialogUser(props) {
 
-  const store = useStore().getState().analysis;
   const refName = useRef();
   const refEmail = useRef();
   const refCookies = useRef();
@@ -40,8 +37,7 @@ export default function ModalDialogUser(props) {
 
   const [isDragging, setIsDragging] = useState(false)
   
-  const { register, watch, reset, setValue, getValues } = useForm();
-  const dispatch = useDispatch();
+  const { register, reset, setValue, getValues } = useForm();
   
   const help = useHelp();
   const toast = useToast();
@@ -70,11 +66,6 @@ export default function ModalDialogUser(props) {
       if (allowGravatar) {
         getGravatar();
       }
-      
-      // dispatch(analysisUpdate({
-        //   name: refName.current.value,
-        //   notes: refEmail.current.value
-        // }))
     }
 
     // Hide modal dialog
@@ -186,7 +177,7 @@ export default function ModalDialogUser(props) {
       centered
     >
       <Modal.Body>
-        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button></span>
+        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button></span>
         <span className="d-flex align-items-center fs-4"><i className='bi bi-person-square me-2 fs-2 text-muted' /> Profile</span>
         <Row className='mt-2'>
           <Col className='mt-2 text-center'>
@@ -210,12 +201,26 @@ export default function ModalDialogUser(props) {
             <Form>
               <Form.Group className="mb-3">
                 <Form.Label>Name</Form.Label>
-                <Form.Control ref={refName} type="text" {...register("appUser")} placeholder="My Name" defaultValue='' disabled={!allowCookies} />
+                <Form.Control 
+                  ref={refName}
+                  type="text"
+                  {...register("appUser")}
+                  placeholder="My Name"
+                  defaultValue=''
+                  disabled={!allowCookies}
+                  autoComplete='given-name' />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Email</Form.Label>
-                <Form.Control ref={refEmail} type="email" {...register("appEmail")} placeholder="email@domain.org" defaultValue='' disabled={!allowCookies} />
+                <Form.Control
+                  ref={refEmail}
+                  type="email"
+                  {...register("appEmail")}
+                  placeholder="email@domain.org"
+                  defaultValue=''
+                  disabled={!allowCookies}
+                  autoComplete='email' />
               </Form.Group>
 
               <Form.Group className="mb-3">

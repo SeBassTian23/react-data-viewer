@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
 
 import Table from 'react-bootstrap/Table';
 
@@ -11,6 +10,7 @@ import PanelStatistics from './helpers/PanelStatistics'
 import PanelWarning from './helpers/PanelWarning'
 
 import chiSquaredTest, {interpretChiSquaredTest} from '../../utils/statistics/chiSquaredTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 export default function ChiSquarePanel(props) {
   return (
@@ -33,6 +33,7 @@ function CalculateChiSquare(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState(null);
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
 
   useEffect( () => {
     
@@ -151,7 +152,7 @@ function CalculateChiSquare(props) {
 
                       if(cidx == 0)
                         return <td key={cidx} className='text-start'>
-                          <i className='bi-square-fill' style={{ 'color': cell?.color }} /> {cell?.name}
+                          <i className='bi bi-square-fill' style={{ 'color': cell?.color }} /> {cell?.name}
                         </td>
 
                       return <td key={cidx} 

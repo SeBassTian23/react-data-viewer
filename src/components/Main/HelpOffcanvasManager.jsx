@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
+import rehypeCallouts from 'rehype-callouts'
 
 import Placeholder from 'react-bootstrap/Placeholder'
 import { startCase } from 'lodash'
@@ -102,7 +103,8 @@ export default function HelpOffcanvasManager() {
             }}
             rehypePlugins={[
               rehypeRaw,
-              rehypeSlug
+              rehypeSlug,
+              [rehypeCallouts, {showIndicator: false}]
             ]}
           />
         }

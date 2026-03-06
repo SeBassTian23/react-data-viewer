@@ -81,6 +81,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
         data.push({
           "x": Array.from({ length: input[i].y[g].length }, (_, i) => i + 1),
           "y": input[i].y[g],
+          "idx": input[i]['$loki'][g],
           "legendgroup": input[i].id,
           "name": input[i].name,
           "showlegend": (input.length > 0) ? true : false,
@@ -93,7 +94,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
           },
           marker,
           "type": "scattergl",
-          "mode": 'lines+markers',
+          "mode": scaleisVisible? 'lines+markers' : 'lines',
           "connectgaps": true,
           "visible": true
         })

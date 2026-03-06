@@ -8,6 +8,7 @@ import { parametersReset } from '../features/parameter.slice';
 import { plotReset } from '../features/plot.slice';
 import { thresholdsReset } from '../features/threshold.slice';
 import { analysisReset } from '../features/analysis.slice';
+import { flagReset } from '../features/flag.slice';
 
 import { resetCollection } from '../modules/database'
 
@@ -23,7 +24,9 @@ export function useAppReset() {
     dispatch(plotReset());
     dispatch(thresholdsReset());
     dispatch(analysisReset());
+    dispatch(flagReset());
     resetCollection('data');
     resetCollection('bookmarks');
+    resetCollection('flags');
   };
 }

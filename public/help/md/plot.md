@@ -22,10 +22,11 @@ Line plots are an essential data visualization technique used to display the rel
 
 The following types of line plots can be selected. Depending on the type, different options are available.
 
-| Type               | Options            |
-| :----------------- | :----------------- |
-| Line               | `x-Axis`, `y-Axis` |
-| Line (y-Data only) | `y-Axis`           |
+| Type                            | Options                                                                 |
+| :------------------------------ | :---------------------------------------------------------------------- |
+| Line                            | `x-Axis`, `y-Axis`, `Line Shape`, `Line Style`                          |
+| Line (y-Data only)              | `y-Axis`, `Line Shape`, `Line Style`                                    |
+| Lines from Arrays (y-Data only) | `y-Axis`, `Line Shape`, `Line Style`, `Lines Colored By`, `Color Scale` |
 
 ## Bar
 

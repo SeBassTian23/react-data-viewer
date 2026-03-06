@@ -1,7 +1,5 @@
 import { useState, useEffect, Fragment } from 'react'
 
-import { getFilteredData, getSeries, getUnique } from '../../modules/database'
-
 import { useSelector } from 'react-redux'
 
 import numberFormat from '../../helpers/number-format'
@@ -13,6 +11,7 @@ import PanelWarning from './helpers/PanelWarning'
 
 import pairs from '../../helpers/generate-pairs'
 import welchsTTest, {interpretWelchTTest} from '../../utils/statistics/welchsTTest'
+import useGetFilteredData from '../../hooks/useGetFilteredData';
 
 
 export default function WelchesTTestPanel(props) {
@@ -37,6 +36,8 @@ function CalculateWelchsTTest(props) {
   const confidenceLevel = props.confidence_level || 0.05
 
   const [results, setResults] = useState([]);
+
+  const { getFilteredData, getSeries, getUnique} = useGetFilteredData();
   
   useEffect( () => {
     
@@ -100,8 +101,8 @@ function CalculateWelchsTTest(props) {
           <Table size='sm'>
             <thead className='text-center small align-middle'>
               <tr>
-                <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
-                <th className='w-50'><i className='bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
+                <th className='w-50'><i className='bi bi-square-fill' style={{ 'color': itm.colors[0] }} />&nbsp;{itm.names[0]}</th>
+                <th className='w-50'><i className='bi bi-square-fill' style={{ 'color': itm.colors[1] }} />&nbsp;{itm.names[1]}</th>
               </tr>
             </thead>
             <tbody className='text-center small align-middle'>

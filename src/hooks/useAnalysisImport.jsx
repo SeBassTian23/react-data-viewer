@@ -9,6 +9,7 @@ import { plotReset, plotUpdate } from '../features/plot.slice';
 import { thresholdAddBackup, thresholdsReset } from '../features/threshold.slice';
 import { analysisAddBackup, analysisReset, initialState } from '../features/analysis.slice';
 import { bookmarkAddBackup } from '../features/bookmark.slice';
+import { flagAdd, flagToggleActive } from '../features/flag.slice';
 
 import migrateStore from '../utils/data/migrateStore';
 
@@ -76,6 +77,18 @@ export default function useAnalysisImport() {
           creator: bookmark?.creator
         }));
       dispatch(bookmarkAddBackup(bookmarks));
+
+      // Process and restore flagged data
+      const flags = getFilteredData('flags', {})
+        .data()
+        .map(flag => flag.datumId );
+      dispatch(flagAdd(flags));
+      // Set toggle state according to store
+      if (Object.hasOwn(analysis.store, 'flags')){
+        if(analysis.store.flags?.isActive === false){
+          dispatch(flagToggleActive());
+        }
+      }
     }
     else {
       // Add base parameters

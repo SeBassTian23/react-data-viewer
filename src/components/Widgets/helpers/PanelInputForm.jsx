@@ -72,7 +72,7 @@ export default function PanelInputForm(props) {
               dispatch(dashboardEditPanel({ id: props.id, content: { ...values } }))
               dispatch(dashboardEditTitlePanel({ id: props.id, title: `${parameterName} | ${title}` }))
             }
-            }><i className='bi-caret-right' /> Apply</Button>
+            }><i className='bi bi-caret-right' /> Apply</Button>
           </Col>
         </Row>
         {props?.comment && <p className='form-text'>{props.comment}</p>}

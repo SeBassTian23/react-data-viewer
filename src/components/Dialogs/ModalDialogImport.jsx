@@ -56,10 +56,10 @@ export default function ModalDialogImport(props) {
         <Row>
           <Col sm={12}>
             <span className='float-end'>
-              <Button variant={null} onClick={handleClickHelp}><i className='bi-question-circle' /></Button>
+              <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
             </span>
             <span className="d-block fs-4">
-              <i className="bi-box-arrow-in-down fs-1 text-muted" /> Import Data
+              <i className="bi bi-box-arrow-in-down fs-1 text-muted" /> Import Data
             </span>
           </Col>
         </Row>

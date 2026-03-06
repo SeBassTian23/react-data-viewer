@@ -34,6 +34,11 @@ export const KEYBOARD_SHORTCUTS = {
     windows: "Ctrl+K",
     description: "Toggle Filter/Data Tab"
   },
+  showRecent: {
+    apple: "⌘ U",
+    windows: "Ctrl+U",
+    description: "Show Recent Analysis"
+  },
   showDashboard: {
     apple: "⇧ ⌘ D",
     windows: "Ctrl+Shift+D",

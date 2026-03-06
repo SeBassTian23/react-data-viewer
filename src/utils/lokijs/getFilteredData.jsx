@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { getColumnNames } from "../../modules/database";
+import { getColumnNames, getCollection } from "../../modules/database";
 
 dayjs.extend(isBetween);
 
@@ -19,7 +19,7 @@ function isTimeBetween(timeToCheck, startTime, endTime) {
   return checkTime.isAfter(start) && checkTime.isBefore(end);
 }
 
-const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '', dropna = [] } = {}) => {
+const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '', dropna = [], ignore = [] } = {}) => {
 
   // Parse filters
   let parsedFilters = {}
@@ -82,6 +82,10 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
     dropna = [dropna]
   }
 
+  if(typeof(collection) == 'string'){
+    collection = getCollection(collection)
+  }
+
   if (Array.isArray(dropna) && dropna.length > 0) {
     parsedDropna['$and'] = []
     // Make unique list of dropna elements and remove None,
@@ -103,6 +107,7 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
   .find(parsedFilters)
   .find(parsedThresholds)
   .find(parsedDropna)
+  .find({'$loki': { '$nin': ignore }})
 
   if(timeFilter.length > 0){
     query.where( function(obj) {
