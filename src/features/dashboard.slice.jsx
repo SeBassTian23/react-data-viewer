@@ -29,7 +29,7 @@ const dashboardSlice = createSlice({
         if (item.id === action.payload.id) {
           const updatedItem = {
             ...item,
-            notes: action.payload || null
+            notes: action.payload.notes || null
           }
           return updatedItem
         }

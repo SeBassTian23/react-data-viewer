@@ -9,9 +9,11 @@ Import your data into the application for analysis using various file formats an
 
 ## Supported File Formats (Text-based)
 
-- `CSV` (.csv): Comma-separated values
-- `TXT` (.txt): Tab-separated values
-- `JSON` (.json): JavaScript Object Notation
+|  File   | MIME Type        | Description                                              |
+| :-----: | :--------------- | :------------------------------------------------------- |
+| `.csv`  | text/csv         | Comma-separated values                                   |
+| `.txt`  | text/plain       | Tab-separated values                                     |
+| `.json` | application/json | key value pairs in the JavaScript Object Notation (json) |
 
 ## File Requirements
 
@@ -64,7 +66,7 @@ Weight  | Person1   | 65
 Weight  | Person2   | 70
 ```
 
-A usecase for selecting the `long format` would be a data structure in which you have the first column describing spectra 
+A usecase for selecting the `long format` would be a data structure in which you have the first column describing spectra
 
 ## Best Practices
 

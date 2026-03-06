@@ -4,7 +4,7 @@ The application provides the option to add a simple user profile that is stored 
 
 ## Creating a Profile
 
-The user profile is very basic, consisting of a name, email, and avatar, none of which are required. To open the profile dialog, select the <i class="bi bi bi-person-circle"></i> button from the side bar. If you created a profile with an avatar already, it will be replaced by your avatar.
+The user profile is very basic, consisting of a name, email, and avatar, none of which are required. To open the profile dialog, select the <i class="bi bi-person-circle"></i> button from the side bar. If you created a profile with an avatar already, it will be replaced by your avatar.
 
 1. Activate your profile, by selecting *Remember Me* to allow the app to set a cookie
 1. Now you can provide name and email

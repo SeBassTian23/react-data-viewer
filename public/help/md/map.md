@@ -4,9 +4,9 @@ The Map view allows you to visualize and analyze data with geographic coordinate
 
 ## Base Maps
 
-The following base maps are available through the Map Layer selector <i class="bi-stack"></i> in the upper right corner:
+The following base maps are available through the Map Layer selector <i class="bi bi-stack"></i> in the upper right corner:
 
-| <i class="bi-stack"></i> Map Layer | Content                                                                                                                                |
+| <i class="bi bi-stack"></i> Map Layer | Content                                                                                                                                |
 | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
 | OpenStreetMap (default)            | Standard street map with detailed road networks, landmarks, and points of interest. Best for urban navigation and general purpose use. |
 | OpenTopoMap                        | Topographic map featuring terrain contours, hiking trails, and elevation data. Ideal for outdoor activities and terrain analysis.      |
@@ -17,7 +17,7 @@ The following base maps are available through the Map Layer selector <i class="b
 | maps-for-free                      | Relief map emphasizing natural terrain features and land cover. Suitable for environmental and geological analysis.                    |
 | Esri:Topo                          | Detailed topographic map with terrain features, contour lines, and place names. Ideal for elevation and landscape analysis.            |
 
-Toggle between color and grayscale tiles using the <i class="bi-shadows"></i> Filter button in the toolbar.
+Toggle between color and grayscale tiles using the <i class="bi bi-shadows"></i> Filter button in the toolbar.
 
 ## Navigation
 
@@ -25,7 +25,7 @@ Navigate the map using standard map controls or mouse/touch gestures:
 
 - `Pan`: Click and drag or use arrow keys
 - `Zoom`: Mouse wheel, double-click, or use + / - buttons
-- `Reset View`: Click the <i class="bi-arrows-angle-expand"></i> "Reset Map View" button to adjust the view to show all data points
+- `Reset View`: Click the <i class="bi bi-arrows-angle-expand"></i> "Reset Map View" button to adjust the view to show all data points
 
 ## Data Visualization
 
@@ -43,7 +43,9 @@ Markers can be colored in two ways:
   - The color scale automatically adjusts to the data range
   - Selecting parts of the histogram removes markers outside of the selected range
 
-You can select coloration by Data Series using the <i class="bi-geo-alt-fill"></i> Marker Button or the histogram dialog by selecting the <i class="bi-bar-chart-fill"></i> Chart Button to bring up the dialog to select the parameter based coloration.
+You can select coloration by Data Series using the <i class="bi bi-geo-alt-fill"></i> Marker Button or the histogram dialog by selecting the <i class="bi bi-bar-chart-fill"></i> Chart Button to bring up the dialog to select the parameter based coloration.
+
+To allow for a better contrast  <i class="bi bi-shadows"></i> Marker Button or the histogram dialog by selecting the <i class="bi bi-bar-chart-fill"></i> Chart Button to bring up the dialog to select the parameter based coloration.
 
 ### Spatial Analysis
 
@@ -54,12 +56,12 @@ Use the drawing toolbar to create shapes for spatial filtering:
 - `Circle`: Click center point and drag to define radius
 - `Rectangle`: Click and drag to define corners
 - `Polygon`: Click to add points, double-click to complete
-- <i class="bi-pencil-square"></i> Edit a selected shape
-- <i class="bi-trash"></i> Delete one or all shapes
+- <i class="bi bi-pencil-square"></i> Edit a selected shape
+- <i class="bi bi-trash"></i> Delete one or all shapes
 
 #### Filter Options
 
-After drawing the shapes, select the <i class="bi-bounding-box"></i> button to pick how to filter your data:
+After drawing the shapes, select the <i class="bi bi-bounding-box"></i> button to pick how to filter your data:
 
 - **Inside (All)**: Include points within any drawn shape
 - **Inside (Separate)**: Create separate subsets for each shape
@@ -67,7 +69,7 @@ After drawing the shapes, select the <i class="bi-bounding-box"></i> button to p
 
 ### Dashboard Integration
 
-Add the current map view to your dashboard using the <i class="bi-window-plus"></i> "Add to Dashboard" button. The dashboard panel will include:
+Add the current map view to your dashboard using the <i class="bi bi-window-plus"></i> "Add to Dashboard" button. The dashboard panel will include:
 
 - Current map view and zoom level
 - Active base map selection

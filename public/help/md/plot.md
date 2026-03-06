@@ -15,6 +15,8 @@ The following types of scatter plots can be selected. Depending on the type, dif
 | Scatter              | `x-Axis`, `y-Axis`, `Marker Size By`, `Marker Colored By`, `Color Scale`           |
 | Scatter (with lines) | `x-Axis`, `y-Axis`, `Marker Size By`, `Marker Colored By`, `Color Scale`           |
 | 3D Scatter           | `x-Axis`, `y-Axis`, `z-Axis`, `Marker Size By`, `Marker Colored By`, `Color Scale` |
+| 3D Surface           | `z-Axis`, `Color Scale`, `Projected Contours`                                      |
+| 3D Mesh              | `x-Axis`, `y-Axis`, `z-Axis`, `Intensity`, `Color Scale`, `Projected Contours`     |
 
 ## Line
 
