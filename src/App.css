@@ -774,6 +774,11 @@ span.form-text.p-1 + p.small.px-2:not(:first-child):not(:last-child) {
 /* Plotly modebar icon fix */
 .plotly .modebar-group a {
   margin-top: 4px;
+}
+
+.form-label {
+  font-variant: small-caps;
+}
 
 /* Badge Pills */
 .rounded-pill {
