@@ -76,7 +76,7 @@ export default function ModalDialogImport(props) {
               />
               <Form.Text muted className='d-block my-2'>
                 Supported files formats are comma separated files <b>(.csv)</b> and tab separated files <b>(.txt)</b>.
-                Data can also be provided formatted as a JSON object <b>(.json)</b>.
+                Data can also be provided formatted as a JSON object <b>(.json)</b> a Newline Delimited JSON <b>(.nbjson)</b> and as a Parquet file <b>(.parquet)</b>.
               </Form.Text>
             </Form.Group>
           </Col>
