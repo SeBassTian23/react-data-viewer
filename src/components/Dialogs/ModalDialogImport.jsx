@@ -101,7 +101,7 @@ export default function ModalDialogImport(props) {
                 </Form.Select>
               </Col>
               <Col xs="auto">
-                <Form.Check type="checkbox" className="mb-2" label="Append Data" {...register("append")} />
+                <Form.Check type="checkbox" className="mb-2" id='import-append-data' label="Append Data" {...register("append")} />
               </Col>
             </Row>
           </Col>
