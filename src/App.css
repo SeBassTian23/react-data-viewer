@@ -367,91 +367,6 @@ body[data-bs-theme="dark"] {
   }
 }
 
-/** Spreadsheet Darkmode */
-body[data-bs-theme="dark"] .jexcel {
-  & {
-    border-right: 1px solid var(--bs-border-color);
-    border-bottom: 1px solid var(--bs-border-color);
-  }
-
-  & > thead > tr > td {
-    border-top: 1px solid var(--bs-border-color);
-    border-left: 1px solid var(--bs-border-color);
-    background-color: var(--bs-secondary-bg-subtle);
-  }
-
-  & > tbody > tr > td {
-    border-top: 1px solid var(--bs-border-color);
-    border-left: 1px solid var(--bs-border-color);
-  }
-
-  & > tbody > tr > td:first-child {
-    background: var(--bs-secondary-bg-subtle);
-  }
-
-  &.jexcel_overflow {
-    background: var(--bs-body-bg);
-  }
-
-  .jexcel_content {
-    box-shadow: none !important;
-  }
-
-  & > tbody > tr.selected > td:first-child,
-  & thead .selected {
-    background: var(--bs-body-bg);
-  }
-
-  & .highlight-top.highlight-left {
-    box-shadow: -1px -1px #ccc;
-    -webkit-box-shadow: -1px -1px #ccc;
-    -moz-box-shadow: -1px -1px #ccc;
-  }
-
-  & .selected .highlight {
-    background-color: var(--bs-secondary-bg-subtle);
-  }
-}
-
-/** Spreadsheet selected cell((s) */
-.jexcel_content {
-  box-shadow: none !important;
-  .jexcel {
-    .highlight-top {
-      border-top: 1px solid var(--bs-primary) !important;
-      box-shadow: none !important;
-    }
-
-    .highlight-left {
-      border-left: 1px solid var(--bs-primary) !important;
-      box-shadow: none !important;
-    }
-
-    .highlight-right {
-      border-right: 1px solid var(--bs-primary) !important;
-    }
-
-    .highlight-bottom {
-      border-bottom: 1px solid var(--bs-primary) !important;
-    }
-  }
-
-  .jexcel_corner {
-    background-color: var(--bs-primary) !important;
-    border: 1px solid var(--bs-border-color) !important;
-  }
-}
-
-/** Spreadsheet search field */
-.jexcel_search {
-  display: inline-block !important;
-  width: 70% !important;
-}
-
-.jexcel_filter div:nth-child(2) {
-  font-weight: bold;
-}
-
 /** Toast */
 body[data-bs-theme="dark"] .toast .toast-body {
   color: var(--bs-light);
@@ -784,4 +699,15 @@ span.form-text.p-1 + p.small.px-2:not(:first-child):not(:last-child) {
 .rounded-pill {
   backdrop-filter: opacity(0.8);
   font-weight: 400 !important;
+}
+
+/* Spreadsheet */
+.spreadsheet-container .rgCell, .rgHeaderCell {
+  border-right: 1px solid rgb(226, 227, 227);
+}
+
+body[data-bs-theme="dark"] {
+  .spreadsheet-container .rgCell, .rgHeaderCell {
+    border-right: 1px solid rgb(66, 66, 66);
+  }
 }
