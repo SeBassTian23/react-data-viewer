@@ -160,6 +160,14 @@ export default function Spreadsheet(props) {
     triggerDownload(jsonStr, `${filename}.json`, 'application/json')
   }
 
+  function downloadNDJSON() {
+    const ws = resolveSubsetNames(source);
+    const ndjson = ws
+      .map(row => JSON.stringify(row))
+      .join('\n');
+    triggerDownload(ndjson, `${filename}.ndjson`, 'application/x-ndjson')
+  }
+
   function downloadXLSX() {
     const ws = utils.json_to_sheet( resolveSubsetNames(source) )
     const wb = utils.book_new();
@@ -220,14 +228,28 @@ export default function Spreadsheet(props) {
                 <i className='bi bi-filetype-xlsx' /> Excel
               </Button>
             </ButtonGroup>
-            <Button
-                variant={props.darkmode ? 'outline-light' : 'outline-dark'}
-                onClick={downloadJSON}
-                size='sm'
-                aria-label='Download as JSON formatted file'
-              >
-                <i className='bi bi-filetype-json' /> JSON
-            </Button>
+            <ButtonGroup
+              size='sm'
+              className='me-2'
+              aria-label='Download Data in different formats'
+            >
+              <Button
+                  variant={props.darkmode ? 'outline-light' : 'outline-dark'}
+                  onClick={downloadJSON}
+                  size='sm'
+                  aria-label='Download as JSON formatted file'
+                >
+                  <i className='bi bi-filetype-json' /> JSON
+              </Button>
+              <Button
+                  variant={props.darkmode ? 'outline-light' : 'outline-dark'}
+                  onClick={downloadNDJSON}
+                  size='sm'
+                  aria-label='Download as NDJSON formatted file'
+                >
+                  <i className='bi bi-file-earmark' /> ND-JSON
+              </Button>
+            </ButtonGroup>
             <Button
               variant={props.darkmode ? 'outline-light' : 'outline-dark'}
               onClick={handleClickHelp}
