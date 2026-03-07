@@ -72,7 +72,7 @@ export default function ModalDialogImport(props) {
                 isInvalid={fileInvalid} 
                 onChange={() => setFileInvalid(false)} 
                 multiple={false} 
-                accept="text/csv, text/plain, application/json, application/octet-stream" 
+                accept="text/csv, text/plain, application/json, application/octet-stream, application/jsonlines, application/x-ndjson, .parquet" 
               />
               <Form.Text muted className='d-block my-2'>
                 Supported files formats are comma separated files <b>(.csv)</b> and tab separated files <b>(.txt)</b>.

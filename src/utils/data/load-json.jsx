@@ -4,8 +4,13 @@ const loadJSON = (file) => {
     const reader = new FileReader();
     reader.onloadend = function (e) {
       content = e.target.result;
-      content = JSON.parse(reader.result)
-      resolve(content);
+      try{
+        content = JSON.parse(reader.result)
+        resolve(content);
+      }
+      catch(e){
+        reject(e);
+      }
     };
     reader.onerror = function (e) {
       reject(e);

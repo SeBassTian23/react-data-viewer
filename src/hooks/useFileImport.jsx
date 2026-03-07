@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import loadCSV from '../utils/data/load-csv';
 import loadJSON from '../utils/data/load-json';
+import loadNDJSON from '../utils/data/load-ndjson';
+import loadPARQUET from '../utils/data/load-parquet';
 import parseMultispeQJSON, {isMultispeQData} from '../utils/data/parse-multispeq-json';
 import wideToLong from '../utils/data/wide-to-long';
 import { addDataJSON, parameters, saveDatabase, setFilename } from '../modules/database';
@@ -41,10 +43,36 @@ export const useFileImport = () => {
           if (values.format === 'long') {
             data.data = wideToLong(data.data);
           }
-        } else if (file.type === 'application/json') {
-          data = await loadJSON(file);
-          if(isMultispeQData(data))
-            data = await parseMultispeQJSON(data);
+        } else if (['application/x-ndjson', 'application/jsonlines'].includes(file.type) || file.name.endsWith('.ndjson') || file.name.endsWith('.jsonl')) {
+          try{
+            data = await loadNDJSON(file);
+          }
+          catch(e){
+            throw new Error('Unsupported file type');
+          }
+        }
+        else if (file.type === 'application/json') {
+          try{
+            data = await loadJSON(file);
+            if(isMultispeQData(data))
+              data = await parseMultispeQJSON(data);
+          }
+          catch(e){
+            try{
+              data = await loadNDJSON(file);
+            }
+            catch(e){
+              throw new Error('Unsupported file type');
+            }
+          }
+        }
+        else if ( file.name.endsWith('.parquet') ) {
+          try{
+            data = await loadPARQUET(file);
+          }
+          catch(e){
+            throw new Error('Unsupported file type parquet');
+          }
         } else {
           throw new Error('Unsupported file type');
         }

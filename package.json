@@ -14,6 +14,7 @@
     "buffer": "^6.0.3",
     "chroma-js": "^3.2.0",
     "dayjs": "^1.11.19",
+    "hyparquet": "^1.25.1",
     "is-number": "^7.0.0",
     "jstat": "^1.9.6",
     "kind-of": "^6.0.3",

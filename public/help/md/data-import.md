@@ -7,13 +7,15 @@ Import your data into the application for analysis using various file formats an
   - macOS: <kbd>⌘ I</kbd>
 - Sidebar menu → Import Data…
 
-## Supported File Formats (Text-based)
+## Supported File Formats
 
-|  File   | MIME Type        | Description                                              |
-| :-----: | :--------------- | :------------------------------------------------------- |
-| `.csv`  | text/csv         | Comma-separated values                                   |
-| `.txt`  | text/plain       | Tab-separated values                                     |
-| `.json` | application/json | key value pairs in the JavaScript Object Notation (json) |
+| Format               | MIME Type                        | Description                                                                                  |
+| -------------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| `.csv`               | `text/csv`                       | Comma-separated values; standard tabular data format widely supported by tools and databases |
+| `.txt`               | `text/plain`                     | Plain text, often tab-separated; simple but lacks standardized structure for data            |
+| `.json`              | `application/json`               | Structured key-value pairs; good for nested/hierarchical data and APIs                       |
+| `.jsonl` / `.ndjson` | `application/jsonlines`          | Newline-delimited JSON objects; efficient for streaming large datasets line-by-line          |
+| `.parquet`           | `application/vnd.apache.parquet` | Column-oriented binary format; optimized for analytical queries and storage efficiency       |
 
 ## File Requirements
 
@@ -30,6 +32,8 @@ Select the appropriate separator for your data:
 - Comma (,): Standard CSV format
 - Semicolon (;): Alternative CSV format
 - Tab (↹): Tab-separated format
+
+>[!note] This is ignored with JSON NDJSON and parquet formated data
 
 Append Data: Add new data to existing dataset
 
@@ -104,20 +108,25 @@ Date,Temperature,Sunrise/Sunset,Location
 ### JSON Format
 
 ```Javascript
-{
-  "data": [
-    {
-      "Date": "2026-02-12",
-      "Temperature": 0.1,
-      "Sunrise/Sunset": ["6:53", "17:27"],
-      "Location": "New York"
-    },
-    {
-      "Date": "2026-02-12",
-      "Temperature": -1.5,
-      "Sunrise/Sunset": ["6:44", "17:12"],
-      "Location": "Boston"
-    }
-  ]
-}
+[
+  {
+    "Date": "2026-02-12",
+    "Temperature": 0.1,
+    "Sunrise/Sunset": ["6:53", "17:27"],
+    "Location": "New York"
+  },
+  {
+    "Date": "2026-02-12",
+    "Temperature": -1.5,
+    "Sunrise/Sunset": ["6:44", "17:12"],
+    "Location": "Boston"
+  }
+]
+```
+
+### ND-JSON Format
+
+```Javascript
+{ "Date": "2026-02-12", "Temperature": 0.1, "Sunrise/Sunset": ["6:53", "17:27"], "Location": "New York" }
+{ "Date": "2026-02-12", "Temperature": -1.5, "Sunrise/Sunset": ["6:44", "17:12"], "Location": "Boston" }
 ```
