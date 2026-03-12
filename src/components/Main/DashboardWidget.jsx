@@ -188,11 +188,12 @@ function DashboardWidget(props) {
           </ErrorBoundary>
                 
           {props.notes && isHovered && !toggleNote && (
-            <Card.Body className="position-absolute bottom-0 start-0 end-0 rounded-bottom bg-dark border-top border border-top-0 shadow-lg mx-2 p-3"
+            <Card.Body className="position-absolute bottom-0 start-0 end-0 rounded-bottom border-top border border-top-0 shadow-lg mx-2 p-3"
               style={{
                 transform: 'translateY(100%)',
-                transition: 'transform 1.3s ease-out',
+                // transition: 'transform 1.3s ease-out',
                 zIndex: 10,
+                background: 'var(--bs-card-bg)'
               }}
             >
               {props.notes}
