@@ -5,7 +5,7 @@ import { hideModal } from "../../features/modal.slice";
 
 import { deleteBookmarkFromDB, deleteAllBookmarksFromDB } from '../../utils/data/bookmark'
 
-import { dashboardDeletePanel } from '../../features/dashboard.slice'
+import { dashboardDeletePanel, dashboardReset } from '../../features/dashboard.slice'
 import { thresholdsReset, thresholdDelete } from '../../features/threshold.slice'
 import { datasubsetReset, datasubsetDeleted } from '../../features/datasubset.slice'
 import { bookmarksReset, bookmarkDelete } from '../../features/bookmark.slice'
@@ -14,6 +14,7 @@ import { flagReset } from '../../features/flag.slice'
 import { useAppReset } from '../../hooks/useAppReset'
 import { useApplyBookmark } from "../../hooks/useApplyBookmark";
 import useFlagData from "../../hooks/useFlagData";
+import { useAddBookmark } from '../../hooks/useAddBookmark';
 
 import { saveDatabase, setFilename, resetCollection } from '../../modules/database'
 
@@ -33,6 +34,7 @@ export default function ModalManager() {
   const resetApp = useAppReset();
   const applyBookmark = useApplyBookmark();
   const flagData = useFlagData();
+   const addBookmark = useAddBookmark();
 
   if (!modal.open) return null;
 
@@ -50,9 +52,15 @@ export default function ModalManager() {
                   dispatch(dashboardDeletePanel(modal.props?.payload?.id));
                   break;
 
+                case "DELETE_PANELS":
+                  addBookmark();
+                  dispatch(dashboardReset());
+                  break;
+
                 case "DELETE_THRESHOLDS":
                   dispatch(thresholdsReset());
                   break;
+
                 case "DELETE_THRESHOLD":
                   dispatch(thresholdDelete(modal.props?.payload?.id))
                   break;

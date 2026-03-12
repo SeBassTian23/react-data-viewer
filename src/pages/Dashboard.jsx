@@ -24,6 +24,7 @@ import useHelp from '../hooks/useHelp'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import useModalConfirm from '../hooks/useModalConfirm';
 
 dayjs.extend(duration)
 dayjs.extend(relativeTime)
@@ -41,6 +42,7 @@ export default function Dashboard(props) {
   const dispatch = useDispatch();
 
   const help = useHelp();
+  const modal = useModalConfirm();
 
   const [panelFilter, setPanelFilter] = useState([]);
 
@@ -77,6 +79,15 @@ export default function Dashboard(props) {
     })
   }
 
+  const handleClickReset = useCallback(() => modal.show("confirm", {
+      header: "Reset Dashboard",
+      content: `Remove all panels from the Dashboard (A Bookmark is added before panels are removed)`,
+      yes: "Reset",
+      no: "Cancel",
+      payload: {
+        action: "DELETE_PANELS"
+      }
+    }), [modal])
 
   // Check if scrolling is possible and update button states
   const checkScroll = useCallback(() => {
@@ -154,6 +165,16 @@ export default function Dashboard(props) {
               </Dropdown.Menu>
             </Dropdown>
           </ButtonGroup>
+          <Button size='sm'
+              aria-label='Reset Dashboard'
+              variant={props.darkmode ? "outline-light" : "outline-dark"}
+              onClick={handleClickReset}
+              title="Reset Dashboard"
+              className='me-2'
+              disabled={state.length === 0}
+            >
+              <i className='bi bi-window-x' /> Reset
+          </Button>         
           <Button size='sm'
               aria-label='Show Help'
               variant={props.darkmode ? "outline-light" : "outline-dark"}
