@@ -126,7 +126,7 @@ export default function ModalDialogUser(props) {
       fileInput.current.click();
   },[])
 
-  const handleDroppedFile = useCallback((file)=>{
+  const handleDroppedFile = useCallback((file)=> {
     if (!file || !file.type.startsWith("image/") || !allowCookies || allowGravatar) return;
       const reader = new FileReader();
       reader.onload = () => {
@@ -134,7 +134,7 @@ export default function ModalDialogUser(props) {
         props.setAvatar(userAvatar);
       }
       reader.readAsDataURL(file);
-  }, []);
+  }, [allowCookies,allowGravatar]);
 
   const onDrop = (e) => {
     e.preventDefault();
