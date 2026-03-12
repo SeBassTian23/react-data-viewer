@@ -44,6 +44,12 @@ export default function Spreadsheet(props) {
 
   const filename = stateAnalysis?.saveAs || 'data';
 
+  // Guessing the column width
+  const colWidth = (name) => {
+    const len = name.length * 10 + 36
+    return len < 70? 70 : len;
+  }
+
   useEffect(() => {
     const cols = stateParameters.map((col) => {
       let columnType = 'text'
@@ -54,7 +60,7 @@ export default function Spreadsheet(props) {
       let colDef = {
         prop: col.name,
         name: col.alias || col.name,
-        // size: 150,
+        size: colWidth(col.alias || col.name),
         columnType,
         sortable: true,
         // order: 'asc',
