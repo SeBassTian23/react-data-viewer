@@ -134,12 +134,31 @@ function PlotParameterSelect(props) {
   const parameters = useSelector(state => state.parameters)
   const state = useSelector(state => state.plot)
 
-  if (state.plottype && plotselect && state.plottype === plotselect.type) {
-    for (let key in state) {
-      if (!['legend', 'title', 'plottype'].includes(key))
-        props.setValue(key, state[key])
+  useEffect(() => {
+    if (plotselect) {
+      // Get all valid field names for the current plot type
+      const validFields = new Set(['legend', 'title', 'plottype'])
+      plotselect.options.forEach(option => {
+        validFields.add(option.name)
+      })
+
+      // Clear fields that don't belong to this plot type
+      const currentValues = props.getValues()
+      for (let key in currentValues) {
+        if (!validFields.has(key)) {
+          props.setValue(key, undefined)
+        }
+      }
+
+      // Set values from stored state
+      if (state.plottype && state.plottype === plotselect.type) {
+        for (let key in state) {
+          if (!['legend', 'title', 'plottype'].includes(key))
+            props.setValue(key, state[key])
+        }
+      }
     }
-  }
+  }, [plotselect, props, state])
 
   return (
     <>
