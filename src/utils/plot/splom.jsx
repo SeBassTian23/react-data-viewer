@@ -23,6 +23,16 @@ const splom = ({ input = [], diagonal = false, parameters = [] } = {}) => {
     if (diagonal === false || diagonal === "false")
         diagonal = false
 
+    if(input.length > 0){
+        let len = input[0].dimensions.length;
+        if(len < 2)
+            alert('Select at least 2 parameters')
+        if(len > 8)
+            alert('Select up to 8 parameters')
+        if(len < 2 || len > 8)
+            return { data, layout }
+    }
+
     for (let i in input) {
         data.push({
             "dimensions": input[i].dimensions.map((item, idx) => {
