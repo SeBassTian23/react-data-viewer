@@ -223,6 +223,7 @@ export default function ModalDialogUser(props) {
                   autoComplete='email' />
               </Form.Group>
 
+              <Form.Label as={'div'}>Settings</Form.Label>
               <Form.Group className="mb-3">
                 <Form.Check // prettier-ignore
                   type="switch"
