@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import ModalDialogConfirm from "../Dialogs/ModalDialogConfirm";
 import ModalDialogBusy from "../Dialogs/ModalDialogBusy";
+import ModalDialogAlert from "../Dialogs/ModalDialogAlert";
 import { hideModal } from "../../features/modal.slice";
 
 import { deleteBookmarkFromDB, deleteAllBookmarksFromDB } from '../../utils/data/bookmark'
@@ -157,6 +158,16 @@ export default function ModalManager() {
                 flagData.addFlags(ids, parameter, comment)
               }
             }
+            dispatch(hideModal());
+          }}
+        />
+      );
+    case "alert":
+      return (
+        <ModalDialogAlert
+          {...modal.props}
+          show={() => modal.open}
+          onHide={() => {
             dispatch(hideModal());
           }}
         />
