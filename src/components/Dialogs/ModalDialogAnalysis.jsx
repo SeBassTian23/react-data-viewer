@@ -16,6 +16,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 dayjs.extend(localizedFormat)
 
+import humanFileSize from '../../helpers/humanFileSize'
+
 import { fileExtension } from '../../helpers/file-extension';
 import { analysisUpdate } from '../../features/analysis.slice';
 
@@ -124,6 +126,13 @@ export default function ModalDialogAnalysis(props) {
 }
 
 function AnalysisFileInfo({ files, hasdata, handleClose, setModalImport }) {
+
+  const icon = (name) => {
+    if(['json', 'csv', 'txt'].includes(fileExtension(name)))
+      return `bi bi-filetype-${fileExtension(name)}`
+    return `bi bi-file-earmark`
+  }
+
   if (files.length == 0 && hasdata)
     return <li key={"0"} className='small text-muted'><i className={`bi bi-file-earmark-x text-warning`} /> No files associated</li>
 
@@ -137,14 +146,14 @@ function AnalysisFileInfo({ files, hasdata, handleClose, setModalImport }) {
   return files.map((itm, idx) => {
     if (typeof (itm) === 'string')
       return <ListGroup.Item as="li" key={idx} className='d-flex align-items-center ps-2'>
-        <i className={`bi ${fileExtension(itm) != '' ? 'bi-filetype-'+fileExtension(itm) : 'bi-file-earmark'} fs-4 me-2`} /> <span className='text-muted'>{itm}</span>
+        <i className={`${icon(itm)} fs-4 me-2`} /> <span className='text-muted'>{itm}</span>
       </ListGroup.Item>
 
     if (typeof (itm) === 'object')
       return <ListGroup.Item as="li" key={idx} className='d-flex align-items-center ps-2'>
-        <i className={`bi ${fileExtension(itm.name) != '' ? 'bi-filetype-'+fileExtension(itm.name) : 'bi-file-earmark'} fs-4 me-2`} />
+        <i className={`${icon(itm.name)} fs-4 me-2`} />
         <span className='text-muted'>{itm.name} <br />
-          <small>{(itm.size > 1024 ** 2 ? (itm.size / 1024 ** 2).toFixed(2) + ' mb' : (itm.size / 1024).toFixed(2) + ' kb')} | {new Date(itm.lastModified).toLocaleString()}</small>
+          <small className='fw-light'>{ humanFileSize(itm.size)} | {fileExtension(itm.name)} | {dayjs(itm.lastModified).format('L LT')}</small>
         </span>
       </ListGroup.Item>
   })
