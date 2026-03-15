@@ -47,6 +47,7 @@ export default function GraphPanel(props) {
 
     statePlot.layout.margin = { autoexpand: true, b: 5, l: 5, pad: 0, r: 5, t: 5 }
     statePlot.layout.font = { ...statePlot.layout.font, size: 12 * sizeScale }
+    statePlot.layout.hovermode = false
 
     statePlot.data = statePlot.data.map(itm => {
       if (itm?.marker?.colorbar?.thickness)
