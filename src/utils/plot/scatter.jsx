@@ -18,6 +18,7 @@ const scatter = ({ input = [], mode = 'markers', gradient = 'Viridis', shape = '
   }
 
   let scaleisVisible = true
+  let totalMarkerCount = input.flatMap(item => item.x).length
 
   for (let i in input) {
     layout.xaxis.title.text = parameters.find(e => e.name === input[i].xaxis)?.alias || input[i].xaxis
@@ -64,7 +65,7 @@ const scatter = ({ input = [], mode = 'markers', gradient = 'Viridis', shape = '
       "legendgroup": input[i].id,
       "name": input[i].name,
       marker,
-      "type": "scattergl",
+      "type": totalMarkerCount > 50000? "scattergl" : "scatter",
       "mode": mode,
       "line": {
         "color": input[i].color,

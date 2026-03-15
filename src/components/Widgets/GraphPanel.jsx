@@ -61,7 +61,7 @@ export default function GraphPanel(props) {
       if (['violin', 'box'].includes(itm?.type) && (itm?.points == 'all' || itm?.boxpoints == 'all') && itm?.marker) {
         itm.marker.size = 6 * halfScale
       }
-      if (['scattergl', 'splom'].includes(itm?.type) && itm?.marker) {
+      if (['scatter', 'scattergl', 'splom'].includes(itm?.type) && itm?.marker) {
         if (itm.marker.size > 0.1 || !itm.marker.size)
           itm.marker.size = 6 * sizeScale
         if (Array.isArray(itm.marker.size))

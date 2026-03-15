@@ -38,7 +38,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
           // "smoothing": 1,
           "dash": dash
         },
-        "type": "scattergl",
+        "type": "scatter", //"scattergl",
         "mode": 'lines',
         "connectgaps": true,
         "visible": true
@@ -93,7 +93,7 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
             "dash": dash
           },
           marker,
-          "type": "scattergl",
+          "type": "scatter", //"scattergl",
           "mode": scaleisVisible? 'lines+markers' : 'lines',
           "connectgaps": true,
           "visible": true
