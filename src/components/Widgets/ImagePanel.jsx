@@ -8,12 +8,15 @@ import Form from 'react-bootstrap/Form'
 import { useDispatch } from 'react-redux'
 import { dashboardEditPanel } from '../../features/dashboard.slice'
 
+import getAverageRGB from '../../helpers/getAverageRGB'
+
 export default function ImagePanel(props) {
 
   const dispatch = useDispatch()
 
   const [state, setState] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [bgcolor, setBgcolor] = useState("transparent")
 
   const fileInput = useRef();
   const refDragCounter = useRef(0);
@@ -73,6 +76,15 @@ export default function ImagePanel(props) {
     handleDroppedFile(e.target.files[0]);
   };
 
+  useEffect( () => {
+    async function fetchColor() {
+      // You can await here
+      const res = await getAverageRGB(props.content.base64, 5);
+      setBgcolor(`rgba(${res.r},${res.g},${res.b},${res.a})`)
+    }
+    fetchColor();
+  }, [state])
+
   return (
     <>
       {!state && <>
@@ -106,7 +118,8 @@ export default function ImagePanel(props) {
             "background": `url(${props.content.base64})`,
             "backgroundSize": "contain",
             "backgroundPosition": "center",
-            "backgroundRepeat": "no-repeat"
+            "backgroundRepeat": "no-repeat",
+            "backgroundColor": `${bgcolor}`
           }}
           title={props.name}
           onClick={handleClick}></Card.Body>
