@@ -21,14 +21,22 @@ const datasubsetSlice = createSlice({
       })
     },
     datasubsetAdded(state, action) {
-      const assignedColor = colors[(state.length % colors.length + colors.length) % colors.length]
-      state.push({ ...action.payload, color: assignedColor, id: crypto.randomUUID() })
+      let addItem = { ...action.payload}
+      if(!action.payload?.color)
+        addItem.color = colors[(state.length % colors.length + colors.length) % colors.length]
+      if(!action.payload?.id)
+        addItem.id = crypto.randomUUID() 
+      return [...state, addItem]
     },
     datasubsetMultipleAdded(state, action) {
       let addedItems = []
       for (let i in action.payload) {
-        let assignedColor = colors[(state.length + i % colors.length + colors.length) % colors.length]
-        addedItems.push({ ...action.payload[i], color: assignedColor, id: crypto.randomUUID() })
+        let addItem = { ...action.payload[i] }
+        if(!action.payload[i]?.color)
+          addItem.color = colors[(state.length + i % colors.length + colors.length) % colors.length]
+        if(!action.payload[i]?.id)
+          addItem.id = crypto.randomUUID()         
+        addedItems.push(addItem)
       }
       return [...state, ...addedItems]
     },
