@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import ListGroup from 'react-bootstrap/ListGroup'
-import Badge from 'react-bootstrap/Badge'
 
 import tinycolor from 'tinycolor2'
 
@@ -20,6 +19,7 @@ export default function DataSubsetItem(props) {
 
   const thresholds = useSelector(selectedThresholds)
   const stateFlags = useSelector(state => state.flags)
+  const parameters = useSelector(state => state.parameters)
 
   const [count, setCount] = useState(props.count || 0);
 
@@ -50,14 +50,18 @@ export default function DataSubsetItem(props) {
         title={`${props.name}${props.count !== count ? ` [${count}/${props.count}]` : ` [${props.count}]`}`}
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}
       >
-        <span className="d-inline-block text-truncate" style={!props.isVisible ? { 'opacity': 0.25 } : {}}>
-          <i className="bi bi-square-fill " style={{ "color": props.color }} /> {props.name || "Unknown"}
+        <i className="bi bi-square-fill " style={{ "color": props.color, 'opacity': props.isVisible? 1 : 0.25  }} />
+        <span className='d-flex flex-column flex-grow-1 overflow-hidden ps-2' style={!props.isVisible ? { 'opacity': 0.25 } : {}}>
+          <span className="d-inline-block text-truncate">
+            {props.name || "Unknown"}
+          </span>
+          <small className="d-inline-block text-truncate fw-light text-muted">
+            <i className="bi bi-filter" /> {props.filter.map(itm => itm.name === "$loki"? "Selected Rows" : parameters.find(p => p.name == itm.name )?.alias || itm.name).join(', ')}
+          </small>
         </span>
+        <span className={`align-self-start text-nowrap font-monospace text-${props.count !== count ? " text-danger" : ""}`} style={!props.isVisible ? { 'opacity': 0.25, fontSize: 'small' } : {fontSize: 'small'}}><i className='bi bi-database' />{props.count !== count? count : props.count}</span>
         {showHoverContent && (
           <DataSubsetItemMenu {...props} showModalEdit={handleShow} />
-        )}
-        {!showHoverContent && (
-          <Badge bg={props.count !== count ? "danger" : "secondary"} style={!props.isVisible ? { 'opacity': 0.25 } : {}}>{props.count !== count? count : props.count}</Badge>
         )}
       </ListGroup.Item>
       {show && <ModalDialogEditSubset show={show} onHide={handleClose} {...props} />}

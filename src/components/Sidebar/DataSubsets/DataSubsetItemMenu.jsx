@@ -26,7 +26,7 @@ export default function DataSubsetItemMenu(props) {
 
   return (
     <>
-      <ButtonGroup size="sm" className="data-subset-btn-group">
+      <ButtonGroup size="sm" className="data-subset-btn-group" style={{opacity: 1}}>
         <Button variant="outline-secondary" onClick={() => dispatch(datasubsetToggled(props.id))} >
           {props.isVisible && <i className="bi bi-eye-fill" />}
           {!props.isVisible && <i className="bi bi-eye-slash-fill" />}
