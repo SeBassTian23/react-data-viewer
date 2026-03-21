@@ -23,8 +23,9 @@ export default function ModalDialogEditSubset(props) {
       keyboard={true}
     >
       <Modal.Body>
-        <h5>Edit Series</h5>
-        <InputGroup className="mb-3">
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-filter me-2 fs-3 text-muted" /> Data Subset
+        </span>
           <Form.Control type={'color'} aria-label="Series color" {...register("color")} defaultValue={props.color} className='form-color' />
           <Form.Control type={'text'} aria-label="Series name" {...register("name")} defaultValue={props.name} />
         </InputGroup>

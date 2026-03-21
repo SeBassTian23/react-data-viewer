@@ -26,7 +26,9 @@ export default function ModalDialogMapHistogram(props) {
       keyboard={true}
     >
       <Modal.Body>
-        <h5>Histogram</h5>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-bar-chart-line-fill me-2 fs-3 text-muted" /> Histogram
+        </span>
         <Form.Group className='my-2'>
           <Form.Label className='form-label-header'>Color Markers By</Form.Label>
           <Form.Select size='sm' aria-label="Parameter" {...register("colorBy")} defaultValue={stateMap.colorBy} >

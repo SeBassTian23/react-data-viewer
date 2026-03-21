@@ -53,17 +53,11 @@ export default function ModalDialogImport(props) {
       }}
     >
       <Modal.Body className='p-4'>
-        <Row>
-          <Col sm={12}>
-            <span className='float-end'>
-              <Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button>
-            </span>
-            <span className="d-block fs-4">
-              <i className="bi bi-box-arrow-in-down fs-1 text-muted" /> Import Data
-            </span>
-          </Col>
-        </Row>
-        <Row>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-database-up me-2 fs-3 text-muted" /> Import Data
+          <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
+        </span>
+        <Row className='mt-2'>
           <Col sm={12}>
             <Form.Group className="my-3">
               <Form.Control 

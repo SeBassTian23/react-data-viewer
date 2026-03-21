@@ -1,4 +1,4 @@
-import { useEffect, useId } from 'react'
+import { useEffect, useId, useCallback } from 'react'
 
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -19,6 +19,8 @@ import { ColorGradientDropDown } from '../Main/ColorGradient';
 import { useSelector, useDispatch } from 'react-redux'
 import { plotUpdate } from '../../features/plot.slice';
 
+import useHelp from '../../hooks/useHelp';
+
 
 export default function ModalDialogPlot(props) {
 
@@ -26,6 +28,7 @@ export default function ModalDialogPlot(props) {
   const parameters = useSelector(state => state.parameters) 
 
   const dispatch = useDispatch()
+  const help = useHelp();
 
   const { register, watch, reset, setValue, getValues } = useForm();
 
@@ -46,6 +49,9 @@ export default function ModalDialogPlot(props) {
 
   }, [props.show])
 
+  const handleClickHelp = useCallback( ()=>{
+    help.open("Help | Plot Data", `help/md/plot.md#${props.type}`)
+  },[props.type] )
 
   return (
     <Modal
@@ -54,7 +60,11 @@ export default function ModalDialogPlot(props) {
       aria-labelledby="contained-modal-title-vcenter"
     >
       <Modal.Body>
-        <Row>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-graph-up me-2 fs-3 text-muted" /> Plot Data | {String(props.type).replace(/^./, match => match.toUpperCase())}
+          <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
+        </span>
+        <Row className='mt-2'>
           <Col className='border-end'>
             <PlotTypeSelect {...props} register={register} />
           </Col>
@@ -88,7 +98,7 @@ function PlotTypeSelect(props) {
   return (
     <>
       <div className='border-bottom'>
-        <Form.Group className="my-3">
+        <Form.Group className="mb-3">
           <Form.Label className='form-label-header'>Title</Form.Label>
           <Form.Control
             size='sm'

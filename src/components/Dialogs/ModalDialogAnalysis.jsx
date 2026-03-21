@@ -70,8 +70,11 @@ export default function ModalDialogAnalysis(props) {
       size={'lg'}
     >
       <Modal.Body>
-        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button></span>
-        <span className="d-block fs-4"><i className="bi bi-journal-richtext fs-2 text-muted" /> Analysis</span>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-journal-richtext me-2 fs-3 text-muted" /> Analysis
+          <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
+        </span>
+
         <Row>
           <Col sm={12} lg={8}>
             <Form className='mt-2'>

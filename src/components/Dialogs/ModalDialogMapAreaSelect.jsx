@@ -30,7 +30,9 @@ export default function ModalDialogMapAreaSelect(props) {
       keyboard={true}
     >
       <Modal.Body>
-        <h5>Filter By Map Area</h5>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-pin-map me-2 fs-3 text-muted" /> Filter By Map Area
+        </span>
         <Form.Group className='my-2'>
           <Form.Label className='form-label-header'>Selection Method</Form.Label>
           <Form.Select size='sm' aria-label="Selection Method" {...register("selectionMethod")} defaultValue='i' >
