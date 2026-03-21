@@ -174,7 +174,7 @@ export default function Dashboard(props) {
               disabled={state.length === 0}
             >
               <i className='bi bi-window-x' /> Reset
-          </Button>         
+          </Button>
           <Button size='sm'
               aria-label='Show Help'
               variant={props.darkmode ? "outline-light" : "outline-dark"}
@@ -211,8 +211,8 @@ export default function Dashboard(props) {
                   bg='danger' 
                   className='gap-2 text-nowrap'
                   title='Number of Currently Flagged Datapoints'>Flagged Data ({flags.datumIds.length})
-                    <span 
-                      className='btn-close ms-2'
+                    <i 
+                      className='bi bi-x-circle-fill ms-2'
                       title="Deactivate Flagged Data" 
                       role='button' 
                       aria-description='deactivate flagged data' onClick={handleDeactivateFlags} />
@@ -226,8 +226,8 @@ export default function Dashboard(props) {
                   bg='primary'
                   className='gap-2 text-nowrap'
                   title="Applied Threshold" > {itm.name}: {(itm.min && itm.max)? itm.min + ' - ' + itm.max : (itm.min? '≳ '+ String(itm.min) : '≲ ' + String(itm.max))}
-                    <span 
-                      className='btn-close ms-2'
+                    <i 
+                      className='bi bi-x-circle-fill ms-2'
                       role='button'
                       title="Deactivate Threshold"
                       aria-description='deactivate threshold'
