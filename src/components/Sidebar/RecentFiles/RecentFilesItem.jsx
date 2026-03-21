@@ -1,6 +1,11 @@
 import { useCallback } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup';
 
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat)
+
 import useAnalysisImport from '../../../hooks/useAnalysisImport'
 import opfs from '../../../modules/opfs';
 import humanFileSize from '../../../helpers/humanFileSize'
@@ -103,7 +108,7 @@ export default function RecentFilesItem(props) {
     >
       <strong className='d-block text-truncate'><i className="bi bi-clock-history" /> {name}</strong>
       <small className='d-block'>{notes.length < 200? notes : notes.slice(0,199) +'…' }</small>
-      <small>{new Date(props.lastModified).toLocaleString()} &bull; {humanFileSize(filesize)}</small>
+      <small>{dayjs(props.lastModified).format('L LT')} &bull; {humanFileSize(filesize)}</small>
       { (props.hasMenu && showHoverContent) && <RecentFilesItemMenu name={name} file={props.name} />}
     </ListGroup.Item>
   )
