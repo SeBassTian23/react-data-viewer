@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 import { datasubsetToggled } from '../../../features/datasubset.slice'
 import {selectedThresholds} from '../../../store/thresholds';
 import useGetFilteredData from '../../../hooks/useGetFilteredData'
+import useHoverMenu from '../../../hooks/useHoverMenu'
 
 export default function DataSubsetItem(props) {
 
@@ -38,11 +39,13 @@ export default function DataSubsetItem(props) {
     setCount(query)
   }, [thresholds, props.filter, stateFlags.checksum])
 
+  const { handleMouseEnter, handleMouseLeave } = useHoverMenu(setShowHoverContent, 250);  
+
   return (
     <>
       <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center"
-        onMouseEnter={() => setShowHoverContent(true)}
-        onMouseLeave={() => { if (!show) setShowHoverContent(false) }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onDoubleClick={() => dispatch(datasubsetToggled(props.id))}
         title={`${props.name}${props.count !== count ? ` [${count}/${props.count}]` : ` [${props.count}]`}`}
         style={props.isVisible ? { background: `linear-gradient(90deg, ${tinycolor(props.color).setAlpha(.2)} 5%, transparent 50%)` } : {}}

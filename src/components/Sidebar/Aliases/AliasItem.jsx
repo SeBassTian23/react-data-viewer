@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { parametersEdit } from '../../../features/parameter.slice';
 
 import AliasItemMenu from './AliasItemMenu';
+import useHoverMenu from '../../../hooks/useHoverMenu';
 
 export default function AliasItem({ id, alias, name, ...props }) {
 
@@ -28,10 +29,12 @@ export default function AliasItem({ id, alias, name, ...props }) {
     setInputValue(input);
   }
 
+  const { handleMouseEnter, handleMouseLeave } = useHoverMenu(setShowHoverContent, 250);
+
   return (
     <ListGroup.Item as="li"
-      onMouseEnter={() => setShowHoverContent(true)}
-      onMouseLeave={() => setShowHoverContent(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="d-flex justify-content-between align-items-start flex-column"
       title={alias ? `${alias} (${name})` : name}
     >

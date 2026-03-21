@@ -14,6 +14,7 @@ import { bookmarkEdit } from '../../../features/bookmark.slice';
 
 // TODO: Move bookmark update into hook
 import { updateDocByField, saveDatabase } from '../../../modules/database'
+import useHoverMenu from '../../../hooks/useHoverMenu'
 
 dayjs.extend(localizedFormat)
 
@@ -43,11 +44,12 @@ export default function BookmarkItem(props) {
   }
 
   const dispatch = useDispatch();
+  const { handleMouseEnter, handleMouseLeave } = useHoverMenu(setShowHoverContent, 250);
 
   return (
     <ListGroup.Item as="li" className='list-group-item'
-      onMouseEnter={() => setShowHoverContent(true)}
-      onMouseLeave={() => setShowHoverContent(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       title={props.name}
     >
       <span className="d-flex align-items-left">

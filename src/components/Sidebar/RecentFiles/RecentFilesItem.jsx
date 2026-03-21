@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import RecentFilesItemMenu from './RecentFilesItemMenu'
 
 import useModalBusy from "../../../hooks/useModalBusy";
+import useHoverMenu from '../../../hooks/useHoverMenu';
 
 export default function RecentFilesItem(props) {
 
@@ -91,12 +92,14 @@ export default function RecentFilesItem(props) {
     }
   }, [props])
 
+  const { handleMouseEnter, handleMouseLeave } = useHoverMenu(setShowHoverContent, 250);
+
   return (
     (name.toLowerCase().match(hasFilter.toLowerCase()) || notes.toLowerCase().match(hasFilter.toLowerCase()) || hasFilter === '') &&
     <ListGroup.Item as="li" className='list-group-item-action cursor-pointer px-2 py-1 m-0' title={notes}
       onClick={() => handleClickRecent(props)}
-      onMouseEnter={() => setShowHoverContent(true)}
-      onMouseLeave={() => setShowHoverContent(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <strong className='d-block text-truncate'><i className="bi bi-clock-history" /> {name}</strong>
       <small className='d-block'>{notes.length < 200? notes : notes.slice(0,199) +'…' }</small>

@@ -11,6 +11,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ThresholdItemMenu from './ThresholdItemMenu';
+import useHoverMenu from '../../../hooks/useHoverMenu';
 
 export default function ThresholdItem(props) {
 
@@ -46,10 +47,12 @@ export default function ThresholdItem(props) {
     setShowHoverContent(true);
   }
 
+  const { handleMouseEnter, handleMouseLeave } = useHoverMenu(setShowHoverContent, 250);
+
   return (
     <ListGroup.Item as="li" className='d-flex justify-content-between align-items-center list-group-item'
-      onMouseEnter={() => !showEditContent && setShowHoverContent(true)}
-      onMouseLeave={() => setShowHoverContent(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       title={`${param.alias ? param.alias : props.name}${!props.isSelected ? ' - disabled' : ''}`}
     >
       <>
