@@ -206,7 +206,6 @@ export default function Spreadsheet(props) {
             aria-label='Spreadsheet Menu'
             className='d-flex align-items-center'
           >
-            <label className='me-2 fw-bold'>Save as</label>
             <ButtonGroup
               size='sm'
               className='me-2'
