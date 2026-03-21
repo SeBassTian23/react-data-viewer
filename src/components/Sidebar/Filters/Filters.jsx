@@ -62,7 +62,7 @@ export default function Filters() {
           const dataTypeOrg = state.find(param => param.name === item[0] || param.alias === item[0])?.type
           return {
             'name': item[0],
-            'values': [dataType, dataTypeOrg].some(type => ['latitude', 'longitude', 'number'].includes(type)) ? item[1].map(itm => Number(itm)) : item[1],
+            'values': [dataType, dataTypeOrg].some(type => ['latitude', 'longitude', 'number'].includes(type)) && dataType !== 'date-time'? item[1].map(itm => Number(itm)) : item[1],
             'type': dataType
           }
         })
@@ -92,7 +92,7 @@ export default function Filters() {
         const dataTypeOrg = state.find(param => param.name === item[0] || param.alias === item[0])?.type
         return {
           'name': item[0],
-          'values': [dataType, dataTypeOrg].some(type => ['latitude', 'longitude', 'number'].includes(type)) ? item[1].map(itm => Number(itm)) : item[1],
+          'values': [dataType, dataTypeOrg].some(type => ['latitude', 'longitude', 'number'].includes(type)) && dataType !== 'date-time'? item[1].map(itm => Number(itm)) : item[1],
           'type': dataType
         }
       })
