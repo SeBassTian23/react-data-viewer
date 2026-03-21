@@ -123,7 +123,12 @@ export default function Dashboard(props) {
 
   const handleReset = () => setPanelFilter([]);
 
-  const panelTypes = [...new Set(state.map(itm => itm.type))]
+  const typeToNameMap = {};
+  widgets.forEach((widget) => {
+    typeToNameMap[widget.type] = widget.name;
+  });
+
+  const panelTypes = [...new Set(state.map(itm => itm.type))].sort((a, b) => typeToNameMap[a].localeCompare(typeToNameMap[b]))
 
   const currentThresholds = thresholds.map(el => {
     return { ...el, name: parameters.find(i => i.name == el.name)?.alias || el.name }
