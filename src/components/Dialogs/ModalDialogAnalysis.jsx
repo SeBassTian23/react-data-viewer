@@ -155,8 +155,12 @@ function AnalysisFileInfo({ files, hasdata, handleClose, setModalImport }) {
     if (typeof (itm) === 'object')
       return <ListGroup.Item as="li" key={idx} className='d-flex align-items-center ps-2'>
         <i className={`${icon(itm.name)} fs-4 me-2`} />
-        <span className='text-muted'>{itm.name} <br />
-          <small className='fw-light'>{ humanFileSize(itm.size)} | {fileExtension(itm.name)} | {dayjs(itm.lastModified).format('L LT')}</small>
+        <span className='text-muted fw-bold d-flex flex-column'>{itm.name}
+          <span className='imported-file-info'>
+            <i className='bi bi-hdd' /> { humanFileSize(itm.size)}
+            <i className='bi bi-file-earmark-text ms-2' /> {fileExtension(itm.name)}
+            <i className='bi bi-calendar2 ms-2' /> {dayjs(itm.lastModified).format('L LT')}
+          </span>
         </span>
       </ListGroup.Item>
   })

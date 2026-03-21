@@ -710,4 +710,8 @@ body[data-bs-theme="dark"] {
   .spreadsheet-container .rgCell, .rgHeaderCell {
     border-right: 1px solid rgb(66, 66, 66);
   }
+.imported-file-info {
+  font-size: small;
+  font-weight: lighter;
+  line-height: 1.2rem;
 }
