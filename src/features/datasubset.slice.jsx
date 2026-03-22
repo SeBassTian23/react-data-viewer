@@ -1,8 +1,48 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-import { defaults as colors } from 'plotly.js/src/components/color/attributes.js'
+import colorSchemes from '../constants/color-schemes'
 
 const initialState = [];
+
+export const datasubsetAdded = createAsyncThunk(
+  'datasubsets/datasubsetAdded',
+  (payload, { getState }) => {
+    const state = getState();
+    const colorPalette = colorSchemes[state.user.colorScheme];
+    const currentDatasubsets = state.datasubsets;
+
+    let addItem = { ...payload };
+    if (!addItem.color) {
+      addItem.color = colorPalette[(currentDatasubsets.length % colorPalette.length + colorPalette.length) % colorPalette.length];
+    }
+    if (!addItem.id) {
+      addItem.id = crypto.randomUUID();
+    }
+    return addItem;
+  }
+)
+
+export const datasubsetMultipleAdded = createAsyncThunk(
+  'datasubsets/datasubsetMultipleAdded',
+  (payload, { getState }) => {
+    const state = getState();
+    const colorPalette = colorSchemes[state.user.colorScheme];
+    const currentDatasubsets = state.datasubsets;
+
+    let addedItems = [];
+    for (let i in payload) {
+      let addItem = { ...payload[i] };
+      if (!addItem.color) {
+        addItem.color = colorPalette[(currentDatasubsets.length + i % colorPalette.length + colorPalette.length) % colorPalette.length];
+      }
+      if (!addItem.id) {
+        addItem.id = crypto.randomUUID();
+      }
+      addedItems.push(addItem);
+    }
+    return addedItems;
+  }
+)
 
 const datasubsetSlice = createSlice({
   name: 'datasubsets',
@@ -19,26 +59,6 @@ const datasubsetSlice = createSlice({
         }
         return item
       })
-    },
-    datasubsetAdded(state, action) {
-      let addItem = { ...action.payload}
-      if(!action.payload?.color)
-        addItem.color = colors[(state.length % colors.length + colors.length) % colors.length]
-      if(!action.payload?.id)
-        addItem.id = crypto.randomUUID() 
-      return [...state, addItem]
-    },
-    datasubsetMultipleAdded(state, action) {
-      let addedItems = []
-      for (let i in action.payload) {
-        let addItem = { ...action.payload[i] }
-        if(!action.payload[i]?.color)
-          addItem.color = colors[(state.length + i % colors.length + colors.length) % colors.length]
-        if(!action.payload[i]?.id)
-          addItem.id = crypto.randomUUID()         
-        addedItems.push(addItem)
-      }
-      return [...state, ...addedItems]
     },
     datasubsetDeleted(state, action) {
       return state.filter((item) => item.id !== action.payload)
@@ -88,8 +108,17 @@ const datasubsetSlice = createSlice({
       });
       return updatedState;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(datasubsetAdded.fulfilled, (state, action) => {
+        return [...state, action.payload];
+      })
+      .addCase(datasubsetMultipleAdded.fulfilled, (state, action) => {
+        return [...state, ...action.payload];
+      });
   }
 })
 
-export const { datasubsetToggled, datasubsetAdded, datasubsetMultipleAdded, datasubsetDeleted, datasubsetsDeleted, datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetEdited, datasubsetDnD } = datasubsetSlice.actions
+export const { datasubsetToggled, datasubsetDeleted, datasubsetsDeleted, datasubsetReset, datasubsetShowAll, datasubsetHideAll, datasubsetEdited, datasubsetDnD } = datasubsetSlice.actions
 export default datasubsetSlice.reducer
