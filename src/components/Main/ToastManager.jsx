@@ -16,6 +16,7 @@ export default function ToastManager() {
           onClose={() => dispatch(removeToast(toast.id))}
           delay={toast.timeout}
           autohide
+          animation={true}
         >
           {toast?.header && <Toast.Header className={`bg-${toast.variant}-subtle`}>
             <i className={`bi ${toast?.icon ? toast.icon : 'bi-app-indicator'} me-2`} />
