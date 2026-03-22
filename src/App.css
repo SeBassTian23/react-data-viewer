@@ -567,6 +567,12 @@ kbd {
   height: 300px;
 }
 
+/** Color Scheme */
+.color-scheme-menu-dd {
+  width: 300px;
+  overflow-y: auto;
+}
+
 /** Bootstrap extend */
 .cursor-pointer {
   cursor: pointer;
