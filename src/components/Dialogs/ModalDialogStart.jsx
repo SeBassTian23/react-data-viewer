@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import { useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -13,6 +14,8 @@ export default function ModalDialogStart(props) {
 
   const [files, setFiles] = useState([])
 
+  const profile = useSelector(state => state.user)
+
   useEffect(() => {
     opfs.fileList().then( e => setFiles(e.filter(f => f.name.match(/\.db$/) ) ))
   },[])
@@ -26,9 +29,9 @@ export default function ModalDialogStart(props) {
       centered
     >
       <Modal.Body className="text-center">
-        { localStorage.getItem('APP_USER_NAME') &&
+        { profile.name &&
           <Row className='border-bottom'>
-            <Col className='text-start fs-5 fw-light text-secondary pb-2'>Welcome Back, {localStorage.getItem('APP_USER_NAME').split(' ')[0]}!</Col>
+            <Col className='text-start fs-5 fw-light text-secondary pb-2'>Welcome Back, <strong>{ profile.name.split(' ')[0]}</strong>!</Col>
           </Row>
         }
         <Row>

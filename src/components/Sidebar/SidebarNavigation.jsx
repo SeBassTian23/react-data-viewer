@@ -1,4 +1,6 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
+import { useSelector } from 'react-redux';
+
 import Button from 'react-bootstrap/Button';
 
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -12,9 +14,8 @@ import ModalDialogUser from '../Dialogs/ModalDialogUser'
 
 export default function SidebarNavigation(props) {
 
-  const navigate = useNavigate()
-
-  const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate();
+  const profile = useSelector(state => state.user)
 
   useEffect(() => {
     if (props.darkmode)
@@ -31,7 +32,7 @@ export default function SidebarNavigation(props) {
   const handleClickDarkmode = useCallback(() => {
     props.setDarkmode(prev => !prev);
 
-    if(localStorage.length > 0)
+    if(profile.allowCookies)
       localStorage.setItem('APP_USER_DARKMODE', !props.darkmode);
 
   }, [props.setDarkmode, props.darkmode]);
@@ -103,7 +104,7 @@ export default function SidebarNavigation(props) {
         <i className="bi bi-journal-richtext fs-5" />
       </Button>
       <Button type="link" variant={null} className='mx-1 user-profile-btn' title='User' onClick={handleClickUserModal}>
-        {avatar ? <div className='rounded ratio ratio-1x1' style={{background: `url(${avatar}) 0% 0% / cover`}}/> : <i className="bi bi-person-square fs-5" />}
+        {profile.avatar ? <div className='rounded ratio ratio-1x1' style={{background: `url(${profile.avatar}) 0% 0% / cover`}}/> : <i className="bi bi-person-square fs-5" />}
       </Button>
       <Button type="button" variant={null} className='mx-1' title='Color Mode' onClick={handleClickDarkmode}>
         {props.darkmode ? <i className="bi bi-moon-stars fs-5" /> : <i className="bi bi-sun fs-5" />}
@@ -116,7 +117,7 @@ export default function SidebarNavigation(props) {
       </Button>
 
       <ModalDialogAnalysis setModalImport={props.setModalImport} show={props.analysisModal} onHide={() => props.setAnalysisModal(false)} />
-      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} darkmode={props.darkmode} setAvatar={setAvatar} />
+      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} darkmode={props.darkmode} />
     </nav>
   )
 }

@@ -3,9 +3,8 @@ import opfs from '../../modules/opfs'
 
 const triggerOPFSSync = debounce(async (file=null, content={}) => {
   try {
-    if(file && opfs.isSupported() && localStorage.length > 0){
+    if(file && opfs.isSupported() && localStorage.getItem('APP_USER_COOKIES') ){
       await opfs.fileWrite(file, JSON.stringify(content, null, 0), false, true );
-      console.log('State saved')
     }
   } catch (error) {
     console.error('Failed to sync to OPFS:', error);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useStore } from 'react-redux'
+import { useStore, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -31,6 +31,7 @@ import opfs from '../../modules/opfs'
 export default function SidebarTabs({ modalImport, setModalImport, darkmode, setTogglesidebar, ...props }) {
 
   const store = useStore();
+  const profile = useSelector(state => state.user)
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -110,11 +111,11 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
   }, [])
 
   useEffect(() => {
-    if (localStorage.length === 0)
+    if (!profile.allowCookies)
       setShowRecent(false);
-    if (opfs.isSupported() && localStorage.length > 0)
+    if (opfs.isSupported() && profile.allowCookies)
       setShowRecent(true);
-  }, [localStorage.length])
+  }, [profile.allowCookies])
 
   const handleNewAnalysis = useCallback(() => modal.show("confirm", {
     header: "New Analysis",

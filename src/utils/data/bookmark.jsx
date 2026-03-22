@@ -5,6 +5,8 @@ import cloneDeep from 'lodash/cloneDeep'
 
 const addBookmarkToDB = (store) => {
 
+  const profile = store.getState().user
+
   const bookmarks = getFilteredData('bookmarks').data({ removeMeta: true });
 
   let name = bookmarks.filter(itm =>
@@ -23,20 +25,18 @@ const addBookmarkToDB = (store) => {
   }
 
   // Get the creator's recent profile
-  let creator = {
-      name: localStorage.getItem('APP_USER_NAME'),
-      email: localStorage.getItem('APP_USER_EMAIL'),
-      avatar: localStorage.getItem('APP_USER_AVATAR')
-    }
-
-  if( !localStorage.getItem('APP_USER_NAME') )
-    creator = null
+  let creator = profile.name? {
+      name: profile.name,
+      email: profile.email,
+      avatar: profile.avatar
+    } : null
 
   // Get a copy of the redux store without the bookmarks
   let storeCopy = null
   if (store) {
     storeCopy = cloneDeep(store.getState())
     delete storeCopy.bookmarks;
+    delete storeCopy.user;
   }
 
   // Item saved to database

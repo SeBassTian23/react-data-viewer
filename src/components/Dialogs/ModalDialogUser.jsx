@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-
-import { useForm } from 'react-hook-form';
+import { useState, useRef, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -13,42 +12,43 @@ import Col from 'react-bootstrap/Col'
 import { getUserAvatarURL } from '../../utils/user/getUserAvatarURL';
 import { getBase64ImageFromURL } from '../../utils/user/getBase64ImageFromURL';
 
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import opfs from '../../modules/opfs'
+
+import { updateProfile } from '../../features/user.slice'
+
+import {ColorSchemeDropDown} from '../Main/ColorScheme'
 
 import useHelp from '../../hooks/useHelp';
 import useToast from '../../hooks/useToast'
 
 export default function ModalDialogUser(props) {
 
+  const profile = useSelector(state => state.user);
+
   const refName = useRef();
   const refEmail = useRef();
   const refCookies = useRef();
   const refGravatar = useRef();
+  const refColorScheme = useRef(profile.colorScheme);
   const refDragCounter = useRef(0)
   const fileInput = useRef();
-
-  const [allowCookies, setAllowCookies] = useState(() => localStorage.length > 0)
-  const [allowGravatar, setAllowGravatar] = useLocalStorage('APP_USER_GRAVATAR', false);
   
-  const [userName, setUserName] = useLocalStorage('APP_USER_NAME', null);
-  const [userEmail, setUserEmail] = useLocalStorage('APP_USER_EMAIL', null);
-  const [userAvatar, setUserAvatar] = useLocalStorage('APP_USER_AVATAR', null);
-
   const [isDragging, setIsDragging] = useState(false)
-  
-  const { register, reset, setValue, getValues } = useForm();
-  
+    
   const help = useHelp();
   const toast = useToast();
+  const dispatch = useDispatch();
   
   const getGravatar = () => {
-    if(getValues('appEmail')?.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm) !== null){
+    const email = refEmail?.current?.value || ""
+    if(email?.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm) !== null){
       
-      const url = getUserAvatarURL( getValues('appEmail'), 200 );
+      const url = getUserAvatarURL( email, 200 );
 
       if(url){
-        getBase64ImageFromURL(url).then((base64img) => {setUserAvatar(base64img)}).catch(()=>{
+        getBase64ImageFromURL(url).then((base64img) => {
+          dispatch(updateProfile({avatar: base64img}))
+        }).catch(()=>{
           toast.error('Failed to Fetch your Gravatar', 'Gravatar', 'bi-person-square')
         });
       }
@@ -59,66 +59,23 @@ export default function ModalDialogUser(props) {
   }
   
   const handleClose = () => {
-    if (allowCookies) {
-      setUserName( getValues('appUser') )
-      setUserEmail( getValues('appEmail') )
-      
-      if (allowGravatar) {
-        getGravatar();
-      }
-    }
+    dispatch(updateProfile({
+      allowCookies: refCookies?.current?.checked,
+      avatar: profile.avatar || null,
+      colorScheme: refColorScheme.current || 'default',
+      email: refEmail?.current?.value || "",
+      enableGravatar: refGravatar?.current?.checked,
+      name: refName?.current?.value || "",
+    }));
 
     // Hide modal dialog
     props.onHide();
   }
-    
-  useEffect(() => {
-
-    if(allowCookies) {
-      // Make sure there is one element in the localStorage
-      localStorage.setItem('APP_USER_COOKIES', 1);
-      // Request persistant storage
-      opfs.isPersistent(true)
-      reset();
-    }
-    
-    if (!allowCookies) {      
-      setUserName(null);
-      setUserEmail(null);
-      setUserAvatar(null);
-      setAllowGravatar(false);
-      
-      // final cleanup
-      localStorage.clear();
-      
-      // Remove data from storage
-      if( opfs.isSupported() )
-        opfs.clearStorage();
-
-      // Reset form
-      reset();
-    }
-    
-  }, [allowCookies])
-
-  useEffect(()=>{
-    props.setAvatar(userAvatar)
-  },[userAvatar])  
-  
-  useEffect(() => {
-    if (allowCookies) {
-      setValue('appUser', userName, { shouldTouch: true })
-      setValue('appEmail', userEmail, { shouldTouch: true })
-    }
-  }, [])
-
-  useEffect( ()=>{
-    if(allowGravatar)
-      getGravatar();
-  },[allowGravatar])
 
   const handleClickDelete = useCallback(()=>{
-    setUserAvatar(null)
+    dispatch(updateProfile({
+      avatar: null
+    }));
   },[])
 
   const handleClickFolder = useCallback(()=>{
@@ -127,14 +84,13 @@ export default function ModalDialogUser(props) {
   },[])
 
   const handleDroppedFile = useCallback((file)=> {
-    if (!file || !file.type.startsWith("image/") || !allowCookies || allowGravatar) return;
+    if (!file || !file.type.startsWith("image/") || !profile.allowCookies || profile.enableGravatar) return;
       const reader = new FileReader();
       reader.onload = () => {
-        setUserAvatar(reader.result)
-        props.setAvatar(userAvatar);
+        dispatch(updateProfile({avatar: reader.result}))
       }
       reader.readAsDataURL(file);
-  }, [allowCookies,allowGravatar]);
+  }, [profile.allowCookies,profile.enableGravatar]);
 
   const onDrop = (e) => {
     e.preventDefault();
@@ -163,6 +119,36 @@ export default function ModalDialogUser(props) {
     handleDroppedFile(e.target.files[0]);
   };
 
+  const handleCookieSwitch = (e) => {
+    if(e.target.checked){
+      // Activate Storage
+      localStorage.setItem('APP_USER_COOKIES',1)
+      // Update State
+      dispatch(updateProfile({allowCookies: true}))
+      // Request persistant storage
+      opfs.isPersistent(true)
+    }
+    else{
+      // "Deactivate" Storage
+      localStorage.removeItem('APP_USER_COOKIES')
+      // Update State
+      dispatch(updateProfile({allowCookies: false}))
+      // Remove data from storage
+      if( opfs.isSupported() )
+        opfs.clearStorage();
+    }
+  }
+
+  const handleGravatarSwitch = (e) => {
+    if(e.target.checked){
+      dispatch(updateProfile({enableGravatar: true}))
+      getGravatar();
+    }
+    else{
+      dispatch(updateProfile({enableGravatar: false}))
+    }
+  }
+
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | User Profile", "help/md/profile.md")
   },[] )
@@ -177,22 +163,25 @@ export default function ModalDialogUser(props) {
       centered
     >
       <Modal.Body>
-        <span className='float-end'><Button variant={null} onClick={handleClickHelp}><i className='bi bi-question-circle' /></Button></span>
-        <span className="d-flex align-items-center fs-4"><i className='bi bi-person-square me-2 fs-2 text-muted' /> Profile</span>
+        <span className="d-flex align-items-center fs-5">
+          <i className="bi bi-person-square me-2 fs-3 text-muted" /> Profile
+          <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
+        </span>
+
         <Row className='mt-2'>
           <Col className='mt-2 text-center'>
-            <div className={`ratio ratio-1x1 img-thumbnail text-center${isDragging? ' bg-light-subtle' : ''}`} style={userAvatar? {background: `url(${userAvatar}) 0% 0% / cover`} : {} }
+            <div className={`ratio ratio-1x1 img-thumbnail text-center${isDragging? ' bg-light-subtle' : ''}`} style={profile.avatar? {background: `url(${profile.avatar}) 0% 0% / cover`} : {} }
               onDrop={onDrop}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={onDragEnter}
               onDragLeave={onDragLeave}
             >
-              {!userAvatar && <i className="bi bi-person-bounding-box fs-1 opacity-25 text-muted" style={{ height: 'inherit', marginTop: '30%'}} />}
+              {!profile.avatar && <i className="bi bi-person-bounding-box fs-1 opacity-25 text-muted" style={{ height: 'inherit', marginTop: '30%'}} />}
             </div>
             <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex justify-content-center'>
               <ButtonGroup size='sm' className='mt-1'>
-                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(allowGravatar)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
-                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(allowGravatar)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(profile.enableGravatar || !profile.allowCookies)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(profile.enableGravatar || !profile.allowCookies)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
               </ButtonGroup>
             </ButtonToolbar>
             <Form.Control onChange={onFileChange} required type="file" ref={fileInput} multiple={false} accept="image/png, image/webp, image/svg+xml, image/jpeg, image/tiff, image/gif" className='d-none' />
@@ -204,10 +193,9 @@ export default function ModalDialogUser(props) {
                 <Form.Control 
                   ref={refName}
                   type="text"
-                  {...register("appUser")}
                   placeholder="My Name"
-                  defaultValue=''
-                  disabled={!allowCookies}
+                  defaultValue={profile.name || ""}
+                  disabled={!profile.allowCookies}
                   autoComplete='given-name' />
               </Form.Group>
 
@@ -216,10 +204,9 @@ export default function ModalDialogUser(props) {
                 <Form.Control
                   ref={refEmail}
                   type="email"
-                  {...register("appEmail")}
                   placeholder="email@domain.org"
-                  defaultValue=''
-                  disabled={!allowCookies}
+                  defaultValue={profile.email || ""}
+                  disabled={!profile.allowCookies}
                   autoComplete='email' />
               </Form.Group>
 
@@ -229,19 +216,23 @@ export default function ModalDialogUser(props) {
                   type="switch"
                   id="allow-cookies"
                   label={<>Remember me <small className='text-muted'>(Allow Cookies)</small></>}
-                  checked={allowCookies}
-                  onChange={(e) => setAllowCookies(e.target.checked)}
+                  checked={profile.allowCookies}
+                  onChange={handleCookieSwitch}
                   ref={refCookies}
                 />
                 <Form.Check // prettier-ignore
                   type="switch"
                   id="allow-gravatar"
                   label={<>Use Gravatar <small className='text-muted'>(<a href='https://gravatar.com' target='_blank'>gravatar.com</a>)</small></>}
-                  checked={allowGravatar}
-                  disabled={!allowCookies}
-                  onChange={(e) => setAllowGravatar(e.target.checked)}
+                  checked={profile.enableGravatar}
+                  disabled={!profile.allowCookies}
+                  onChange={handleGravatarSwitch}
                   ref={refGravatar}
                 />
+              </Form.Group>
+              <Form.Group>
+                <span className='form-label ms-2'>Subset Color Palettes</span>
+                <ColorSchemeDropDown refColorScheme={refColorScheme} disabled={!profile.allowCookies} />
               </Form.Group>
             </Form>
           </Col>
