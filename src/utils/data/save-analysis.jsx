@@ -10,6 +10,7 @@ const saveAnalysisToFile = (store = null) => {
   if (store) {
     storeCopy = cloneDeep(store)
     delete storeCopy.bookmarks;
+    delete storeCopy.user;
   }
 
   // Prevent saving empty analysis
