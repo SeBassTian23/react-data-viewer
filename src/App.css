@@ -696,7 +696,7 @@ span.form-text.p-1 + p.small.px-2:not(:first-child):not(:last-child) {
 }
 
 /* Badge Pills */
-.rounded-pill {
+#dv-dashboard .rounded-pill {
   backdrop-filter: opacity(0.8);
   font-weight: 400 !important;
 }
