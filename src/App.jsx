@@ -26,7 +26,7 @@ dbInit();
 function App() {
 
   let initDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches || false;
-  if(localStorage.length > 0 && localStorage.getItem('APP_USER_DARKMODE'))
+  if(localStorage.getItem('APP_USER_COOKIES') && localStorage.getItem('APP_USER_DARKMODE'))
     initDarkMode = JSON.parse(localStorage.getItem('APP_USER_DARKMODE'))
 
   const [darkmode, setDarkmode] = useState(initDarkMode);
@@ -35,7 +35,7 @@ function App() {
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia("(prefers-color-scheme: dark)").matches
 
-      if(localStorage.length > 0 && localStorage.getItem('APP_USER_DARKMODE'))
+      if(localStorage.getItem('APP_USER_COOKIES') && localStorage.getItem('APP_USER_DARKMODE'))
         setDarkmode(JSON.parse(localStorage.getItem('APP_USER_DARKMODE')))
       else
         setDarkmode(doesMatch)
