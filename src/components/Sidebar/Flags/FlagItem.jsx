@@ -2,7 +2,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 
 export default function FlagItem({ onClick, ...props }) {
 
-  const comment = props.comment || "undefined reason";
+  const comment = props.comment || "Undefined Reason";
 
   return (
     <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center"
