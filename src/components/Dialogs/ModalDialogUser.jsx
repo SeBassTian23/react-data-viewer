@@ -84,14 +84,59 @@ export default function ModalDialogUser(props) {
       fileInput.current.click();
   },[])
 
-  const handleDroppedFile = useCallback((file)=> {
-    if (!file || !file.type.startsWith("image/") || !profile.allowCookies || profile.enableGravatar) return;
-      const reader = new FileReader();
-      reader.onload = () => {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
+
+  const handleDroppedFile = useCallback((file) => {
+    if (!file || !allowedTypes.includes(file.type) || !profile.allowCookies || profile.enableGravatar) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // We don't have to resize the svg
+      if(file.type == 'image/svg+xml' ){
         dispatch(updateProfile({avatar: reader.result}))
       }
-      reader.readAsDataURL(file);
-  }, [profile.allowCookies,profile.enableGravatar]);
+      else{
+        // Resize Image
+        const img = new Image();
+        img.onload = () => {
+          // Set your desired width and height here
+          const maxWidth = 200; // Example: max width
+          const maxHeight = 200; // Example: max height
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions while maintaining aspect ratio
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          // Create a canvas element
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw the image on the canvas
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert the canvas back to a Data URL
+          const resizedDataUrl = canvas.toDataURL(file.type);
+          dispatch(updateProfile({ avatar: resizedDataUrl }));
+        };
+        img.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  }, [profile.allowCookies, profile.enableGravatar]);
+
 
   const onDrop = (e) => {
     e.preventDefault();
