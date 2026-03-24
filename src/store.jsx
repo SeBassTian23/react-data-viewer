@@ -43,6 +43,9 @@ const localStorageMiddleware = store => next => action => {
           case 'colorScheme':
             localStorage.setItem('APP_USER_COLOR_PALETTE', value || 'default')
             break;
+          case 'darkmode':
+            localStorage.setItem('APP_USER_DARKMODE', value || 'system')
+            break;
           case 'email':
             localStorage.setItem('APP_USER_EMAIL', value)
             break;

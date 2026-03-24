@@ -48,6 +48,10 @@
     font-size: 0.5rem;
     color: initial;
   }
+  button:nth-child(3) {
+    font-size: 1.5rem;
+    background: transparent;
+  }
 }
 
 .column-dropdown > div {

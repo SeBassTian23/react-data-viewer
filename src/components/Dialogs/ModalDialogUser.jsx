@@ -30,6 +30,7 @@ export default function ModalDialogUser(props) {
   const refCookies = useRef();
   const refGravatar = useRef();
   const refColorScheme = useRef(profile.colorScheme);
+  const refTheme = useRef();
   const refDragCounter = useRef(0)
   const fileInput = useRef();
   
@@ -149,6 +150,17 @@ export default function ModalDialogUser(props) {
     }
   }
 
+  const handleChangeTheme = useCallback(() => {
+
+    if(refTheme.current){
+      let mode = refTheme.current?.value || 'system'
+
+      props.setdarkmode(mode)
+      dispatch(updateProfile({darkmode: mode}))
+    }
+
+  }, [props.setDarkmode, props.darkmode]);
+
   const handleClickHelp = useCallback( ()=>{
     help.open("Help | User Profile", "help/md/profile.md")
   },[] )
@@ -170,21 +182,26 @@ export default function ModalDialogUser(props) {
 
         <Row className='mt-2'>
           <Col className='mt-2 text-center'>
-            <div className={`ratio ratio-1x1 img-thumbnail text-center${isDragging? ' bg-light-subtle' : ''}`} style={profile.avatar? {background: `url(${profile.avatar}) 0% 0% / cover`} : {} }
+            <div className={`ratio ratio-1x1 img-thumbnail${isDragging? ' bg-light-subtle' : ''}`} style={profile.avatar? {background: `url(${profile.avatar}) 0% 0% / cover`} : {} }
               onDrop={onDrop}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={onDragEnter}
               onDragLeave={onDragLeave}
             >
-              {!profile.avatar && <i className="bi bi-person-bounding-box fs-1 opacity-25 text-muted" style={{ height: 'inherit', marginTop: '30%'}} />}
+              {!profile.avatar && <div className="text-center text-muted">
+                <i className="bi bi-person-bounding-box fs-1 opacity-25 d-block" style={{marginTop: '30%'}}/>
+                <span className="d-block" style={{fontSize: 'x-small'}}>
+                  Drag image here
+                </span>
+              </div>}
             </div>
             <ButtonToolbar aria-label="Toolbar with button groups" className='d-flex justify-content-center'>
               <ButtonGroup size='sm' className='mt-1'>
-                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(profile.enableGravatar || !profile.allowCookies)} className='border-0 rounded-0'><i className='bi bi-folder2-open' /> File</Button>
+                <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickFolder} disabled={(profile.enableGravatar || !profile.allowCookies)} className='border-0 rounded-0'><i className='bi bi-upload' /> File</Button>
                 <Button variant={props.darkmode? "outline-secondary" : "outline-dark"} onClick={handleClickDelete} disabled={(profile.enableGravatar || !profile.allowCookies)} className='border-0 rounded-0'><i className='bi bi-x-circle' /> Delete</Button>
               </ButtonGroup>
             </ButtonToolbar>
-            <Form.Control onChange={onFileChange} required type="file" ref={fileInput} multiple={false} accept="image/png, image/webp, image/svg+xml, image/jpeg, image/tiff, image/gif" className='d-none' />
+            <Form.Control onChange={onFileChange} required type="file" ref={fileInput} multiple={false} accept="image/png, image/webp, image/svg+xml, image/jpeg, image/gif" className='d-none' />
           </Col>
           <Col sm={8}>
             <Form>
@@ -193,7 +210,7 @@ export default function ModalDialogUser(props) {
                 <Form.Control 
                   ref={refName}
                   type="text"
-                  placeholder="My Name"
+                  placeholder="Name"
                   defaultValue={profile.name || ""}
                   disabled={!profile.allowCookies}
                   autoComplete='given-name' />
@@ -230,9 +247,23 @@ export default function ModalDialogUser(props) {
                   ref={refGravatar}
                 />
               </Form.Group>
-              <Form.Group>
-                <span className='form-label ms-2'>Subset Color Palettes</span>
+              <Form.Group className="mb-3">
+                <span className='form-label mb-2 d-inline-block'>Subset Color Palettes</span>
                 <ColorSchemeDropDown refColorScheme={refColorScheme} disabled={!profile.allowCookies} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="themeSelect">Theme</Form.Label>
+                <Form.Select 
+                  size="sm"
+                  id="themeSelect"
+                  ref={refTheme}
+                  onChange={handleChangeTheme}
+                  value={String(profile.darkmode)}
+                >
+                  <option value="system">System</option>
+                  <option value="false">Light</option>
+                  <option value="true">Dark</option>
+                </Form.Select>
               </Form.Group>
             </Form>
           </Col>

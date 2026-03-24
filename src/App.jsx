@@ -26,8 +26,10 @@ dbInit();
 function App() {
 
   let initDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches || false;
-  if(localStorage.getItem('APP_USER_COOKIES') && localStorage.getItem('APP_USER_DARKMODE'))
-    initDarkMode = JSON.parse(localStorage.getItem('APP_USER_DARKMODE'))
+  let userSelectedMode = localStorage.getItem('APP_USER_DARKMODE');
+  
+  if(userSelectedMode && userSelectedMode !== 'system')
+    initDarkMode = JSON.parse(userSelectedMode)
 
   const [darkmode, setDarkmode] = useState(initDarkMode);
 
@@ -35,11 +37,25 @@ function App() {
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia("(prefers-color-scheme: dark)").matches
 
-      if(localStorage.getItem('APP_USER_COOKIES') && localStorage.getItem('APP_USER_DARKMODE'))
-        setDarkmode(JSON.parse(localStorage.getItem('APP_USER_DARKMODE')))
-      else
+      let userSelectedMode = localStorage.getItem('APP_USER_DARKMODE');
+      if(userSelectedMode && userSelectedMode !== 'system'){
+        let selected = JSON.parse(userSelectedMode)
+        setDarkmode(selected)
+        if(selected)
+          document.querySelector("body").setAttribute('data-bs-theme', 'dark');
+        else
+          document.querySelector("body").setAttribute('data-bs-theme', 'light');
+      }
+      else{
         setDarkmode(doesMatch)
+        if(doesMatch)
+          document.querySelector("body").setAttribute('data-bs-theme', 'dark');
+        else
+          document.querySelector("body").setAttribute('data-bs-theme', 'light');
+      }
     }
+    
+    handleDarkModePrefferedChange()
 
     window
       .matchMedia("(prefers-color-scheme: dark)")
@@ -51,7 +67,8 @@ function App() {
         .removeEventListener("change", handleDarkModePrefferedChange)
     }
 
-  },[])
+
+  },[darkmode])
 
   return (
     <Suspense fallback={<h1>Loading Application…</h1>}>

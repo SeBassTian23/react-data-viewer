@@ -17,25 +17,9 @@ export default function SidebarNavigation(props) {
   const navigate = useNavigate();
   const profile = useSelector(state => state.user)
 
-  useEffect(() => {
-    if (props.darkmode)
-      document.querySelector("body").setAttribute('data-bs-theme', 'dark');
-    else
-      document.querySelector("body").setAttribute('data-bs-theme', 'light')
-  }, [props.darkmode])
-
-
   const handleClickAnalysisModal = useCallback(() => props.setAnalysisModal(true), [props.setAnalysisModal]);
   
   const handleClickUserModal = useCallback(() => props.setUserModal(true), [props.setUserModal]);
-  
-  const handleClickDarkmode = useCallback(() => {
-    props.setDarkmode(prev => !prev);
-
-    if(profile.allowCookies)
-      localStorage.setItem('APP_USER_DARKMODE', !props.darkmode);
-
-  }, [props.setDarkmode, props.darkmode]);
   
   const handleClickToggleSidebar = useCallback(() => {
     props.setToggle(prev => !prev);
@@ -101,13 +85,10 @@ export default function SidebarNavigation(props) {
         </li>
       </ul>
       <Button type="link" variant={null} className='mx-1' title='About the Analysis' onClick={handleClickAnalysisModal}>
-        <i className="bi bi-journal-richtext fs-5" />
+        <i className="bi bi-journal-richtext" />
       </Button>
       <Button type="link" variant={null} className='mx-1 user-profile-btn' title='User' onClick={handleClickUserModal}>
         {profile.avatar ? <div className='rounded ratio ratio-1x1' style={{background: `url(${profile.avatar}) 0% 0% / cover`}}/> : <i className="bi bi-person-square fs-5" />}
-      </Button>
-      <Button type="button" variant={null} className='mx-1' title='Color Mode' onClick={handleClickDarkmode}>
-        {props.darkmode ? <i className="bi bi-moon-stars fs-5" /> : <i className="bi bi-sun fs-5" />}
       </Button>
       <Button type="button" variant={null} className='mx-1' title='Toggle Sidebar' onClick={handleClickToggleSidebar}>
         <span className="sidebar-toggle-icon-stack">
@@ -117,7 +98,7 @@ export default function SidebarNavigation(props) {
       </Button>
 
       <ModalDialogAnalysis setModalImport={props.setModalImport} show={props.analysisModal} onHide={() => props.setAnalysisModal(false)} />
-      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} darkmode={props.darkmode} />
+      <ModalDialogUser show={props.userModal} onHide={() => props.setUserModal(false)} darkmode={props.darkmode} setdarkmode={props.setDarkmode} />
     </nav>
   )
 }
