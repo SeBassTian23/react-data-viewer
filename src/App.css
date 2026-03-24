@@ -725,8 +725,9 @@ body[data-bs-theme="dark"] {
   aspect-ratio: 1;
   border-radius: 50%;
   border: none;
+  transition: 0.1s ease-in-out;
   &:hover {
-    filter: blur(1px);
+    transform: scale(1.2);
   }
 }
 
