@@ -178,8 +178,7 @@ export default function Spreadsheet(props) {
     const ws = utils.json_to_sheet( resolveSubsetNames(source) )
     const wb = utils.book_new();
     utils.book_append_sheet(wb, ws, 'Sheet1');
-    const filename = `${filename}.xlsx`;
-    writeFile(wb, filename);
+    writeFile(wb, `${filename}.xlsx`);
   }
 
   function triggerDownload(dataStr, filename, mime) {
