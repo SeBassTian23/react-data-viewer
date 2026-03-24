@@ -128,7 +128,12 @@ export default function Dashboard(props) {
     typeToNameMap[widget.type] = widget.name;
   });
 
-  const panelTypes = [...new Set(state.map(itm => itm.type))].sort((a, b) => typeToNameMap[a].localeCompare(typeToNameMap[b]))
+  const panelTypes = [...new Set(state.map(itm => itm.type))].sort((a, b) => {
+    const nameA = typeToNameMap[a] || "";
+    const nameB = typeToNameMap[b] || "";
+    return nameA.localeCompare(nameB);
+  });
+
 
   const currentThresholds = thresholds.map(el => {
     return { ...el, name: parameters.find(i => i.name == el.name)?.alias || el.name }
@@ -159,7 +164,7 @@ export default function Dashboard(props) {
                     <Form.Check
                       type='checkbox'
                       id={`filter-${type}`}
-                      label={widgets.find(itm => itm.type == type).name}
+                      label={widgets.find(itm => itm.type == type)?.name || `Unknown (${type})`}
                       checked={panelFilter.includes(type)}
                       onChange={() => handleFilterChange(type)}
                     />
