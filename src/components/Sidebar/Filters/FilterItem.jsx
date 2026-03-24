@@ -143,12 +143,12 @@ export function FilterItemDateTime(props) {
       
       <div className={toggle ? 'd-block' : 'd-none' }>
         <ButtonGroup size='sm'>
-          <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" defaultChecked={true} onClick={() => setInputtype('datetime-local')} />
-          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio1">Date-Time</label>
-          <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off" onClick={() => setInputtype('date')} />
-          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio2">Date</label>
-          <input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off" onClick={() => setInputtype('time')}/>
-          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor="btnradio3">Time</label>
+          <input type="radio" className="btn-check" name="btnradio" id={`${props.id}dt`} autoComplete="off" defaultChecked={true} onClick={() => setInputtype('datetime-local')} />
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor={`${props.id}dt`}>Date-Time</label>
+          <input type="radio" className="btn-check" name="btnradio" id={`${props.id}d`} autoComplete="off" onClick={() => setInputtype('date')} />
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor={`${props.id}d`}>Date</label>
+          <input type="radio" className="btn-check" name="btnradio" id={`${props.id}t`} autoComplete="off" onClick={() => setInputtype('time')}/>
+          <label className="btn btn-outline-secondary filter-datetime-btn" htmlFor={`${props.id}t`}>Time</label>
         </ButtonGroup>
 
         <Form.Check
