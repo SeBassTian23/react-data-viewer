@@ -57,6 +57,7 @@ export default function DataSubsetItem(props) {
           </span>
           <small className="d-inline-block text-truncate fw-light text-muted">
             <i className="bi bi-filter" /> {props.filter.map(itm => itm.name === "$loki"? "Selected Rows" : parameters.find(p => p.name == itm.name )?.alias || itm.name).join(', ')}
+            {props.filter.length == 0 && "No filters"}
           </small>
         </span>
         <span className={`align-self-start text-nowrap font-monospace text-${props.count !== count ? " text-danger" : ""}`} style={!props.isVisible ? { 'opacity': 0.25, fontSize: 'small' } : {fontSize: 'small'}}><i className='bi bi-database' />{props.count !== count? count : props.count}</span>

@@ -32,11 +32,6 @@ const buildGeoJSON = ({ datasets = [], thresholds = [], parameters = [], ignore 
     });
   }
 
-  if (datasets.length === 0) {
-    data = getFilteredData('data', { thresholds: thresholdsCopy, dropna: cols, ignore }).data({ removeMeta: false })
-    colors = Array(data.length).fill('#ff0000')
-  }
-
   if (datasets.length > 0) {
     for (let series in datasets) {
       if (!datasets[series].isVisible)

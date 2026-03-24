@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import PanelStatistics from './helpers/PanelStatistics'
 import statsSummary from '../../utils/statistics/statsSummary'
 import useGetFilteredData from '../../hooks/useGetFilteredData';
+import PanelWarning from './helpers/PanelWarning';
 
 export default function SummaryPanel(props) {
   return (
@@ -41,15 +42,6 @@ function CalculateSummary(props) {
         
     let summary = [];
   
-    if (subsets.length === 0) {
-      let query = getFilteredData('data', { thresholds, dropna: parameter }).data({ removeMeta: true })
-      let summarydata = getSeries(query, parameter)[parameter] || []
-      summary.push({
-        ...statsSummary(summarydata, 1-confidenceLevel),
-        ...{color: 'blue', name: 'All Data' }
-      })
-    }
-  
     if (subsets.length > 0) {
       for (let series in subsets) {
         let query = getFilteredData('data', { filters: subsets[series].filter, thresholds, dropna: parameter })
@@ -66,6 +58,7 @@ function CalculateSummary(props) {
   },[subsets, thresholds, parameter])
 
   return (<>
+    { results.length === 0 && <PanelWarning warning={`Select data subset(s) for a "${parameterName}" summary.`}/>}
     { results.length > 0 && results.map((itm, idx) => {
       return (
         <Table size="sm" key={idx}>

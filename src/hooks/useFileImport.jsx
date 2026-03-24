@@ -9,8 +9,10 @@ import parseMultispeQJSON, {isMultispeQData} from '../utils/data/parse-multispeq
 import wideToLong from '../utils/data/wide-to-long';
 import { addDataJSON, parameters, saveDatabase, setFilename } from '../modules/database';
 
+import useGetFilteredData from './useGetFilteredData';
+
 import { parametersAdded } from '../features/parameter.slice';
-import { datasubsetReset } from '../features/datasubset.slice';
+import { datasubsetReset, datasubsetAdded } from '../features/datasubset.slice';
 import { analysisAddFile, analysisAppendFile, analysisUpdate } from '../features/analysis.slice';
 
 export const useFileImport = () => {
@@ -20,6 +22,7 @@ export const useFileImport = () => {
   const [isBusy, setIsBusy] = useState(false);
   const [fileInvalid, setFileInvalid] = useState(false);
   const dispatch = useDispatch();
+  const {getFilteredData} = useGetFilteredData();
 
   const processFile = async (values, onComplete) => {
     if (values.file === "" || values.file.length === 0) {
@@ -93,6 +96,16 @@ export const useFileImport = () => {
           }
 
           saveDatabase();
+
+          const selection = {
+            name: "All Data",
+            count: getFilteredData('data').data().length,
+            isVisible: true,
+            filter: []
+          }
+      
+          // Add Filter to Series
+          dispatch(datasubsetAdded(selection))
           
           onComplete({ success: true, message: file.name });
         } else {

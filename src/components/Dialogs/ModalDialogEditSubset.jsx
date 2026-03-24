@@ -46,9 +46,11 @@ export default function ModalDialogEditSubset(props) {
           />)}
         </div>
         <span className='form-text'>Select different color schemes in your user profile</span>
+        {props.filter.length > 0 && <>
           <hr/>
-        <span className='form-label'>Filter(s)</span>
-        <FilterDescriptionList filter={props.filter} />
+          <span className='form-label'>Filter(s)</span>
+          <FilterDescriptionList filter={props.filter} />
+        </>}
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>
         <Button variant="link" className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' onClick={() => props.onHide()}>

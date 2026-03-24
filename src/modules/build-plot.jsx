@@ -38,16 +38,6 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
   let subsets = datasets.slice(0)
   let data = []
 
-  if (datasets.length === 0) {
-    subsets.push({
-      id: 'all_data',
-      name: 'All Data',
-      color: '#0d6efd',
-      filter: [],
-      isVisible: true
-    })
-  }
-
   // Determine if meta data is needed
   let removeMeta = true
   if (['scatter', 'scatter-lines', 'splom', 'scatter3d','mesh3d', 'surface', 'boxplot', 'violinplot', 'line-array-y-only'].includes(settings.plottype)) {
