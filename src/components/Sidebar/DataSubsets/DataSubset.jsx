@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect, useState } from 'react'
 
 import { ReactSortable } from "react-sortablejs";
 
@@ -24,6 +24,8 @@ import useHelp from '../../../hooks/useHelp';
 import useModalConfirm from '../../../hooks/useModalConfirm';
 
 export default function DataSubset(props) {
+
+  const [dataDisabled, setDataDisabled] = useState(true)
 
   const state = useSelector(state => state.datasubsets)
   const dispatch = useDispatch();
@@ -75,6 +77,10 @@ export default function DataSubset(props) {
     }
   }), [])
 
+  useEffect( () => {
+    getDatasetCount('data') > 0? setDataDisabled(false) : setDataDisabled(true)
+  }, [getDatasetCount('data')] )
+
   const handleSelectAll = () => {
 
     const selection = {
@@ -109,7 +115,7 @@ export default function DataSubset(props) {
             <ButtonGroup size='sm' className="me-2" aria-label="Data Subset Reset">
               <Button variant='outline-secondary' onClick={handleClickReset}><i className="bi bi-x-circle" /> Reset</Button>
               <DropdownButton size="sm" variant='outline-secondary'>
-                <Dropdown.Item onClick={handleSelectAll}><i className="bi bi-database" /> Select all Data</Dropdown.Item>
+                <Dropdown.Item onClick={handleSelectAll} disabled={dataDisabled}><i className="bi bi-database" /> Select all Data</Dropdown.Item>
                 <Dropdown.Item onClick={handleClickDeleteHidden}><i className="bi bi-eye-slash-fill" /> Remove hidden</Dropdown.Item>
               </DropdownButton>
             </ButtonGroup>
@@ -118,13 +124,13 @@ export default function DataSubset(props) {
       </Row>
       <Row className={`h-100 overflow-auto${(state.length === 0) ? ' align-items-center' : ''}`}>
         <Col sm={12} className='p-0'>
-          {getDatasetCount('data') === 0 && <div className='text-center'>
+          {dataDisabled && <div className='text-center'>
             <i className='bi bi-box-arrow-in-down text-muted fs-1' />
             <span className='d-block text-muted fs-5'>Import Data</span>
             <p className='small'>To Get Started Import Data from a File.</p>
             <button className="btn btn-sm btn-primary my-2" onClick={props.setModalImport} title='Import Data'><i className='bi bi-box-arrow-in-down' /> Import…</button>
           </div>}
-          {(getDatasetCount('data') > 0 && state.length === 0) ? (
+          {(!dataDisabled && state.length === 0) ? (
             <div className='text-center p-3'>
               <i className='bi bi-database text-muted fs-1' />
               <span className='d-block fs-5'>No Data Selected</span>
