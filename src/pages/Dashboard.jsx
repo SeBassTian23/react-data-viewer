@@ -150,7 +150,7 @@ export default function Dashboard(props) {
           <span className='fs-4 fw-bold'>{analysis.name || 'New Analysis'}</span>
           <small className='text-muted'>Last saved {dayjs(analysis.updated_at).fromNow()}</small>
         </Col>
-        <Col className='pb-1 d-flex gap-2 align-items-center'>
+        <Col className='pb-1 d-flex gap-2 align-items-center text-nowrap'>
           <ButtonGroup>
             <PanelMenuItems darkmode={props.darkmode} />
             <Dropdown className='d-inline btn-group' autoClose={false}>
