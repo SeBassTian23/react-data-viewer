@@ -17,6 +17,7 @@
     "hyparquet": "^1.25.1",
     "is-number": "^7.0.0",
     "jstat": "^1.9.6",
+    "jszip": "^3.10.1",
     "kind-of": "^6.0.3",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.23",

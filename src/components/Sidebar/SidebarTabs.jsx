@@ -25,6 +25,7 @@ import { ShortcutLabel, ShortcutLabelStr } from '../Main/ShortcutLabel'
 import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 import useToast from '../../hooks/useToast';
+import useExport from '../../hooks/useExport';
 
 import opfs from '../../modules/opfs'
 
@@ -38,6 +39,7 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
   const toast = useToast();
   const modal = useModalConfirm();
   const addBookmark = useAddBookmark();
+  const exportToNotebook = useExport();
 
   const [showAbout, setShowAbout] = useState(false)
   const [modalSaveAnalysis, setModalSaveAnalysis] = useState(false);
@@ -93,6 +95,11 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
   useHotkeys('meta+u', (event) => {
     event.preventDefault();
     setTab('RECENT');
+  });
+
+  useHotkeys('meta+ctrl+e', (event) => {
+    event.preventDefault();
+    exportToNotebook.show();
   });
 
   const saveAnalysis = () => {
@@ -164,6 +171,8 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('RECENT')} className='d-flex align-items-center' disabled={!showRecent}><span className='flex-grow-1 me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span><ShortcutLabel shortcutKey="showRecent" /></Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={() => exportToNotebook.show()} className='d-flex align-items-center' title='Download Dashboard as Jupyter/iPython Notebook'><span className='flex-grow-1 me-3'><i className="bi bi-journal-code" /> Export…</span><ShortcutLabel shortcutKey="showExport" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={saveBookmark} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-bookmark-plus" /> Save Bookmark…</span> <ShortcutLabel shortcutKey="saveBookmark" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('BOOKMARKS')} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-bookmarks" /> Bookmarks</span> <ShortcutLabel shortcutKey="showBookmarks" /></Dropdown.Item>

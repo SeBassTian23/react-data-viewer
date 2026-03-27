@@ -58,5 +58,10 @@ export const KEYBOARD_SHORTCUTS = {
     apple: "⇧ ⌘ X",
     windows: "Ctrl+Shift+X",
     description: "Show Spreadsheet"
+  },
+  showExport: {
+    apple: "^ ⌘ E",
+    windows: "Alt+Ctrl+E",
+    description: "Show Export Dialog"
   }
 };

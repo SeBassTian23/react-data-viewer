@@ -17,5 +17,6 @@ The following keyboard shortcuts are supported within the application.
 | Ctrl + Shift + P |    ⇧ ⌘ P    | Show Plots              |
 | Ctrl + Shift + M |    ⇧ ⌘ M    | Show Map                |
 | Ctrl + Shift + X |    ⇧ ⌘ X    | Show Spreadsheet        |
+|  Alt + Ctrl + E  |    ⌘ ^ E    | Export analysis         |
 
 > [!warning] Some browser shortcuts might be overwriten by the application

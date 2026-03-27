@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import ModalDialogConfirm from "../Dialogs/ModalDialogConfirm";
+import ModalDialogExport from "../Dialogs/ModalDialogExport";
 import ModalDialogBusy from "../Dialogs/ModalDialogBusy";
 import ModalDialogAlert from "../Dialogs/ModalDialogAlert";
 import { hideModal } from "../../features/modal.slice";
@@ -172,6 +173,19 @@ export default function ModalManager() {
           }}
         />
       );
+    case "export":
+      return (
+        <ModalDialogExport
+          {...modal.props}
+          header= "Export Analysis"
+          show={() => modal.open
+          }
+          onHide={() => {
+            dispatch(hideModal());
+          }}
+        />
+      );
+
     // add other modal types here...
     default:
       return null;
