@@ -220,7 +220,11 @@
   overflow: auto;
   height: 100vh;
 
-  @media (min-width: 768px) {
+  & .toc {
+    min-width: 275px;
+  }
+
+  @media (min-width: 0px) {
     grid-template-areas:
       "intro"
       "toc"
@@ -249,6 +253,9 @@
 
   #dv-docs-content {
     grid-area: content;
+    pre:has(code) code {
+      white-space: pre-wrap !important;
+    }
   }
 
   .toc {
@@ -296,9 +303,11 @@
       margin-bottom: 0.5rem;
     }
   }
+
   & section {
     margin-bottom: 3rem;
   }
+
   & a.active {
     border-left: 3px solid var(--bs-primary);
     padding-left: 5px;

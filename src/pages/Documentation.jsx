@@ -136,7 +136,7 @@ export default function Documentation(props) {
               remarkPlugins={[remarkGfm]}
               components={{
                 blockquote: ({ node, ...props }) => <blockquote className='blockquote' {...props} />,
-                table: ({ node, ...props }) => <table className='table table-bordered table-w-fit' {...props} />,
+                table: ({ node, ...props }) => <div className='table-responsive'><table className='table table-bordered' {...props} /></div>,
                 img: ({ node, ...props }) => <img className='img-fluid' alt={props.alt || ""} {...props} />
               }}
               rehypePlugins={[
