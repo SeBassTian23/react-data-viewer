@@ -55,7 +55,7 @@ export default function DataSubsetItem(props) {
           <span className="d-inline-block text-truncate">
             {props.name || "Unknown"}
           </span>
-          <small className="d-inline-block text-truncate fw-light text-muted">
+          <small className="d-inline-block text-truncate fw-light text-body-secondary">
             <i className="bi bi-filter" /> {props.filter.map(itm => itm.name === "$loki"? "Selected Rows" : parameters.find(p => p.name == itm.name )?.alias || itm.name).join(', ')}
             {props.filter.length == 0 && "No filters"}
           </small>

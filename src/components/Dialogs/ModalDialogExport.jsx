@@ -32,18 +32,18 @@ export default function ModalDialogExport(props) {
     >
       <Modal.Body className='p-4 row'>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-journal-code me-2 fs-3 text-muted" /> Export Analysis
+          <i className="bi bi-journal-code me-2 fs-3 text-body-secondary" /> Export Analysis
           {/* <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button> */}
         </span>
 
         <Form.Group className="col-12 col-md-12 mt-2">
-          <div className='text-muted fs-6'>File Format</div>
+          <div className='text-body-secondary fs-6'>File Format</div>
           <ListGroup variant='flush'>
             <ListGroup.Item className='px-1'>
               <Form.Check // prettier-ignore
                   type="radio"
                   id={`format-1`}
-                  label={<>Jupyter <small className='text-muted font-monospace'>(.ipynb)</small></>}
+                  label={<>Jupyter <small className='text-body-secondary font-monospace'>(.ipynb)</small></>}
                   name="export-format"
                   value="ipynb"
                   checked={format === "ipynb"}
@@ -54,7 +54,7 @@ export default function ModalDialogExport(props) {
               <Form.Check // prettier-ignore
                 type="radio"
                 id={`format-2`}
-                label={<>RStudio <small className='text-muted font-monospace'>(.rmd)</small></>}
+                label={<>RStudio <small className='text-body-secondary font-monospace'>(.rmd)</small></>}
                 name="export-format"
                 value="rmd"
                 checked={format === "rmd"}
@@ -66,7 +66,7 @@ export default function ModalDialogExport(props) {
               <Form.Check // prettier-ignore
                 type="radio"
                 id={`format-3`}
-                label={<>Excel <small className='text-muted font-monospace'>(.xlsx)</small></>}
+                label={<>Excel <small className='text-body-secondary font-monospace'>(.xlsx)</small></>}
                 name="export-format"
                 value="xlsx"
                 checked={format === "xlsx"}

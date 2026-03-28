@@ -148,7 +148,7 @@ export default function Dashboard(props) {
       <Row className='border-bottom sticky-top bg-sub'>
         <Col sm={12} className='pb-1 d-flex gap-2 align-items-baseline'>
           <span className='fs-4 fw-bold'>{analysis.name || 'New Analysis'}</span>
-          <small className='text-muted'>Last saved {dayjs(analysis.updated_at).fromNow()}</small>
+          <small className='text-body-secondary'>Last saved {dayjs(analysis.updated_at).fromNow()}</small>
         </Col>
         <Col className='pb-1 d-flex gap-2 align-items-center text-nowrap'>
           <ButtonGroup>
@@ -261,8 +261,8 @@ export default function Dashboard(props) {
       {state.length === 0 ?
         <Row className='align-items-center flex-grow-1'>
           <div className="text-center">
-            <i className="bi bi-columns-gap text-muted fs-1" />
-            <span className="d-block text-muted fs-5">Dashboard</span>
+            <i className="bi bi-columns-gap text-body-secondary fs-1" />
+            <span className="d-block text-body-secondary fs-5">Dashboard</span>
             <span className="small">Add Panels to your Dashboard to enrich your Analysis and save your Results.<br />Use the <i className="bi bi-window-plus"></i>&nbsp;button when available to add the view as a Panel.</span>
           </div>
         </Row> :

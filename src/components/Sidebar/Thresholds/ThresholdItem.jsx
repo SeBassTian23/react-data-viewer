@@ -86,9 +86,9 @@ export default function ThresholdItem(props) {
       {!showEditContent && <>
         <span className="d-inline-block text-truncate" style={!props.isSelected ? { 'opacity': 0.25 } : {}}>
           <span className="fw-bold">{param.alias ? param.alias : props.name}</span><br />
-          {(props.min && props.max) && <span className="text-muted small">Between: {props.min} - {props.max}</span>}
-          {(props.min && !props.max) && <span className="text-muted small">Min: {props.min}</span>}
-          {(!props.min && props.max) && <span className="text-muted small">Max: {props.max}</span>}
+          {(props.min && props.max) && <span className="text-body-secondary small">Between: {props.min} - {props.max}</span>}
+          {(props.min && !props.max) && <span className="text-body-secondary small">Min: {props.min}</span>}
+          {(!props.min && props.max) && <span className="text-body-secondary small">Max: {props.max}</span>}
         </span>
         {showHoverContent && (
           <ThresholdItemMenu {...props} setShowEditContent={setShowEditContent} />

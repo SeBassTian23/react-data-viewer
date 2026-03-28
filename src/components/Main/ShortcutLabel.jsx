@@ -6,7 +6,7 @@ import { isApple } from '../../helpers/isApple';
 export const ShortcutLabel = ({ shortcutKey }) => {
   const shortcut = KEYBOARD_SHORTCUTS[shortcutKey];
   return (
-    <small className="text-muted fw-light">
+    <small className="text-body-secondary fw-light">
       {isApple() ? shortcut.apple : shortcut.windows}
     </small>
   );

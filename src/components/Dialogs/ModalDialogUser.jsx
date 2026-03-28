@@ -221,7 +221,7 @@ export default function ModalDialogUser(props) {
     >
       <Modal.Body>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-person-square me-2 fs-3 text-muted" /> Profile
+          <i className="bi bi-person-square me-2 fs-3 text-body-secondary" /> Profile
           <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
         </span>
 
@@ -233,7 +233,7 @@ export default function ModalDialogUser(props) {
               onDragEnter={onDragEnter}
               onDragLeave={onDragLeave}
             >
-              {!profile.avatar && <div className="text-center text-muted">
+              {!profile.avatar && <div className="text-center text-body-secondary">
                 <i className="bi bi-person-bounding-box fs-1 opacity-25 d-block" style={{marginTop: '30%'}}/>
                 <span className="d-block" style={{fontSize: 'x-small'}}>
                   Drag image here
@@ -277,7 +277,7 @@ export default function ModalDialogUser(props) {
                 <Form.Check // prettier-ignore
                   type="switch"
                   id="allow-cookies"
-                  label={<>Remember me <small className='text-muted'>(Allow Cookies)</small></>}
+                  label={<>Remember me <small className='text-body-secondary'>(Allow Cookies)</small></>}
                   checked={profile.allowCookies}
                   onChange={handleCookieSwitch}
                   ref={refCookies}
@@ -285,7 +285,7 @@ export default function ModalDialogUser(props) {
                 <Form.Check // prettier-ignore
                   type="switch"
                   id="allow-gravatar"
-                  label={<>Use Gravatar <small className='text-muted'>(<a href='https://gravatar.com' target='_blank'>gravatar.com</a>)</small></>}
+                  label={<>Use Gravatar <small className='text-body-secondary'>(<a href='https://gravatar.com' target='_blank'>gravatar.com</a>)</small></>}
                   checked={profile.enableGravatar}
                   disabled={!profile.allowCookies}
                   onChange={handleGravatarSwitch}

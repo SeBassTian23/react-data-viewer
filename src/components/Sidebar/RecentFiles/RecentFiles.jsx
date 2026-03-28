@@ -88,7 +88,7 @@ export default function RecentFiles() {
             </ButtonGroup>
           </ButtonToolbar>
           {storage && <>
-            <span className='text-muted' style={{fontSize: 'x-small'}} title={persist? 'Available Storage' : 'Storage is not persistent. Make sure to save your data regularly'}>{ humanFileSize(storage.usage) } of { humanFileSize(storage.quota) } used {!persist && <i className='bi bi-exclamation-triangle-fill text-warning' />}</span>
+            <span className='text-body-secondary' style={{fontSize: 'x-small'}} title={persist? 'Available Storage' : 'Storage is not persistent. Make sure to save your data regularly'}>{ humanFileSize(storage.usage) } of { humanFileSize(storage.quota) } used {!persist && <i className='bi bi-exclamation-triangle-fill text-warning' />}</span>
           </> }
         </Col>
       </Row>
@@ -97,8 +97,8 @@ export default function RecentFiles() {
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
         <Col sm={12} className='p-2'>
-          {recentFiles.length === 0? <div className='text-center text-muted'>
-              <i className='bi bi-clock-history text-muted fs-1' />
+          {recentFiles.length === 0? <div className='text-center text-body-secondary'>
+              <i className='bi bi-clock-history text-body-secondary fs-1' />
               <p className='small'>Recent Analyses</p>
             </div>
             :

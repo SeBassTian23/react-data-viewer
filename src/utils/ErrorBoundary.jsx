@@ -21,7 +21,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return <Card.Body className='p-0 overflow-y'>
-        <PanelWarning warning={<>Something went wrong with the widget.<small className="small text-muted d-block">{this.state.message}</small></>}/>
+        <PanelWarning warning={<>Something went wrong with the widget.<small className="small text-body-secondary d-block">{this.state.message}</small></>}/>
       </Card.Body>;
     }
     return this.props.children;

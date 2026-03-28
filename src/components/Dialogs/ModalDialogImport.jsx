@@ -54,7 +54,7 @@ export default function ModalDialogImport(props) {
     >
       <Modal.Body className='p-4'>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-database-up me-2 fs-3 text-muted" /> Import Data
+          <i className="bi bi-database-up me-2 fs-3 text-body-secondary" /> Import Data
           <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
         </span>
         <Row className='mt-2'>

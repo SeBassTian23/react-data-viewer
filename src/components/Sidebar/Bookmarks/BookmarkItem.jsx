@@ -57,13 +57,13 @@ export default function BookmarkItem(props) {
           <i className="bi bi-bookmark-check" /> {props.name}
         </span>
       </span>
-      {props?.creator && <>{props.creator?.avatar? <div className='rounded ratio ratio-1x1 d-inline-block bookmark-avatar' style={{background: `url(${props.creator.avatar}) 0% 0% / cover`}}/> : <i className='bi bi-person-square' />} <span className='text-muted'>{props.creator?.name}</span></> }
-      <ul className='list-inline text-muted bookmark-ul-icons'>
+      {props?.creator && <>{props.creator?.avatar? <div className='rounded ratio ratio-1x1 d-inline-block bookmark-avatar' style={{background: `url(${props.creator.avatar}) 0% 0% / cover`}}/> : <i className='bi bi-person-square' />} <span className='text-body-secondary'>{props.creator?.name}</span></> }
+      <ul className='list-inline text-body-secondary bookmark-ul-icons'>
         <li className='list-inline-item'><i className='bi bi-columns-gap' /> {props.dashboard}</li>
         <li className='list-inline-item'><i className='bi bi-filter' /> {props.datasubsets}</li>
         <li className='list-inline-item'><i className='bi bi-bar-chart-steps' /> {props.thresholds}</li>
         <li className='list-inline-item'>
-          <i className='bi bi-calendar-event' /> <span className='text-muted'>{dayjs(props.created_at).format('l LT')}</span>
+          <i className='bi bi-calendar-event' /> <span className='text-body-secondary'>{dayjs(props.created_at).format('l LT')}</span>
         </li>
       </ul>
       {(showHoverContent && !showEdit) && <BookmarkItemMenu {...props} onEditClick={() => showEditClick(props.bookmark || '')} /> }

@@ -125,14 +125,14 @@ export default function DataSubset(props) {
       <Row className={`h-100 overflow-auto${(state.length === 0) ? ' align-items-center' : ''}`}>
         <Col sm={12} className='p-0'>
           {dataDisabled && <div className='text-center'>
-            <i className='bi bi-box-arrow-in-down text-muted fs-1' />
-            <span className='d-block text-muted fs-5'>Import Data</span>
+            <i className='bi bi-box-arrow-in-down text-body-secondary fs-1' />
+            <span className='d-block text-body-secondary fs-5'>Import Data</span>
             <p className='small'>To Get Started Import Data from a File.</p>
             <button className="btn btn-sm btn-primary my-2" onClick={props.setModalImport} title='Import Data'><i className='bi bi-box-arrow-in-down' /> Import…</button>
           </div>}
           {(!dataDisabled && state.length === 0) ? (
             <div className='text-center p-3'>
-              <i className='bi bi-database text-muted fs-1' />
+              <i className='bi bi-database text-body-secondary fs-1' />
               <span className='d-block fs-5'>No Data Selected</span>
               <span className='small'>
                 Use the <i className='bi bi-filter-square' />&nbsp;Filters to select subsets of data,

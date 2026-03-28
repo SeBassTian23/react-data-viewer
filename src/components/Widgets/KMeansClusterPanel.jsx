@@ -409,7 +409,7 @@ function CalculateKMeansCluster(props) {
               }).map((itm, idx) => {
                 return (<li key={idx}>{itm.name} | Min: {itm.min} | Max: {itm.max}</li>)
               })}
-              {thresholds.length === 0 && <small className='text-muted'>No Thresholds were applied</small>}
+              {thresholds.length === 0 && <small className='text-body-secondary'>No Thresholds were applied</small>}
             </ul>
 
             <span className='form-text p-1'>Clusters k={results.k}</span>

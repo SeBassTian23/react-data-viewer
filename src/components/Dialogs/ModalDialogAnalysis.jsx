@@ -71,7 +71,7 @@ export default function ModalDialogAnalysis(props) {
     >
       <Modal.Body>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-journal-richtext me-2 fs-3 text-muted" /> Analysis
+          <i className="bi bi-journal-richtext me-2 fs-3 text-body-secondary" /> Analysis
           <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
         </span>
 
@@ -98,10 +98,10 @@ export default function ModalDialogAnalysis(props) {
           </Col>
           <Col sm={12} lg={4} className='border-start pt-2'>
             <span className='d-block form-label'>Started</span>
-            <span className='text-muted'>{dayjs(store.created_at).format('l LT')}</span>
+            <span className='text-body-secondary'>{dayjs(store.created_at).format('l LT')}</span>
             <hr />
             <span className='d-block form-label'>Last Saved</span>
-            <span className='text-muted'>{dayjs(store.updated_at).format('l LT')}</span>
+            <span className='text-body-secondary'>{dayjs(store.updated_at).format('l LT')}</span>
             <hr />
             <span className="d-block form-label">Analysis Team</span>
             <ul className='list-unstyled'>
@@ -137,25 +137,25 @@ function AnalysisFileInfo({ files, hasdata, handleClose, setModalImport }) {
   }
 
   if (files.length == 0 && hasdata)
-    return <li key={"0"} className='small text-muted'><i className={`bi bi-file-earmark-x text-warning`} /> No files associated</li>
+    return <li key={"0"} className='small text-body-secondary'><i className={`bi bi-file-earmark-x text-warning`} /> No files associated</li>
 
   if (files.length == 0 && !hasdata)
     return <><ListGroup.Item as="li" key={"0"}>
       <button className="btn btn-primary btn-sm" onClick={(e) => { e.preventDefault(); handleClose(); setModalImport(true) }} title='Import Data'><i className='bi bi-box-arrow-in-down' /> Import Data…</button>
-      <span className='ms-2 small text-muted'>To Get Started Import Data from a File.</span>
+      <span className='ms-2 small text-body-secondary'>To Get Started Import Data from a File.</span>
     </ListGroup.Item>
     </>
 
   return files.map((itm, idx) => {
     if (typeof (itm) === 'string')
       return <ListGroup.Item as="li" key={idx} className='d-flex align-items-center ps-2'>
-        <i className={`${icon(itm)} fs-4 me-2`} /> <span className='text-muted'>{itm}</span>
+        <i className={`${icon(itm)} fs-4 me-2`} /> <span className='text-body-secondary'>{itm}</span>
       </ListGroup.Item>
 
     if (typeof (itm) === 'object')
       return <ListGroup.Item as="li" key={idx} className='d-flex align-items-center ps-2'>
         <i className={`${icon(itm.name)} fs-4 me-2`} />
-        <span className='text-muted fw-bold d-flex flex-column'>{itm.name}
+        <span className='text-body-secondary fw-bold d-flex flex-column'>{itm.name}
           <span className='imported-file-info'>
             <i className='bi bi-hdd' /> { humanFileSize(itm.size)}
             <i className='bi bi-file-earmark-text ms-2' /> {fileExtension(itm.name)}
@@ -170,11 +170,11 @@ function UserProfile({name, email, avatar = null, isCreator = null}) {
 
   return <div className='d-flex align-items-center p-1'>
     <div className="flex-shrink-0 text-center rounded bg-light analysis-user-avatar">
-      {avatar ? <div className='rounded ratio ratio-1x1 d-inline-block' style={{background: `url(${avatar}) 0% 0% / cover`}}/> : <i className="bi bi bi-person-circle fs-2 text-muted" />}
+      {avatar ? <div className='rounded ratio ratio-1x1 d-inline-block' style={{background: `url(${avatar}) 0% 0% / cover`}}/> : <i className="bi bi bi-person-circle fs-2 text-body-secondary" />}
     </div>
     <div className='flex-grow-1'>
       <div className="analysis-user-name">{name}{ isCreator && <Badge pill bg="secondary" className='ms-1'>Creator</Badge>}</div>
-      <div className='text-muted analysis-user-email'>{email}</div>
+      <div className='text-body-secondary analysis-user-email'>{email}</div>
     </div>
   </div>
 }

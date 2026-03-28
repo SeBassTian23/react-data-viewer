@@ -35,8 +35,8 @@ export default function Aliases() {
           <Form.Control type="search" size="sm" placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
         </Col>
         <Col sm={12} className='p-0'>
-          {state.length === 0? <div className='text-center text-muted'>
-              <i className='bi bi-at text-muted fs-1' />
+          {state.length === 0? <div className='text-center text-body-secondary'>
+              <i className='bi bi-at text-body-secondary fs-1' />
               <p className='small'>Aliases</p>
             </div>
             :

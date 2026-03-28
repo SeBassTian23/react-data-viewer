@@ -31,7 +31,7 @@ export default function ModalDialogMapAreaSelect(props) {
     >
       <Modal.Body>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-pin-map me-2 fs-3 text-muted" /> Filter By Map Area
+          <i className="bi bi-pin-map me-2 fs-3 text-body-secondary" /> Filter By Map Area
         </span>
         <Form.Group className='my-2'>
           <Form.Label className='form-label-header'>Selection Method</Form.Label>

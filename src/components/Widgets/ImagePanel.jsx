@@ -94,7 +94,7 @@ export default function ImagePanel(props) {
           onDragEnter={onDragEnter}
           onDragLeave={onDragLeave}
         >
-          {isDragging? <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
+          {isDragging? <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-body-secondary small">
               <i className="bi bi-file-earmark-plus fs-1"></i>
             </div>
           :

@@ -29,7 +29,7 @@ export default function ModalDialogAlert({children, ...props}) {
     >
       <Modal.Body className='p-4 text-center'>
         {props.header && <h5 className='mb-2'>{props.header}</h5>}
-        {props.content && <p className="mb-0 small text-muted">{props.content}</p>}
+        {props.content && <p className="mb-0 small text-body-secondary">{props.content}</p>}
         {children}
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>

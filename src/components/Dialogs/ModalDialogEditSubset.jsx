@@ -28,7 +28,7 @@ export default function ModalDialogEditSubset(props) {
     >
       <Modal.Body>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-filter me-2 fs-3 text-muted" /> Data Subset
+          <i className="bi bi-filter me-2 fs-3 text-body-secondary" /> Data Subset
         </span>
 
         <span className='form-label'>Color & Name</span>

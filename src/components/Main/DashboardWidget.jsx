@@ -86,7 +86,7 @@ function DashboardWidget(props) {
   const content = useMemo(() => {
     const config = widgets.find(itm => itm.type == props.type);
     if (!config) return (
-      <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-muted small">
+      <div className="d-flex flex-column justify-content-center align-items-center p-1 card-body text-body-secondary small">
         <i className="bi bi-window fs-2"></i>
         Unknown or Unsupported Widget
       </div>

@@ -61,7 +61,7 @@ export default function ModalDialogPlot(props) {
     >
       <Modal.Body>
         <span className="d-flex align-items-center fs-5">
-          <i className="bi bi-graph-up me-2 fs-3 text-muted" /> Plot Data | {String(props.type).replace(/^./, match => match.toUpperCase())}
+          <i className="bi bi-graph-up me-2 fs-3 text-body-secondary" /> Plot Data | {String(props.type).replace(/^./, match => match.toUpperCase())}
           <Button variant={null} onClick={handleClickHelp} className='ms-auto'><i className='bi bi-question-circle' /></Button>
         </span>
         <Row className='mt-2'>
@@ -243,7 +243,7 @@ function PlotParameterSelect(props) {
           )
         })
       }
-      {!plotselect && <div className='d-flex flex-wrap text-center align-content-center text-muted h-100'>
+      {!plotselect && <div className='d-flex flex-wrap text-center align-content-center text-body-secondary h-100'>
         <i className='bi bi-ui-checks fs-3 w-100' />
         <small className='w-100'>Select Plottype</small>
       </div>}

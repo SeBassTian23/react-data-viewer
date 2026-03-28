@@ -83,8 +83,8 @@ export default function Flags(props) {
 
       <Row className={`h-100 overflow-auto${(flagged.length === 0) ? ' align-items-center' : ''}`}>
         <Col sm={12} className='p-0'>
-          {flagged.length === 0 && <div className='text-center text-muted'>
-              <i className='bi bi-flag text-muted fs-1' />
+          {flagged.length === 0 && <div className='text-center text-body-secondary'>
+              <i className='bi bi-flag text-body-secondary fs-1' />
               <p className='small'>Flagged Data</p>
             </div>
           }

@@ -147,8 +147,8 @@ return (
     <Row className={`h-100 overflow-auto${(state.length === 0) ? ' align-items-center' : ''}`}>
       <Col sm={12} className='p-0'>
         {state.length === 0 ? <div className='text-center'>
-          <i className='bi bi-filter text-muted fs-1' />
-          <span className='d-block text-muted fs-5'>Filters</span>
+          <i className='bi bi-filter text-body-secondary fs-1' />
+          <span className='d-block text-body-secondary fs-5'>Filters</span>
           <p className='small'>No Filters available</p>
         </div>
           :

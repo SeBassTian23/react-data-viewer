@@ -175,7 +175,7 @@ function DisplayTableRow({ param, value, idx = 0, paramInfo, darkmode }) {
     return (
       <tr id={paramInfo.id}>
         <td><em>{label}</em></td>
-        <td className='text-end' title="No data available"><i className='bi bi-exclamation-triangle text-muted' /></td>
+        <td className='text-end' title="No data available"><i className='bi bi-exclamation-triangle text-body-secondary' /></td>
       </tr>
     )    
   }

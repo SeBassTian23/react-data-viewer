@@ -57,8 +57,8 @@ export default function Bookmarks(props) {
       </Row>
       <Row className={`h-100 overflow-auto align-content-${state.length === 0? 'center': 'start'}`}>
         <Col sm={12} className='p-0'>
-          {state.length === 0? <div className='text-center text-muted'>
-              <i className='bi bi-bookmarks text-muted fs-1' />
+          {state.length === 0? <div className='text-center text-body-secondary'>
+              <i className='bi bi-bookmarks text-body-secondary fs-1' />
               <p className='small'>Bookmarks</p>
             </div>
             :
