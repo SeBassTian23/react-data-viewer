@@ -89,9 +89,10 @@ const getFilteredData = (collection, { filters = [], thresholds = [], sortby = '
   if (Array.isArray(dropna) && dropna.length > 0) {
     parsedDropna['$and'] = []
     // Make unique list of dropna elements and remove None,
-    const fields = getColumnNames(collection);
-    dropna = [...new Set(dropna.filter(itm => fields.includes(itm)).filter(itm => !['$loki'].includes(itm)) )];
-
+    // const fields = getColumnNames(collection);
+    // dropna = [...new Set(dropna.filter(itm => fields.includes(itm)).filter(itm => !['$loki'].includes(itm)) )];
+    dropna = [...new Set(dropna)].filter(f => !['$loki', 'None', 'Row Number'].includes(f));
+    
     for (const field of dropna) {
       parsedDropna['$and'].push({ [field]: { '$ne': null }})
       parsedDropna['$and'].push({ [field]: { '$ne': undefined }})
