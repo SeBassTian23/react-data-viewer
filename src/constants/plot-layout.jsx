@@ -3,7 +3,7 @@ const plotLayout = {
     text: null
   },
   paper_bgcolor: "rgba(0, 0, 0, 0)",
-  plot_bgcolor: "rgba(0, 0, 0, 0)",
+  plot_bgcolor: "rgba(255, 255, 255, 0.05)",
   modebar: {
     bgcolor: "white",
     remove: ["toimage"]
