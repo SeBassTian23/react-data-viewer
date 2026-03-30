@@ -2,6 +2,7 @@
  * File Info
  * 
  * @param {string} filename file name
+ * @returns fileinfo
  */
 const fileInfo = async (filename) => {
 

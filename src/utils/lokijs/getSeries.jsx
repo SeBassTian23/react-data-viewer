@@ -1,3 +1,10 @@
+/**
+ * Get data for selected fields from a lokijs
+ * data call.
+ * @param {Array} data data as returned from the lokijs data() function
+ * @param {String,Array} columns fields to get values for
+ * @returns object with {field: [data,..]}
+ */
 const getSeries = (data = [], columns = '') => {
   let obj = {}
 

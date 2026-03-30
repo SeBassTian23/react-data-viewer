@@ -1,7 +1,7 @@
 /**
  * Read File
- * 
  * @param {string} filename file name
+ * @returns file content as string
  */
 const fileRead = async (filename) => {
 

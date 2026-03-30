@@ -2,6 +2,7 @@
  * File exists
  * 
  * @param {string} filename file name
+ * @returns boolean
  */
 const fileExists = async (filename) => {
 

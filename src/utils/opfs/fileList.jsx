@@ -1,6 +1,7 @@
 /**
  * List files in the directory
- * 
+ * @param {boolean} ascending Sort order (default: ascending / true)
+ * @returns filelist
  */
 const fileList = async (ascending=true) => {
   const root = await navigator.storage.getDirectory();

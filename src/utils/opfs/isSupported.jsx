@@ -1,5 +1,6 @@
 /**
  * Check if OPFS is supported by the browser
+ * @returns boolean
  */
 const isSupported = () => {
   return (

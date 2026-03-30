@@ -1,5 +1,9 @@
 import opfs from '../../modules/opfs'
 
+/**
+ * Class that enables saving the lokijs database
+ * to the opfs of the browser
+ */
 export default class opfsLokiAdapter {
   constructor() {
     this.mode = "reference"

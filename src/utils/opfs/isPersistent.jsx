@@ -2,6 +2,7 @@
  * Check if OPFS has persistent storage in the browser
  * 
  * @param {boolean} set request persistent storage (defaut=false)
+ * @returns boolean
  */
 const isPersistent = async (set=false) => {
   
