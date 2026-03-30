@@ -73,13 +73,14 @@ const line = ({ input = [], mode = 'line', gradient = 'Viridis', shape = 'linear
 
       for(let g in input[i].y){
         marker = g > 0? {
-          "size": 0.01,  // Small markers to show the colorbar
+          "size": 0,  // Small markers to show the colorbar
             "line": {
               "width": 0
             },
         } : marker
         data.push({
-          "x": Array.from({ length: input[i].y[g].length }, (_, i) => i + 1),
+          // "x": Array.from({ length: input[i].y[g].length }, (_, i) => i + 1),
+          "x": input[i].y[g].map((_, i) => i + 1),
           "y": input[i].y[g],
           "idx": input[i]['$loki'][g],
           "legendgroup": input[i].id,
