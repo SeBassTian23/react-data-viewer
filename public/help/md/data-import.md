@@ -14,7 +14,7 @@ Import your data into the application for analysis using various file formats an
 | `.csv`               | `text/csv`                       | Comma-separated values; standard tabular data format widely supported by tools and databases |
 | `.txt`               | `text/plain`                     | Plain text, often tab-separated; simple but lacks standardized structure for data            |
 | `.json`              | `application/json`               | Structured key-value pairs; good for nested/hierarchical data and APIs                       |
-| `.jsonl` / `.ndjson` | `application/jsonlines`          | Newline-delimited JSON objects; efficient for streaming large datasets line-by-line          |
+| `.jsonl`<br>`.ndjson` | `application/jsonlines`          | Newline-delimited JSON objects; efficient for streaming large datasets line-by-line          |
 | `.parquet`           | `application/vnd.apache.parquet` | Column-oriented binary format; optimized for analytical queries and storage efficiency       |
 
 ## File Requirements
@@ -99,6 +99,8 @@ A usecase for selecting the `long format` would be a data structure in which you
 
 ### CSV Format
 
+A CSV file (Comma-Separated Values) is a plain text file with a `.csv` extension that stores tabular data in rows and columns, where each value is separated by a comma and can be opened by spreadsheet applications.
+
 ```CSV
 Date,Temperature,Sunrise/Sunset,Location
 2026-02-12,0.1,"[\"6:53\", \"17:27\"]",New York
@@ -106,6 +108,8 @@ Date,Temperature,Sunrise/Sunset,Location
 ```
 
 ### JSON Format
+
+A JSON file is a plain text file with a `.json` extension that stores data in JSON format, allowing structured information to be saved and easily shared between applications and systems.
 
 ```Javascript
 [
@@ -126,7 +130,15 @@ Date,Temperature,Sunrise/Sunset,Location
 
 ### ND-JSON Format
 
+An ND-JSON file (Newline Delimited JSON) is a text file format where each line contains a complete, independent JSON object separated by newlines, enabling efficient streaming and processing of large datasets.
+
 ```Javascript
 { "Date": "2026-02-12", "Temperature": 0.1, "Sunrise/Sunset": ["6:53", "17:27"], "Location": "New York" }
 { "Date": "2026-02-12", "Temperature": -1.5, "Sunrise/Sunset": ["6:44", "17:12"], "Location": "Boston" }
 ```
+
+### Parquet Format
+
+A Parquet file is a columnar data storage format that efficiently compresses and stores large datasets in a binary file, optimized for fast querying and analysis in big data processing frameworks.
+
+More: [Parquet Documentation](https://parquet.apache.org/)
