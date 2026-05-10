@@ -63,6 +63,8 @@ export const useFileImport = () => {
           catch(e){
             try{
               data = await loadNDJSON(file);
+              if(isMultispeQData(data))
+                data = await parseMultispeQJSON(data);
             }
             catch(e){
               throw new Error('Unsupported file type');
