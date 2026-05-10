@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { parseISO, isValid } from "date-fns";
 import tinycolor from 'tinycolor2'
 // import chroma from 'chroma-js'
 
@@ -9,7 +9,7 @@ const getSpecialStringType = (arr) => {
 
       // Check if it is a date
       try {
-         if (dayjs(arr[i]).isValid()){
+         if (isValid( parseISO(arr[i]) )){
             types.push('date-time');
             continue;
          }
