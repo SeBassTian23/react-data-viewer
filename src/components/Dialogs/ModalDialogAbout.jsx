@@ -21,6 +21,12 @@ export default function ModalDialogAbout({ show, onHide }) {
         <small>Created by: {__APP_AUTHOR__.split(' <')[0]}</small>
         <small>Version {__APP_VERSION__}</small>
         <small>©{CURRENT_YEAR} • {__APP_LICENSE__}</small>
+        <span className='d-flex justify-content-center gap-3'>
+          <span className='small'>
+            Source: <a href={__APP_URL__} target='_blank'>GitHub ↗</a>
+          </span>
+          <a href={__APP_ISSUES_URL__} className='small' target='_blank'>Report Issue ↗</a>
+        </span>
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>
         <Button 

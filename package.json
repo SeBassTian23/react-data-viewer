@@ -5,6 +5,15 @@
   "description": "Explore your data sets",
   "author": "Sebastian Kuhlgert <sebastian.kuhlgert@gmail.com>",
   "license": "AGPL-3.0",
+  "homepage": "https://github.com/SeBassTian23/react-data-viewer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeBassTian23/react-data-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SeBassTian23/react-data-viewer/issues",
+    "email": "sebastian.kuhlgert@gmail.com"
+  },
   "dependencies": {
     "@bopen/leaflet-area-selection": "^0.7.0",
     "@reduxjs/toolkit": "^2.11.2",

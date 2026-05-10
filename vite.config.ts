@@ -28,7 +28,9 @@ export default defineConfig({
     __APP_LICENSE__: JSON.stringify(packageJson.license),
     __APP_AUTHOR__: JSON.stringify(packageJson.author),
     __APP_DESCRIPTION__: JSON.stringify(packageJson.description),
-    __APP_URL__: JSON.stringify(packageJson.url) || `"#"`
+    __APP_URL__: JSON.stringify(packageJson.homepage) || `"#"`,
+    __APP_REPO_URL__: JSON.stringify(packageJson.repository.url) || `"#"`,
+    __APP_ISSUES_URL__: JSON.stringify(packageJson.bugs.url) || `"#"`
   },
   server: {
     open: false, // automatically open the app in the browser
