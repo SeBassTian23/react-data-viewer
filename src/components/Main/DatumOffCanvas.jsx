@@ -179,7 +179,25 @@ function DisplayTableRow({ param, value, idx = 0, paramInfo, darkmode }) {
       </tr>
     )    
   }
-  if (paramInfo.type === 'array') {
+  if (paramInfo.type === 'array' || paramInfo.specialtype === 'array') {
+
+    // In case it is a string, try to parse as an array
+    if(!Array.isArray(value) && paramInfo.specialtype === 'array'){
+      try{
+        value = JSON.parse(value)
+      }
+      catch(e){}
+    }
+    
+    if(!Array.isArray(value))
+      return (
+        <tr id={paramInfo.id}>
+          <td><em>{label}</em></td>
+          <td className='text-end'>
+            { /https?:\/\//.test(String(value))? <a href={String(value)} target='_blank' rel='noreferrer'>{String(value)}</a> : String(value) }
+          </td>
+        </tr>
+      )
 
     const isNested = value.some(el => Array.isArray(el));
     const isNumbers = !value.flat().some(el => typeof(el) === 'number' || el === null || el === undefined)
@@ -226,7 +244,7 @@ function DisplayTableRow({ param, value, idx = 0, paramInfo, darkmode }) {
       </tr>
     )
   }
-  if (paramInfo.type === 'object') {
+  if (paramInfo.type === 'object' || paramInfo.specialtype === 'object') {
     return (
       <tr id={paramInfo.id}>
         <td colSpan={2}>
