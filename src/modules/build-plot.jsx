@@ -12,6 +12,7 @@ import scatter3d from '../utils/plot/scatter-3d'
 import mesh3d from '../utils/plot/mesh-3d'
 import surface from '../utils/plot/surface'
 import line from '../utils/plot/line'
+import piechart from '../utils/plot/pie'
 import dayjs from 'dayjs'
 import plotLayout, { plotLayoutDarkmode, plotLayoutLightmode } from '../constants/plot-layout'
 
@@ -136,6 +137,9 @@ const buildPlot = ({ datasets = [], settings = {}, thresholds = [], parameters =
       break;
     case 'mesh3d':
       output = mesh3d({ input: data, mode: 'mesh', ...settings, parameters })
+      break;
+    case 'pie':
+      output = piechart({ input: data, mode: 'pie', ...settings, parameters })
       break;
     case 'scatter3d':
       output = scatter3d({ input: data, mode: 'markers', ...settings, parameters })

@@ -49,6 +49,13 @@ export default function GraphPanel(props) {
     statePlot.layout.font = { ...statePlot.layout.font, size: 12 * sizeScale }
     statePlot.layout.hovermode = false
 
+    if(statePlot.layout?.annotations)
+      statePlot.layout.annotations = statePlot.layout.annotations.map(itm => {
+        if(itm?.font?.size)
+          itm.font.size = statePlot.layout.annotations.length <= 16? 14 * sizeScale : 14 * (1 / (statePlot.layout.annotations.length / 8))
+        return itm
+      })
+
     statePlot.data = statePlot.data.map(itm => {
       if (itm?.marker?.colorbar?.thickness)
         itm.marker.colorbar.thickness *= halfScale

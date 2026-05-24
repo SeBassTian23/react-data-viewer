@@ -130,6 +130,7 @@ export default function PlotToolbar(props) {
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'scatter', show: true })}><PlotlyIcons.PlotScatterAxesIcon className='ploty-icon' /> Scatter</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'line', show: true })}><i className='bi bi-graph-up' /> Line</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'bar', show: true })}><i className='bi bi-bar-chart-line' /> Bar</Button>
+          <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'pie', show: true })}><i className='bi bi-pie-chart' /> Pie</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'distribution', show: true })}><PlotlyIcons.PlotBoxIcon className='ploty-icon-dist'  /> Distribution</Button>
           <Button variant={props.darkmode? "outline-light" : "outline-dark"} onClick={() => setModalShow({ type: 'matrix', show: true })}><PlotlyIcons.PlotSplomIcon className='ploty-icon-matrix' /> Matrix</Button>
         </ButtonGroup>

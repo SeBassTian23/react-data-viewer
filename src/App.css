@@ -518,6 +518,12 @@ kbd {
   rotate: -90deg;
 }
 
+.ploty-icon-pie {
+  height: 1.125rem;
+  margin-top: -0.313rem;
+  /* rotate: -90deg; */
+}
+
 /** Nav */
 .user-profile-btn > img {
   width: 1.8rem;
