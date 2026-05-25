@@ -52,7 +52,7 @@ export default function GraphPanel(props) {
     if(statePlot.layout?.annotations)
       statePlot.layout.annotations = statePlot.layout.annotations.map(itm => {
         if(itm?.font?.size)
-          itm.font.size = statePlot.layout.annotations.length <= 16? 14 * sizeScale : 14 * (1 / (statePlot.layout.annotations.length / 8))
+          itm.font.size = statePlot.layout.annotations.length <= 16? 14 * sizeScale : 12 * Math.pow(sizeScale, 2)
         return itm
       })
 
