@@ -41,6 +41,16 @@ The following types of bar plots can be selected. Depending on the type, differe
 | Bar              | `y-Axis`, `Category`, `Error Bars`, `Calculate`, `Display Bars` |
 | Bar - horizontal | `x-Axis`, `Category`, `Error Bars`, `Calculate`, `Display Bars` |
 
+## Pie
+
+Pie charts are a widely used data visualization technique that use circular segments of varying sizes to represent the proportional breakdown of a whole into its constituent parts. They provide an intuitive way to display part-to-whole relationships, making them a popular choice for visualizing percentage distributions, compositional data, and how a total quantity is divided across categories.
+
+The following types of pie charts can be selected. Depending on the type, different options are available.
+
+| Type             | Options                                                      |
+| :--------------- | :----------------------------------------------------------- |
+| Pie              | `y-Axis`, `Category`, `Calculate`, `Label`, `label Position` |
+
 ## Distribution
 
 Distribution graphs, such as histograms and kernel density plots, are valuable data visualization tools used to depict the underlying distribution of a numerical variable. By representing the frequency or density of data points across different value ranges, distribution graphs allow analysts to identify the central tendency, spread, and shape characteristics of the data, providing key insights into the statistical properties of the variable.
