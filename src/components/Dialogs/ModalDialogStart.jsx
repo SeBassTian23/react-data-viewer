@@ -63,8 +63,8 @@ export default function ModalDialogStart(props) {
       </Modal.Body>
       {files.length > 0 && <Modal.Footer>
         <Col className='text-start'>
-          <span className='form-label ps-2 mb-2'>Most Recent Analysis</span>
-          <ul className='list-group list-group-flush overflow-y-auto small px-1'>
+          <span className='form-label ps-2'>Most Recent Analysis</span>
+          <ul className='list-group list-group-flush overflow-y-auto small px-1 mt-2'>
             {files.slice(0, 1).map((el, idx) => <RecentFilesItem
               key={idx}
               index={idx}
