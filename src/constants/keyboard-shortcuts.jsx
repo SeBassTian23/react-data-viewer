@@ -29,6 +29,11 @@ export const KEYBOARD_SHORTCUTS = {
     windows: "Ctrl+I",
     description: "Import Data"
   },
+  importClipboardData: {
+    apple: "^ ⌘ V",
+    windows: "Alt+Ctrl+V",
+    description: "Import Data From Clipboard"
+  },
   toggleFilter: {
     apple: "⌘ K",
     windows: "Ctrl+K",

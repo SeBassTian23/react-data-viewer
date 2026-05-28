@@ -26,13 +26,17 @@ import useModalConfirm from '../../hooks/useModalConfirm';
 import { useAddBookmark } from '../../hooks/useAddBookmark';
 import useToast from '../../hooks/useToast';
 import useExport from '../../hooks/useExport';
+import {useFileImport} from '../../hooks/useFileImport'
 
 import opfs from '../../modules/opfs'
+
+const CB_FORMATS = ['text/plain', 'text/csv', 'application/json', 'application/jsonlines']
 
 export default function SidebarTabs({ modalImport, setModalImport, darkmode, setTogglesidebar, ...props }) {
 
   const store = useStore();
   const profile = useSelector(state => state.user)
+  const analysis = useSelector(state => state.analysis)
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,12 +44,15 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
   const modal = useModalConfirm();
   const addBookmark = useAddBookmark();
   const exportToNotebook = useExport();
+  const { processFile, isBusy, fileInvalid, setFileInvalid, resetState } = useFileImport();
 
   const [showAbout, setShowAbout] = useState(false)
   const [modalSaveAnalysis, setModalSaveAnalysis] = useState(false);
 
   const [startModal, setStartModal] = useState(false);
   const [showRecent, setShowRecent] = useState(false);
+  
+  const [hasClipboard, setHasClipboard] = useState(false);
 
   const [loadAnalysis, setLoadAnalysis] = useState(false);
   const [tab, setTab] = useState('DATASUBSETS');
@@ -85,6 +92,11 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
   useHotkeys('meta+i', (event) => {
     event.preventDefault();
     setModalImport(true);
+  });
+
+  useHotkeys('meta+ctrl+v', (event) => {
+    event.preventDefault();
+    handleClipboardImport();
   });
 
   useHotkeys('meta+k', (event) => {
@@ -134,6 +146,72 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
     }
   }), [modal])
 
+  useEffect(() => {
+
+    if(!navigator?.clipboard)
+      return;
+
+    const handleClipboard = async () => {
+      try{
+        const cb = await navigator.clipboard.read();
+        const content = await navigator.clipboard.readText();
+        if(cb.length > 0 && cb[0]?.types && CB_FORMATS.some(item => cb[0]?.types.includes(item))){
+          setHasClipboard(true)
+        }
+        else{
+          setHasClipboard(false)
+        }
+      }
+      catch(e){
+        setHasClipboard(false)
+      }
+    }
+
+    handleClipboard();
+
+    navigator.clipboard.addEventListener("clipboardchange", handleClipboard);
+
+    return () => {
+      navigator.clipboard.removeEventListener("clipboardchange", handleClipboard);
+    };
+  }, []);
+
+  const handleClipboardImport = async () => {
+    const cb = await navigator.clipboard.read();
+    if(cb.length > 0 && cb[0]?.types && CB_FORMATS.some(item => cb[0]?.types.includes(item))){
+      const text = await navigator.clipboard.readText();
+
+      let mimetype = 'text/plain';
+
+      if(text[0] === '{')
+        mimetype = 'application/jsonlines';
+
+      if(text[0] === '[')
+        mimetype = 'application/json';
+
+      const values = {
+        append: analysis.saveAs === 'analysis'? false : true,
+        delimiter: "",
+        file: [new File([text], "Clipboard", {type: mimetype, lastModified: new Date() })],
+        format: "wide"
+      }
+
+      // Process file and empty clipboard
+      processFile(values, (e) => {
+        if(e.success){
+          toast.success('Data imported from Clipboard', 'Data from Clipboard', 'bi-copy');
+        }
+        if(!e.success){
+          toast.error('Data import from Clipboard failed', 'Data from Clipboard', 'bi-copy');
+        }
+        navigator.clipboard.writeText("");
+      })
+    }
+    else{
+      toast.warning('Unknown data format', 'Data from Clipboard', 'bi-copy')
+    }
+  }
+
   return (
     <>
       <div id="dv-tab-nav">
@@ -170,6 +248,7 @@ export default function SidebarTabs({ modalImport, setModalImport, darkmode, set
               <Dropdown.Item onClick={() => setModalSaveAnalysis(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-journal-arrow-down" /> Save…</span> <ShortcutLabel shortcutKey="saveAnalysis" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => setModalImport(true)} className='d-flex align-items-center'><span className='flex-grow-1 me-3'><i className="bi bi-box-arrow-in-down" /> Import Data…</span> <ShortcutLabel shortcutKey="importData" /></Dropdown.Item>
+              <Dropdown.Item onClick={handleClipboardImport} className='d-flex align-items-center' disabled={!hasClipboard}><span className='flex-grow-1 me-3'><i className="bi bi-copy" /> Import from Clipboard</span> <ShortcutLabel shortcutKey="importClipboardData" /></Dropdown.Item>
               <Dropdown.Item onClick={() => setTab('RECENT')} className='d-flex align-items-center' disabled={!showRecent}><span className='flex-grow-1 me-3'><i className="bi bi-file-earmark-zip" /> Recent…</span><ShortcutLabel shortcutKey="showRecent" /></Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => exportToNotebook.show()} className='d-flex align-items-center' title='Download Dashboard as Jupyter/iPython Notebook'><span className='flex-grow-1 me-3'><i className="bi bi-journal-code" /> Export…</span><ShortcutLabel shortcutKey="showExport" /></Dropdown.Item>
