@@ -50,6 +50,10 @@ export const addDataJSON = async (data, append = false, collection = 'data') => 
     return el
   })
 
+  if(data.length === 0){
+    return { success: false, message: `No data could be properly parsed for import.` }
+  }
+
   try {
     let dataset = db.getCollection(collection);
 
