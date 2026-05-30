@@ -8,14 +8,14 @@ You can create a bookmark in two ways:
 
 - Click the ⋮ button in the Sidebar menu and select Save Bookmark…
 - Use the keyboard shortcut:
-  - Windows: <kbd><i class="bi bi-windows"></i> + Shift + S</kbd>
+  - Windows: <kbd>Ctrl + Shift + S</kbd>
   - macOS: <kbd>⇧ ⌘ S</kbd>
 
 Access your bookmarks through:
 
 - Sidebar menu ⋮ → Show Bookmarks
 - Keyboard shortcut:
-  - Windows: <kbd><i class="bi bi-windows"></i> + Shift + L</kbd>
+  - Windows: <kbd>Ctrl + Shift + L</kbd>
   - macOS: <kbd>⇧ ⌘ S</kbd>
 
 ## Saved State Information

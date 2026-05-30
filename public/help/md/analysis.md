@@ -10,7 +10,7 @@ Along with the data, dashboard panels, etc., the analysis dialog can be viewed, 
 
 ### New Analysis
 
-To start a new Analysis, "New Analysis..." can be selected from the drop down menu (shortcut <kbd><i class="bi bi-windows"></i> + Ctrl + N</kbd> <kbd>⌘ ^ N</kbd>). If needed, the web application can also be reloaded, confirming the reload dialog.
+To start a new Analysis, "New Analysis..." can be selected from the drop down menu (shortcut <kbd>Alt + Ctrl + N</kbd> <kbd>^ ⌘ N</kbd>). If needed, the web application can also be reloaded, confirming the reload dialog.
 
 ### Load Analysis
 

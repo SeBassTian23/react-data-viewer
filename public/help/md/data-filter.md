@@ -1,6 +1,6 @@
 # Filter
 
-Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd><i class="bi bi-windows"></i> + K</kbd> <kbd>⌘ K</kbd>. Parameter, if not already available as a Filter, can be selected as such.
+Data can be filterd by categorical parameters and date-time in your data to create subsets that can be compared in the analysis. The Filters can be selected clicking on **<i class="bi bi-filter"></i> Filter** in the sidebar menu or using the keyboard shortcut <kbd>Ctrl + K</kbd> <kbd>⌘ K</kbd>. Parameter, if not already available as a Filter, can be selected as such.
 
 ## Selections
 
