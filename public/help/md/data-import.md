@@ -2,10 +2,15 @@
 
 Import your data into the application for analysis using various file formats and configuration options. Access the import dialog through:
 
-- Keyboard shortcut:
-  - Windows: <kbd><i class="bi bi-windows"></i> + I</kbd>
+- Keyboard shortcut (File Dialog):
+  - Windows: <kbd>Ctrl + I</kbd>
   - macOS: <kbd>⌘ I</kbd>
 - Sidebar menu → Import Data…
+- Keyboard shortcut (Import from Clipboard):
+  - Windows: <kbd>Alt + Ctrl + V</kbd>
+  - macOS: <kbd>^ ⌘ V</kbd>
+- Sidebar menu → Import From Clipboad
+
 
 ## Supported File Formats
 
@@ -71,6 +76,14 @@ Weight  | Person2   | 70
 ```
 
 A usecase for selecting the `long format` would be a data structure in which you have the first column describing spectra
+
+## Data from Clipboard
+
+Data can also be imported from the clipboard, selecting **Import From Clipboad** from the Sidebar menu or using the keyboard shortcut <kbd>^ ⌘ V</kbd> / <kbd>Alt + Ctrl + V</kbd>.
+
+If you have an empty analysis, data is added, if it already contains data, it is appended. In case of using the clipboard, only txt/csv and json/jsonp formats are supported using auto delimiter detection and the wide format. If you require different settings, the file import needs to be used.
+
+> [!note] The Browser might request permisson to access your clipboard, which is required to use this function.
 
 ## Best Practices
 
